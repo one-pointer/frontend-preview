@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: software.amazon.awssdk:third-party-jackson-core:2.29.51">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/software.amazon.awssdk/third-party-jackson-core/2.29.51/ef0eacc0954728dbffae4c3960040a13e902ed72/third-party-jackson-core-2.29.51.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/software.amazon.awssdk/third-party-jackson-core/2.29.51/e43d7fd40a5408c5c082a9cd06b2a20773553591/third-party-jackson-core-2.29.51-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

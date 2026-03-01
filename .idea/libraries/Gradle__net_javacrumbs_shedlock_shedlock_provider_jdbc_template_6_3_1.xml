@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: net.javacrumbs.shedlock:shedlock-provider-jdbc-template:6.3.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.javacrumbs.shedlock/shedlock-provider-jdbc-template/6.3.1/63e048ee6511e6578198c750259878afe51eb208/shedlock-provider-jdbc-template-6.3.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.javacrumbs.shedlock/shedlock-provider-jdbc-template/6.3.1/1f86cf72fa8333809719205d4137709d49f6ce3b/shedlock-provider-jdbc-template-6.3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

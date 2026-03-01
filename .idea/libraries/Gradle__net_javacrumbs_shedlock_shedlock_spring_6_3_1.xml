@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: net.javacrumbs.shedlock:shedlock-spring:6.3.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.javacrumbs.shedlock/shedlock-spring/6.3.1/abb5efe9256604b68a4c7603c211fe873fd4cd39/shedlock-spring-6.3.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.javacrumbs.shedlock/shedlock-spring/6.3.1/7d13b082c53e083108c508c8431b0dbb4111ca2f/shedlock-spring-6.3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: software.amazon.awssdk:retries-spi:2.29.51">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/software.amazon.awssdk/retries-spi/2.29.51/6d7edb77d8480d236f8794cb6d539ceb77fe28b4/retries-spi-2.29.51.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/software.amazon.awssdk/retries-spi/2.29.51/b341a40c7439b48917e4094d845466de004eb290/retries-spi-2.29.51-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

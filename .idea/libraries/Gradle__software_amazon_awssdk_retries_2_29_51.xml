@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: software.amazon.awssdk:retries:2.29.51">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/software.amazon.awssdk/retries/2.29.51/6d7b20af1da4184dc910a79139140b819e9a729d/retries-2.29.51.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/software.amazon.awssdk/retries/2.29.51/a18321510ca703505991c71f04893d344959e614/retries-2.29.51-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
