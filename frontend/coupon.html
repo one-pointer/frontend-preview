@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>쿠폰 충전 - 원포인트</title>
+    <style>
+        :root {
+            --bg: #fafaf7;
+            --bg-card: #ffffff;
+            --bg-elevated: #ffffff;
+            --border: #eae8e4;
+            --border-light: #f2f0ec;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555550;
+            --text-tertiary: #8a8a82;
+            --text-muted: #b5b5ad;
+            --accent: #e8622a;
+            --accent-soft: #fef0e8;
+            --accent-hover: #d4551f;
+            --expert: #0f8a6a;
+            --expert-soft: #e8f6f1;
+            --blue: #2e6fce;
+            --blue-soft: #eaf1fb;
+            --yellow: #d4940a;
+            --yellow-soft: #fdf5e0;
+            --green: #0f8a6a;
+            --green-soft: #e8f6f1;
+            --red: #dc3545;
+            --red-soft: #fef2f2;
+            --purple: #7c5cc4;
+            --purple-soft: #f3f0ff;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(26,26,26,0.04), 0 4px 12px rgba(26,26,26,0.03);
+            --shadow-hover: 0 4px 16px rgba(26,26,26,0.08), 0 8px 32px rgba(26,26,26,0.04);
+            --shadow-elevated: 0 8px 24px rgba(26,26,26,0.06);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ─── ANIMATIONS ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            60% { transform: scale(1.02); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes checkmark {
+            0% { stroke-dashoffset: 24; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        /* ─── HEADER ─── */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(250,250,247,0.88);
+            backdrop-filter: blur(20px) saturate(1.6);
+            -webkit-backdrop-filter: blur(20px) saturate(1.6);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 28px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo { display: flex; align-items: center; gap: 9px; flex-shrink: 0; cursor: pointer; }
+        .logo-mark {
+            width: 34px; height: 34px; background: var(--accent); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 800; color: #fff;
+            transition: transform 0.3s var(--ease-out);
+        }
+        .logo:hover .logo-mark { transform: rotate(-6deg) scale(1.05); }
+        .logo-text { font-size: 19px; font-weight: 800; letter-spacing: -0.5px; }
+
+        .nav-tabs { display: flex; align-items: center; gap: 2px; margin-left: 8px; }
+        .nav-tab {
+            position: relative; padding: 8px 16px; font-size: 14.5px; font-weight: 600;
+            color: var(--text-tertiary); border: none; background: none; cursor: pointer;
+            font-family: inherit; border-radius: var(--radius-sm); transition: var(--transition); white-space: nowrap;
+        }
+        .nav-tab:hover { color: var(--text-primary); background: rgba(0,0,0,0.03); }
+        .nav-tab.active { color: var(--accent); font-weight: 700; }
+        .nav-tab .nav-badge {
+            position: absolute; top: 4px; right: 6px; width: 7px; height: 7px;
+            background: var(--accent); border-radius: 50%; border: 2px solid var(--bg);
+        }
+
+        .header-spacer { flex: 1; }
+        .header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
+
+        .balance-pill {
+            display: flex; align-items: center; gap: 7px;
+            padding: 7px 16px; background: var(--accent-soft); border-radius: 100px;
+            font-size: 13px; font-weight: 600; color: var(--accent);
+        }
+        .balance-pill svg { width: 16px; height: 16px; }
+        .balance-pill strong {
+            font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 15px;
+        }
+
+        .btn-auth {
+            padding: 8px 18px; border-radius: var(--radius-sm); font-size: 13.5px;
+            font-weight: 700; font-family: inherit; cursor: pointer; transition: var(--transition); border: none;
+        }
+        .btn-login { background: var(--text-primary); color: #fff; }
+        .btn-login:hover { opacity: 0.85; }
+
+        /* ─── CONTENT ─── */
+        .content {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            padding: 48px 0 16px;
+            text-align: center;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 16px; background: var(--accent-soft); border-radius: 100px;
+            font-size: 12.5px; font-weight: 700; color: var(--accent);
+            margin-bottom: 20px; letter-spacing: 0.3px;
+        }
+        .hero-eyebrow svg { width: 14px; height: 14px; }
+
+        .hero h1 {
+            font-size: 34px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            line-height: 1.3;
+            margin-bottom: 12px;
+        }
+
+        .hero h1 .accent {
+            background: linear-gradient(135deg, var(--accent) 0%, #d4551f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ─── COUPON TYPE TOGGLE ─── */
+        .type-toggle-wrap {
+            display: flex;
+            justify-content: center;
+            padding: 28px 0 12px;
+        }
+
+        .type-toggle {
+            display: flex;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: 100px;
+            padding: 4px;
+        }
+
+        .type-btn {
+            padding: 10px 28px;
+            border: none;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            color: var(--text-muted);
+            background: transparent;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .type-btn.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(232,98,42,0.3);
+        }
+
+        .type-btn .type-icon { font-size: 16px; }
+
+        /* ─── PACKAGE GRID ─── */
+        .packages-section { padding: 20px 0 32px; }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .pkg-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 28px 24px;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-out);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pkg-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--border-light);
+            transition: var(--transition);
+        }
+
+        .pkg-card:hover {
+            border-color: var(--border);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+
+        .pkg-card.selected {
+            border-color: var(--accent);
+            box-shadow: 0 4px 20px rgba(232,98,42,0.15), 0 0 0 1px var(--accent);
+        }
+
+        .pkg-card.selected::before {
+            background: linear-gradient(90deg, var(--accent), #d4551f);
+        }
+
+        .pkg-card.recommended {
+            border-color: var(--accent);
+        }
+
+        .pkg-card.recommended::before {
+            background: linear-gradient(90deg, var(--accent), #d4551f);
+        }
+
+        .pkg-badge {
+            position: absolute;
+            top: 12px; right: 12px;
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-size: 10.5px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+
+        .pkg-badge.best {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .pkg-badge.popular {
+            background: var(--blue-soft);
+            color: var(--blue);
+        }
+
+        .pkg-badge.max {
+            background: var(--purple-soft);
+            color: var(--purple);
+        }
+
+        .pkg-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .pkg-count-row {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .pkg-count {
+            font-family: 'Outfit', sans-serif;
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1;
+            color: var(--text-primary);
+        }
+
+        .pkg-count-unit {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-tertiary);
+        }
+
+        .pkg-price {
+            font-family: 'Outfit', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .pkg-price-won { font-size: 14px; font-weight: 600; }
+
+        .pkg-per {
+            font-size: 12.5px;
+            color: var(--text-tertiary);
+            margin-bottom: 20px;
+        }
+
+        .pkg-per strong {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .pkg-discount {
+            display: inline-flex;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11.5px;
+            font-weight: 800;
+            margin-top: auto;
+        }
+
+        .pkg-discount.off {
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
+
+        .pkg-discount.zero {
+            background: var(--bg);
+            color: var(--text-muted);
+        }
+
+        .pkg-check {
+            position: absolute;
+            top: 14px; left: 14px;
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .pkg-card.selected .pkg-check {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .pkg-check svg {
+            width: 14px; height: 14px;
+            stroke: #fff; stroke-width: 3; fill: none;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .pkg-card.selected .pkg-check svg { opacity: 1; }
+
+        /* ─── PAYMENT SECTION ─── */
+        .payment-section {
+            padding: 0 0 48px;
+            display: flex;
+            gap: 24px;
+        }
+
+        /* Order Summary (left) */
+        .order-summary {
+            flex: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow-card);
+            align-self: flex-start;
+            position: sticky;
+            top: 88px;
+        }
+
+        .summary-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            letter-spacing: -0.3px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            font-size: 14px;
+        }
+
+        .summary-row + .summary-row { border-top: 1px solid var(--border-light); }
+
+        .summary-label { color: var(--text-secondary); font-weight: 500; }
+        .summary-value { font-weight: 700; }
+        .summary-value.highlight { color: var(--accent); }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 20px 0 0;
+            margin-top: 12px;
+            border-top: 2px solid var(--text-primary);
+        }
+
+        .summary-total-label { font-size: 16px; font-weight: 800; }
+        .summary-total-price {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .summary-total-won { font-size: 16px; font-weight: 600; }
+
+        .summary-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 14px 16px;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            margin-top: 20px;
+            font-size: 12.5px;
+            color: var(--text-tertiary);
+            line-height: 1.5;
+        }
+
+        .summary-note svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
+
+        /* Payment Methods (right) */
+        .payment-methods {
+            width: 420px;
+            flex-shrink: 0;
+        }
+
+        .pm-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .pm-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .pm-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 20px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .pm-option:hover { border-color: var(--border); }
+
+        .pm-option.selected {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .pm-radio {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .pm-option.selected .pm-radio {
+            border-color: var(--accent);
+        }
+
+        .pm-radio-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.2s var(--ease-out);
+        }
+
+        .pm-option.selected .pm-radio-dot {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .pm-icon {
+            width: 40px; height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .pm-icon.card-icon { background: var(--blue-soft); }
+        .pm-icon.kakao-icon { background: #fee500; border-radius: var(--radius-sm); }
+        .pm-icon.toss-icon { background: #e8f1ff; }
+
+        .pm-info { flex: 1; }
+        .pm-name { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+        .pm-desc { font-size: 12px; color: var(--text-tertiary); }
+
+        /* CTA Button */
+        .pay-cta {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 17px;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-out);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: -0.3px;
+        }
+
+        .pay-cta.ready {
+            background: linear-gradient(135deg, var(--accent) 0%, #d4551f 100%);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(232,98,42,0.3);
+        }
+
+        .pay-cta.ready:hover {
+            box-shadow: 0 6px 24px rgba(232,98,42,0.4);
+            transform: translateY(-1px);
+        }
+
+        .pay-cta.disabled {
+            background: var(--border-light);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .pay-cta svg { width: 20px; height: 20px; }
+
+        .pay-terms {
+            text-align: center;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 14px;
+            line-height: 1.6;
+        }
+
+        .pay-terms a { color: var(--text-tertiary); text-decoration: underline; }
+
+        /* ─── BENEFITS STRIP ─── */
+        .benefits {
+            padding: 32px 0;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .benefit-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 22px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card);
+        }
+
+        .benefit-icon {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .benefit-icon.orange { background: var(--accent-soft); }
+        .benefit-icon.green { background: var(--green-soft); }
+        .benefit-icon.blue { background: var(--blue-soft); }
+
+        .benefit-info h4 { font-size: 14.5px; font-weight: 700; margin-bottom: 3px; }
+        .benefit-info p { font-size: 12.5px; color: var(--text-tertiary); line-height: 1.45; }
+
+        /* ─── PURCHASE HISTORY ─── */
+        .history-section {
+            padding: 0 0 56px;
+        }
+
+        .history-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .history-title {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        .history-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            cursor: pointer;
+        }
+        .history-link:hover { color: var(--text-secondary); }
+
+        .history-list {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px 24px;
+            transition: var(--transition);
+        }
+
+        .history-item + .history-item { border-top: 1px solid var(--border-light); }
+        .history-item:hover { background: rgba(0,0,0,0.01); }
+
+        .history-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .history-dot.paid { background: var(--green); }
+        .history-dot.refund { background: var(--red); }
+
+        .history-info { flex: 1; }
+        .history-name { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+        .history-date { font-size: 12px; color: var(--text-muted); }
+
+        .history-qty {
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .history-price {
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: right;
+            min-width: 80px;
+        }
+
+        .history-status {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 100px;
+        }
+
+        .history-status.paid { background: var(--green-soft); color: var(--green); }
+        .history-status.refund { background: var(--red-soft); color: var(--red); }
+
+        /* ─── EVENT BANNER ─── */
+        .event-banner {
+            background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
+            border-radius: var(--radius-lg);
+            padding: 32px 36px;
+            margin: 8px 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-banner::after {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(232,98,42,0.2) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .event-text { position: relative; z-index: 1; }
+        .event-text h3 {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .event-text p { color: rgba(255,255,255,0.6); font-size: 14px; }
+
+        .event-claim-btn {
+            padding: 12px 28px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .event-claim-btn:hover { background: var(--accent-hover); }
+        .event-claim-btn.claimed {
+            background: rgba(255,255,255,0.1);
+            cursor: default;
+        }
+
+        /* ─── SUCCESS MODAL ─── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(26,26,26,0.5);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            width: 420px;
+            max-width: 90vw;
+            text-align: center;
+            animation: popIn 0.4s var(--ease-out) both;
+            box-shadow: var(--shadow-elevated);
+        }
+
+        .modal-icon {
+            width: 72px; height: 72px;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .modal-icon svg { width: 36px; height: 36px; stroke: var(--accent); }
+
+        .modal h2 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .modal p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px; }
+
+        .modal-balance {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--accent-soft);
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .modal-balance strong {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .modal-actions { display: flex; gap: 10px; }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .modal-btn.primary { background: var(--accent); color: #fff; }
+        .modal-btn.primary:hover { background: var(--accent-hover); }
+        .modal-btn.secondary { background: var(--bg); color: var(--text-secondary); border: 1px solid var(--border); }
+        .modal-btn.secondary:hover { background: var(--border-light); }
+
+        /* ─── FOOTER ─── */
+        .footer {
+            background: #1a1a1a;
+            padding: 40px 28px;
+            margin-top: 24px;
+        }
+
+        .footer-inner {
+            max-width: 1080px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .footer-brand { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+        .footer-desc { font-size: 12.5px; color: rgba(255,255,255,0.35); line-height: 1.6; }
+        .footer-col h4 { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.5); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-col a { display: block; font-size: 13px; color: rgba(255,255,255,0.4); padding: 4px 0; transition: var(--transition); }
+        .footer-col a:hover { color: rgba(255,255,255,0.8); }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 960px) {
+            .packages-grid { grid-template-columns: repeat(2, 1fr); }
+            .payment-section { flex-direction: column; }
+            .payment-methods { width: 100%; }
+            .order-summary { position: static; }
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 26px; }
+            .packages-grid { grid-template-columns: 1fr; }
+            .benefits-grid { grid-template-columns: 1fr; }
+            .event-banner { flex-direction: column; text-align: center; }
+            .footer-inner { flex-direction: column; gap: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="header">
+    <div class="header-inner">
+        <a class="logo" href="index.html">
+            <div class="logo-mark">O</div>
+            <span class="logo-text">원포인트</span>
+        </a>
+        <nav class="nav-tabs">
+            <a class="nav-tab" href="index.html">홈</a>
+            <a class="nav-tab" href="chat.html">채팅 <span class="nav-badge"></span></a>
+            <a class="nav-tab active" href="coupon.html">쿠폰충전</a>
+            <a class="nav-tab" href="my-tickets.html">내 의뢰</a>
+            <a class="nav-tab" href="mypage.html">마이페이지</a>
+        </nav>
+        <div class="header-spacer"></div>
+        <div class="header-right">
+            <div class="balance-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2 10h20"/></svg>
+                보유 쿠폰 <strong id="balanceCount">5</strong>장
+            </div>
+            <button class="btn-auth btn-login" onclick="location.href='login.html'">로그인</button>
+        </div>
+    </div>
+</header>
+
+<!-- ═══ CONTENT ═══ -->
+<div class="content">
+
+    <!-- ═══ HERO ═══ -->
+    <div class="hero reveal">
+        <div class="hero-eyebrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            중개 수수료 0% &middot; 쿠폰으로 시작
+        </div>
+        <h1>쿠폰 한 장으로<br><span class="accent">원포인트 레슨</span> 시작하기</h1>
+        <p class="hero-sub">쿠폰 1장 = 의뢰 1건. 패키지를 많이 구매할수록 장당 가격이 내려갑니다.</p>
+    </div>
+
+    <!-- ═══ COUPON TYPE TOGGLE ═══ -->
+    <div class="type-toggle-wrap reveal">
+        <div class="type-toggle">
+            <button class="type-btn active" id="typeTicket" onclick="switchType('ticket')">
+                <span class="type-icon">🎫</span> 의뢰 쿠폰
+            </button>
+            <button class="type-btn" id="typeDirect" onclick="switchType('direct')">
+                <span class="type-icon">📩</span> 직접 의뢰 쿠폰
+            </button>
+        </div>
+    </div>
+
+    <!-- ═══ TICKET PACKAGES ═══ -->
+    <div class="packages-section" id="ticketPackages">
+        <div class="packages-grid reveal">
+            <div class="pkg-card" data-pkg="TRIAL" onclick="selectPackage(this)">
+                <div class="pkg-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="pkg-name">Trial</div>
+                <div class="pkg-count-row">
+                    <span class="pkg-count">1</span>
+                    <span class="pkg-count-unit">장</span>
+                </div>
+                <div class="pkg-price">3,000<span class="pkg-price-won">원</span></div>
+                <div class="pkg-per">장당 <strong>3,000원</strong></div>
+                <div class="pkg-discount zero">첫 경험용</div>
+            </div>
+            <div class="pkg-card" data-pkg="BASIC" onclick="selectPackage(this)">
+                <div class="pkg-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="pkg-name">Basic</div>
+                <div class="pkg-count-row">
+                    <span class="pkg-count">3</span>
+                    <span class="pkg-count-unit">장</span>
+                </div>
+                <div class="pkg-price">7,500<span class="pkg-price-won">원</span></div>
+                <div class="pkg-per">장당 <strong>2,500원</strong></div>
+                <div class="pkg-discount off">17% 할인</div>
+            </div>
+            <div class="pkg-card recommended selected" data-pkg="STANDARD" onclick="selectPackage(this)">
+                <span class="pkg-badge best">BEST</span>
+                <div class="pkg-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="pkg-name">Standard</div>
+                <div class="pkg-count-row">
+                    <span class="pkg-count">5</span>
+                    <span class="pkg-count-unit">장</span>
+                </div>
+                <div class="pkg-price">10,000<span class="pkg-price-won">원</span></div>
+                <div class="pkg-per">장당 <strong>2,000원</strong></div>
+                <div class="pkg-discount off">33% 할인</div>
+            </div>
+            <div class="pkg-card" data-pkg="PREMIUM" onclick="selectPackage(this)">
+                <span class="pkg-badge max">MAX</span>
+                <div class="pkg-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="pkg-name">Premium</div>
+                <div class="pkg-count-row">
+                    <span class="pkg-count">10</span>
+                    <span class="pkg-count-unit">장</span>
+                </div>
+                <div class="pkg-price">15,000<span class="pkg-price-won">원</span></div>
+                <div class="pkg-per">장당 <strong>1,500원</strong></div>
+                <div class="pkg-discount off">50% 할인</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ DIRECT REQUEST PACKAGES (hidden by default) ═══ -->
+    <div class="packages-section" id="directPackages" style="display:none">
+        <div class="packages-grid reveal visible">
+            <div class="pkg-card" data-pkg="CONTACT_SINGLE" onclick="selectPackage(this)">
+                <div class="pkg-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="pkg-name">Single</div>
+                <div class="pkg-count-row">
+                    <span class="pkg-count">1</span>
+                    <span class="pkg-count-unit">장</span>
+                </div>
+                <div class="pkg-price">1,500<span class="pkg-price-won">원</span></div>
+                <div class="pkg-per">장당 <strong>1,500원</strong></div>
+                <div class="pkg-discount zero">1회용</div>
+            </div>
+            <div class="pkg-card" data-pkg="CONTACT_BASIC" onclick="selectPackage(this)">
+                <div class="pkg-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="pkg-name">Basic</div>
+                <div class="pkg-count-row">
+                    <span class="pkg-count">3</span>
+                    <span class="pkg-count-unit">장</span>
+                </div>
+                <div class="pkg-price">3,900<span class="pkg-price-won">원</span></div>
+                <div class="pkg-per">장당 <strong>1,300원</strong></div>
+                <div class="pkg-discount off">13% 할인</div>
+            </div>
+            <div class="pkg-card recommended selected" data-pkg="CONTACT_STANDARD" onclick="selectPackage(this)">
+                <span class="pkg-badge best">BEST</span>
+                <div class="pkg-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="pkg-name">Standard</div>
+                <div class="pkg-count-row">
+                    <span class="pkg-count">5</span>
+                    <span class="pkg-count-unit">장</span>
+                </div>
+                <div class="pkg-price">5,500<span class="pkg-price-won">원</span></div>
+                <div class="pkg-per">장당 <strong>1,100원</strong></div>
+                <div class="pkg-discount off">27% 할인</div>
+            </div>
+            <div class="pkg-card" data-pkg="CONTACT_PREMIUM" onclick="selectPackage(this)">
+                <span class="pkg-badge max">MAX</span>
+                <div class="pkg-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="pkg-name">Premium</div>
+                <div class="pkg-count-row">
+                    <span class="pkg-count">10</span>
+                    <span class="pkg-count-unit">장</span>
+                </div>
+                <div class="pkg-price">9,000<span class="pkg-price-won">원</span></div>
+                <div class="pkg-per">장당 <strong>900원</strong></div>
+                <div class="pkg-discount off">40% 할인</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ PAYMENT SECTION ═══ -->
+    <div class="payment-section reveal">
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <div class="summary-title">주문 요약</div>
+            <div class="summary-row">
+                <span class="summary-label">상품</span>
+                <span class="summary-value" id="summaryProduct">의뢰 쿠폰 · Standard</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">수량</span>
+                <span class="summary-value" id="summaryQty">5장</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">장당 가격</span>
+                <span class="summary-value highlight" id="summaryPer">2,000원</span>
+            </div>
+            <div class="summary-total">
+                <span class="summary-total-label">결제 금액</span>
+                <span class="summary-total-price" id="summaryTotal">10,000<span class="summary-total-won">원</span></span>
+            </div>
+            <div class="summary-note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                구매한 쿠폰은 6개월 이내 사용 가능합니다. 미사용 쿠폰(AVAILABLE 상태)만 환불 가능합니다.
+            </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="payment-methods">
+            <div class="pm-title">결제 수단</div>
+            <div class="pm-grid">
+                <div class="pm-option selected" data-method="CARD" onclick="selectPayment(this)">
+                    <div class="pm-radio"><div class="pm-radio-dot"></div></div>
+                    <div class="pm-icon card-icon">💳</div>
+                    <div class="pm-info">
+                        <div class="pm-name">신용/체크카드</div>
+                        <div class="pm-desc">모든 카드사 결제 가능</div>
+                    </div>
+                </div>
+                <div class="pm-option" data-method="KAKAO_PAY" onclick="selectPayment(this)">
+                    <div class="pm-radio"><div class="pm-radio-dot"></div></div>
+                    <div class="pm-icon kakao-icon">🟡</div>
+                    <div class="pm-info">
+                        <div class="pm-name">카카오페이</div>
+                        <div class="pm-desc">카카오톡에서 바로 결제</div>
+                    </div>
+                </div>
+                <div class="pm-option" data-method="TOSS" onclick="selectPayment(this)">
+                    <div class="pm-radio"><div class="pm-radio-dot"></div></div>
+                    <div class="pm-icon toss-icon">🔵</div>
+                    <div class="pm-info">
+                        <div class="pm-name">토스페이</div>
+                        <div class="pm-desc">토스 앱에서 간편 결제</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="pay-cta ready" id="payBtn" onclick="processPayment()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v20M17 7H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                <span id="payBtnText">10,000원 결제하기</span>
+            </button>
+            <div class="pay-terms">
+                결제 진행 시 <a href="#">이용약관</a> 및 <a href="#">환불 정책</a>에 동의하는 것으로 간주합니다.
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ BENEFITS ═══ -->
+    <div class="benefits reveal">
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon orange">🎫</div>
+                <div class="benefit-info">
+                    <h4>쿠폰 1장 = 의뢰 1건</h4>
+                    <p>쿠폰 한 장으로 전문가 매칭까지.<br>추가 수수료 없이 투명하게.</p>
+                </div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon green">🔄</div>
+                <div class="benefit-info">
+                    <h4>매칭 전 취소 시 쿠폰 반환</h4>
+                    <p>매칭 확정 전이라면 쿠폰이<br>자동으로 돌아옵니다.</p>
+                </div>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon blue">⏰</div>
+                <div class="benefit-info">
+                    <h4>6개월 유효기간</h4>
+                    <p>구매일로부터 6개월간<br>언제든 사용 가능합니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ EVENT BANNER ═══ -->
+    <div class="event-banner reveal" id="eventBanner">
+        <div class="event-text">
+            <h3>🎉 신규 가입 쿠폰 받기</h3>
+            <p>회원가입하면 의뢰 쿠폰 1장을 무료로 드립니다!</p>
+        </div>
+        <button class="event-claim-btn" id="claimBtn" onclick="claimWelcomeCoupon()">무료 쿠폰 받기</button>
+    </div>
+
+    <!-- ═══ PURCHASE HISTORY ═══ -->
+    <div class="history-section reveal">
+        <div class="history-header">
+            <div class="history-title">최근 구매 내역</div>
+            <span class="history-link">전체보기 &#8250;</span>
+        </div>
+        <div class="history-list">
+            <div class="history-item">
+                <div class="history-dot paid"></div>
+                <div class="history-info">
+                    <div class="history-name">의뢰 쿠폰 · Standard 패키지</div>
+                    <div class="history-date">2026.02.24 14:32</div>
+                </div>
+                <div class="history-qty">5장</div>
+                <div class="history-price">10,000원</div>
+                <span class="history-status paid">결제완료</span>
+            </div>
+            <div class="history-item">
+                <div class="history-dot paid"></div>
+                <div class="history-info">
+                    <div class="history-name">직접 의뢰 쿠폰 · Basic 패키지</div>
+                    <div class="history-date">2026.02.18 09:15</div>
+                </div>
+                <div class="history-qty">3장</div>
+                <div class="history-price">3,900원</div>
+                <span class="history-status paid">결제완료</span>
+            </div>
+            <div class="history-item">
+                <div class="history-dot paid"></div>
+                <div class="history-info">
+                    <div class="history-name">의뢰 쿠폰 · Trial 패키지</div>
+                    <div class="history-date">2026.02.10 11:48</div>
+                </div>
+                <div class="history-qty">1장</div>
+                <div class="history-price">3,000원</div>
+                <span class="history-status paid">결제완료</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ═══ SUCCESS MODAL ═══ -->
+<div class="modal-overlay" id="successModal">
+    <div class="modal">
+        <div class="modal-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+        </div>
+        <h2>쿠폰 충전 완료!</h2>
+        <p id="modalMsg">의뢰 쿠폰 5장이 충전되었습니다.<br>지금 바로 의뢰를 등록해보세요.</p>
+        <div class="modal-balance">
+            보유 쿠폰 <strong id="modalBalance">10</strong>장
+        </div>
+        <div class="modal-actions">
+            <button class="modal-btn secondary" onclick="closeModal()">계속 쇼핑</button>
+            <a class="modal-btn primary" href="create-ticket.html" style="text-align:center">의뢰 등록하기</a>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<div class="footer">
+    <div class="footer-inner">
+        <div>
+            <div class="footer-brand">원포인트</div>
+            <p class="footer-desc">딱 한 번의 레슨, 딱 맞는 전문가.<br>구독 없이, 장기 계약 없이. 쿠폰 한 장으로 시작하세요.</p>
+        </div>
+        <div class="footer-col">
+            <h4>서비스</h4>
+            <a href="create-ticket.html">의뢰 등록</a>
+            <a href="#">전문가 찾기</a>
+            <a href="coupon.html">쿠폰 구매</a>
+        </div>
+        <div class="footer-col">
+            <h4>전문가</h4>
+            <a href="expert-portfolio.html">전문가 등록</a>
+            <a href="ticket-feed.html">의뢰 피드</a>
+            <a href="#">수수료 정책</a>
+        </div>
+        <div class="footer-col">
+            <h4>지원</h4>
+            <a href="#">이용약관</a>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">고객센터</a>
+        </div>
+    </div>
+</div>
+    <script>
+// ─── PACKAGE DATA ───
+const packages = {
+    ticket: {
+        TRIAL:    { name: 'Trial',    qty: 1,  price: 3000,  per: 3000, discount: '첫 경험용' },
+        BASIC:    { name: 'Basic',    qty: 3,  price: 7500,  per: 2500, discount: '17% 할인' },
+        STANDARD: { name: 'Standard', qty: 5,  price: 10000, per: 2000, discount: '33% 할인' },
+        PREMIUM:  { name: 'Premium',  qty: 10, price: 15000, per: 1500, discount: '50% 할인' },
+    },
+    direct: {
+        CONTACT_SINGLE:   { name: 'Single',   qty: 1,  price: 1500, per: 1500, discount: '1회용' },
+        CONTACT_BASIC:    { name: 'Basic',     qty: 3,  price: 3900, per: 1300, discount: '13% 할인' },
+        CONTACT_STANDARD: { name: 'Standard',  qty: 5,  price: 5500, per: 1100, discount: '27% 할인' },
+        CONTACT_PREMIUM:  { name: 'Premium',   qty: 10, price: 9000, per: 900,  discount: '40% 할인' },
+    }
+};
+
+let currentType = 'ticket';
+let selectedPkg = 'STANDARD';
+let selectedMethod = 'CARD';
+let balance = 5;
+
+// ─── TYPE SWITCHING ───
+function switchType(type) {
+    currentType = type;
+    document.getElementById('typeTicket').classList.toggle('active', type === 'ticket');
+    document.getElementById('typeDirect').classList.toggle('active', type === 'direct');
+    document.getElementById('ticketPackages').style.display = type === 'ticket' ? '' : 'none';
+    document.getElementById('directPackages').style.display = type === 'direct' ? '' : 'none';
+
+    // Select default package for new type
+    const defaultPkg = type === 'ticket' ? 'STANDARD' : 'CONTACT_STANDARD';
+    const container = type === 'ticket' ? 'ticketPackages' : 'directPackages';
+    const card = document.querySelector(`#${container} [data-pkg="${defaultPkg}"]`);
+    if (card) {
+        selectedPkg = defaultPkg;
+        document.querySelectorAll(`#${container} .pkg-card`).forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        updateSummary();
+    }
+}
+
+// ─── PACKAGE SELECTION ───
+function selectPackage(el) {
+    const container = el.closest('.packages-section');
+    container.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedPkg = el.dataset.pkg;
+    updateSummary();
+}
+
+// ─── PAYMENT METHOD ───
+function selectPayment(el) {
+    document.querySelectorAll('.pm-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedMethod = el.dataset.method;
+}
+
+// ─── UPDATE SUMMARY ───
+function updateSummary() {
+    const pkgData = packages[currentType];
+    const pkg = pkgData[selectedPkg];
+    if (!pkg) return;
+
+    const typeLabel = currentType === 'ticket' ? '의뢰 쿠폰' : '직접 의뢰 쿠폰';
+    document.getElementById('summaryProduct').textContent = `${typeLabel} · ${pkg.name}`;
+    document.getElementById('summaryQty').textContent = `${pkg.qty}장`;
+    document.getElementById('summaryPer').textContent = `${pkg.per.toLocaleString()}원`;
+    document.getElementById('summaryTotal').innerHTML = `${pkg.price.toLocaleString()}<span class="summary-total-won">원</span>`;
+    document.getElementById('payBtnText').textContent = `${pkg.price.toLocaleString()}원 결제하기`;
+
+    // Enable button
+    const btn = document.getElementById('payBtn');
+    btn.className = 'pay-cta ready';
+}
+
+// ─── PROCESS PAYMENT ───
+function processPayment() {
+    const pkgData = packages[currentType];
+    const pkg = pkgData[selectedPkg];
+    if (!pkg) return;
+
+    const btn = document.getElementById('payBtn');
+    btn.innerHTML = '<span style="display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.6s linear infinite"></span> 결제 처리 중...';
+    btn.style.pointerEvents = 'none';
+
+    // Simulate payment processing
+    setTimeout(() => {
+        balance += pkg.qty;
+        document.getElementById('balanceCount').textContent = balance;
+
+        const typeLabel = currentType === 'ticket' ? '의뢰 쿠폰' : '직접 의뢰 쿠폰';
+        document.getElementById('modalMsg').innerHTML = `${typeLabel} ${pkg.qty}장이 충전되었습니다.<br>지금 바로 의뢰를 등록해보세요.`;
+        document.getElementById('modalBalance').textContent = balance;
+        document.getElementById('successModal').classList.add('show');
+
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v20M17 7H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg><span id="payBtnText">${pkg.price.toLocaleString()}원 결제하기</span>`;
+        btn.style.pointerEvents = '';
+    }, 1500);
+}
+
+// ─── CLOSE MODAL ───
+function closeModal() {
+    document.getElementById('successModal').classList.remove('show');
+}
+
+// ─── CLAIM WELCOME COUPON ───
+function claimWelcomeCoupon() {
+    const btn = document.getElementById('claimBtn');
+    if (btn.classList.contains('claimed')) return;
+
+    btn.textContent = '수령 완료!';
+    btn.classList.add('claimed');
+    balance += 1;
+    document.getElementById('balanceCount').textContent = balance;
+}
+
+// ─── SCROLL REVEAL ───
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ─── SPIN ANIMATION ───
+const style = document.createElement('style');
+style.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
+document.head.appendChild(style);
+
+// Initialize
+updateSummary();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>원포인트 - 1회성 레슨 매칭 플랫폼</title>
+    <style>
+        :root {
+            --bg: #fafaf7;
+            --bg-card: #ffffff;
+            --bg-elevated: #ffffff;
+            --border: #eae8e4;
+            --border-light: #f2f0ec;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555550;
+            --text-tertiary: #8a8a82;
+            --text-muted: #b5b5ad;
+            --accent: #e8622a;
+            --accent-soft: #fef0e8;
+            --accent-hover: #d4551f;
+            --accent-deep: #b84417;
+            --expert: #0f8a6a;
+            --expert-soft: #e8f6f1;
+            --expert-hover: #0a7358;
+            --expert-deep: #064d3a;
+            --blue: #2e6fce;
+            --blue-soft: #eaf1fb;
+            --yellow: #d4940a;
+            --yellow-soft: #fdf5e0;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(26,26,26,0.04), 0 4px 12px rgba(26,26,26,0.03);
+            --shadow-hover: 0 4px 16px rgba(26,26,26,0.08), 0 8px 32px rgba(26,26,26,0.04);
+            --shadow-elevated: 0 8px 24px rgba(26,26,26,0.06);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --grad-warm: linear-gradient(135deg, #e8622a 0%, #d4551f 50%, #c44a18 100%);
+            --grad-expert: linear-gradient(135deg, #0f8a6a 0%, #0a7358 50%, #086b50 100%);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ─── GRAIN TEXTURE OVERLAY ─── */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.018;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* ─── SCROLL REVEAL ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── HEADER ─── */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(250,250,247,0.82);
+            backdrop-filter: blur(24px) saturate(1.8);
+            -webkit-backdrop-filter: blur(24px) saturate(1.8);
+            border-bottom: 1px solid rgba(234,232,228,0.6);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 28px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .logo-mark {
+            width: 34px; height: 34px;
+            background: var(--grad-warm);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-size: 17px; font-weight: 800; color: #fff;
+            transition: transform 0.3s var(--ease-out);
+            box-shadow: 0 2px 8px rgba(232,98,42,0.25);
+        }
+        .logo:hover .logo-mark { transform: rotate(-6deg) scale(1.05); }
+        body.expert-mode .logo-mark {
+            background: var(--grad-expert);
+            box-shadow: 0 2px 8px rgba(15,138,106,0.25);
+        }
+
+        .logo-text { font-size: 19px; font-weight: 800; letter-spacing: -0.5px; color: var(--text-primary); }
+
+        .nav-tabs { display: flex; align-items: center; gap: 2px; margin-left: 8px; }
+
+        .nav-tab {
+            position: relative;
+            padding: 8px 16px;
+            font-size: 14.5px; font-weight: 600;
+            color: var(--text-tertiary);
+            border: none; background: none;
+            cursor: pointer; font-family: inherit;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .nav-tab:hover { color: var(--text-primary); background: rgba(0,0,0,0.03); }
+        .nav-tab.active { color: var(--accent); font-weight: 700; }
+        body.expert-mode .nav-tab.active { color: var(--expert); }
+        .nav-tab .nav-badge {
+            position: absolute; top: 4px; right: 6px;
+            width: 7px; height: 7px;
+            background: var(--accent); border-radius: 50%; border: 2px solid var(--bg);
+        }
+
+        .search-bar { flex: 1; max-width: 400px; position: relative; }
+        .search-bar input {
+            width: 100%; height: 40px;
+            padding: 0 40px 0 16px;
+            border: 1.5px solid var(--border); border-radius: 100px;
+            font-size: 13.5px; font-family: inherit;
+            background: var(--bg-card); color: var(--text-primary);
+            transition: var(--transition); outline: none;
+        }
+        .search-bar input::placeholder { color: var(--text-muted); }
+        .search-bar input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+        body.expert-mode .search-bar input:focus { border-color: var(--expert); box-shadow: 0 0 0 4px var(--expert-soft); }
+        .search-icon {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            width: 18px; height: 18px; color: var(--text-muted); pointer-events: none;
+        }
+
+        .header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
+
+        .role-toggle {
+            display: flex; align-items: center;
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: 100px;
+            padding: 3px;
+        }
+        .role-btn {
+            padding: 6px 15px;
+            border-radius: 100px; border: none;
+            background: transparent;
+            font-size: 12.5px; font-weight: 700; font-family: inherit;
+            cursor: pointer; color: var(--text-muted);
+            transition: var(--transition);
+        }
+        .role-btn.active {
+            background: var(--grad-warm);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(232,98,42,0.3);
+        }
+        body.expert-mode .role-btn.active {
+            background: var(--grad-expert);
+            box-shadow: 0 2px 8px rgba(15,138,106,0.3);
+        }
+
+        .btn-auth {
+            padding: 8px 18px; border-radius: var(--radius-sm);
+            font-size: 13.5px; font-weight: 700; font-family: inherit;
+            cursor: pointer; transition: var(--transition); border: none;
+        }
+        .btn-login { background: var(--text-primary); color: #fff; }
+        .btn-login:hover { opacity: 0.85; }
+        .btn-signup { background: var(--accent-soft); color: var(--accent); }
+        body.expert-mode .btn-signup { background: var(--expert-soft); color: var(--expert); }
+        .btn-signup:hover { opacity: 0.85; }
+
+        /* ─── CONTENT ─── */
+        .content { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+
+        /* ─── HERO ─── */
+        .hero { padding: 44px 0 8px; }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .hero-main {
+            border-radius: var(--radius-xl);
+            padding: 48px 44px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* warm mesh gradient */
+            background:
+                radial-gradient(ellipse 80% 50% at 20% 80%, rgba(232,98,42,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 70% at 80% 20%, rgba(212,148,10,0.05) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 50% at 50% 50%, rgba(232,98,42,0.02) 0%, transparent 70%),
+                var(--bg-card);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-card);
+        }
+
+        /* decorative accent line */
+        .hero-main::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 44px;
+            width: 60px; height: 4px;
+            background: var(--grad-warm);
+            border-radius: 0 0 4px 4px;
+        }
+        body.expert-mode .hero-main::before {
+            background: var(--grad-expert);
+        }
+
+        /* floating orb */
+        .hero-main::after {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 180px; height: 180px;
+            background: radial-gradient(circle, rgba(232,98,42,0.08) 0%, transparent 60%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float-orb 8s ease-in-out infinite;
+        }
+        body.expert-mode .hero-main::after {
+            background: radial-gradient(circle, rgba(15,138,106,0.08) 0%, transparent 60%);
+        }
+        @keyframes float-orb {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-20px, 15px); }
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px 5px 10px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            width: fit-content;
+            border: 1px solid rgba(232,98,42,0.1);
+        }
+        .hero-label::before {
+            content: '';
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.7); }
+        }
+        body.expert-mode .hero-label {
+            background: var(--expert-soft);
+            color: var(--expert);
+            border-color: rgba(15,138,106,0.1);
+        }
+        body.expert-mode .hero-label::before { background: var(--expert); }
+
+        .hero-title {
+            font-size: 34px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.28;
+            margin-bottom: 12px;
+            word-break: keep-all;
+        }
+
+        .hero-title .accent {
+            background: linear-gradient(135deg, #e8622a 0%, #d4551f 40%, #c44a18 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        body.expert-mode .hero-title .accent {
+            background: linear-gradient(135deg, #0f8a6a 0%, #0a7358 40%, #086b50 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            font-size: 15.5px;
+            color: var(--text-tertiary);
+            line-height: 1.65;
+            margin-bottom: 28px;
+            word-break: keep-all;
+        }
+
+        .hero-search-row { display: flex; gap: 10px; }
+
+        .hero-input {
+            flex: 1; height: 50px;
+            padding: 0 20px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 15px; font-family: inherit;
+            background: var(--bg);
+            color: var(--text-primary);
+            transition: var(--transition); outline: none;
+        }
+        .hero-input::placeholder { color: var(--text-muted); }
+        .hero-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-soft);
+            background: var(--bg-card);
+        }
+        body.expert-mode .hero-input:focus {
+            border-color: var(--expert);
+            box-shadow: 0 0 0 4px var(--expert-soft);
+        }
+
+        .hero-cta {
+            height: 50px;
+            padding: 0 28px;
+            border: none; border-radius: var(--radius);
+            background: var(--grad-warm);
+            color: #fff;
+            font-size: 15px; font-weight: 700; font-family: inherit;
+            cursor: pointer; white-space: nowrap;
+            transition: var(--transition);
+            box-shadow: 0 2px 10px rgba(232,98,42,0.25);
+        }
+        body.expert-mode .hero-cta {
+            background: var(--grad-expert);
+            box-shadow: 0 2px 10px rgba(15,138,106,0.25);
+        }
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(232,98,42,0.35);
+        }
+        body.expert-mode .hero-cta:hover {
+            box-shadow: 0 6px 20px rgba(15,138,106,0.35);
+        }
+
+        .hero-tags { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+        .hero-tag {
+            padding: 5px 13px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 12.5px; font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer; transition: var(--transition);
+        }
+        .hero-tag:hover {
+            border-color: var(--accent); color: var(--accent); background: var(--accent-soft);
+        }
+        body.expert-mode .hero-tag:hover {
+            border-color: var(--expert); color: var(--expert); background: var(--expert-soft);
+        }
+
+        /* ─── HERO SIDE — CLIENT ACTION CARDS ─── */
+        .hero-side { display: flex; flex-direction: column; gap: 12px; }
+
+        .action-card {
+            flex: 1;
+            border-radius: var(--radius-lg);
+            padding: 22px 24px;
+            cursor: pointer;
+            transition: all 0.35s var(--ease-out);
+            display: flex; align-items: center; gap: 16px;
+            position: relative; overflow: hidden;
+            border: none; text-align: left; width: 100%;
+        }
+        .action-card:hover { transform: translateY(-3px) scale(1.01); }
+
+        /* --- Client: 전문가 찾기 (dark) --- */
+        .action-card.find-expert {
+            background: linear-gradient(135deg, #1c1c1c 0%, #2a2a2a 60%, #333 100%);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(26,26,26,0.2);
+        }
+        .action-card.find-expert:hover {
+            box-shadow: 0 10px 36px rgba(26,26,26,0.3);
+        }
+        .action-card.find-expert .action-icon {
+            width: 46px; height: 46px; border-radius: 12px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; position: relative; z-index: 1;
+        }
+        .action-card.find-expert .action-body { position: relative; z-index: 1; flex: 1; min-width: 0; }
+        .action-card.find-expert .action-body h3 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+        .action-card.find-expert .action-body p { font-size: 12.5px; opacity: 0.55; }
+        .action-card.find-expert .action-num {
+            position: relative; z-index: 1;
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px; font-weight: 800; opacity: 0.9;
+            flex-shrink: 0; letter-spacing: -0.5px;
+        }
+        .action-card.find-expert .action-glow {
+            position: absolute; top: -20px; right: -20px;
+            width: 100px; height: 100px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(232,98,42,0.3) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* --- Client: 직접 의뢰 (outline) --- */
+        .action-card.direct-request {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-card);
+        }
+        .action-card.direct-request:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 20px rgba(232,98,42,0.12), var(--shadow-card);
+        }
+        .action-card.direct-request .action-icon {
+            width: 46px; height: 46px; border-radius: 12px;
+            background: var(--accent-soft);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: var(--transition);
+        }
+        .action-card.direct-request:hover .action-icon { background: var(--accent); }
+        .action-card.direct-request:hover .action-icon svg { stroke: #fff; }
+        .action-card.direct-request .action-body { flex: 1; min-width: 0; }
+        .action-card.direct-request .action-body h3 { font-size: 14.5px; font-weight: 700; margin-bottom: 2px; }
+        .action-card.direct-request .action-body p { font-size: 12.5px; color: var(--text-tertiary); }
+
+        .action-card .action-arrow {
+            width: 28px; height: 28px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; transition: var(--transition);
+        }
+        .action-card.direct-request .action-arrow { background: var(--bg); color: var(--text-muted); }
+        .action-card.direct-request:hover .action-arrow {
+            background: var(--accent-soft); color: var(--accent); transform: translateX(2px);
+        }
+
+        /* --- Client: 쿠폰 충전 (gradient) --- */
+        .action-card.coupon-charge {
+            background: var(--grad-warm);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(232,98,42,0.25);
+        }
+        .action-card.coupon-charge:hover {
+            box-shadow: 0 10px 36px rgba(232,98,42,0.35);
+        }
+        .action-card.coupon-charge .action-icon {
+            width: 46px; height: 46px; border-radius: 12px;
+            background: rgba(255,255,255,0.18);
+            backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .action-card.coupon-charge .action-body { flex: 1; min-width: 0; }
+        .action-card.coupon-charge .action-body h3 { font-size: 14.5px; font-weight: 700; margin-bottom: 2px; }
+        .action-card.coupon-charge .action-body p { font-size: 12.5px; opacity: 0.75; }
+        .action-card.coupon-charge .action-price {
+            font-family: 'Outfit', sans-serif;
+            font-size: 15px; font-weight: 700;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px; border-radius: 20px;
+            flex-shrink: 0; backdrop-filter: blur(4px);
+        }
+        .action-card.coupon-charge .coupon-dots {
+            position: absolute; top: 8px; right: 24px;
+            display: flex; gap: 4px; opacity: 0.15;
+        }
+        .coupon-dots span { width: 5px; height: 5px; border-radius: 50%; background: #fff; }
+
+        /* ─── HERO SIDE — EXPERT DASHBOARD CARDS ─── */
+        .dash-card {
+            flex: 1;
+            border-radius: var(--radius-lg);
+            padding: 20px 22px;
+            cursor: pointer;
+            transition: all 0.35s var(--ease-out);
+            display: flex; align-items: center; gap: 14px;
+            position: relative; overflow: hidden;
+            border: none; text-align: left; width: 100%;
+        }
+        .dash-card:hover { transform: translateY(-2px); }
+
+        .dash-card.new-tickets {
+            background: var(--grad-expert);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(15,138,106,0.25);
+        }
+        .dash-card.new-tickets:hover { box-shadow: 0 10px 36px rgba(15,138,106,0.35); }
+
+        .dash-card .dash-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .dash-card.new-tickets .dash-icon { background: rgba(255,255,255,0.15); backdrop-filter: blur(4px); }
+
+        .dash-card .dash-body { flex: 1; min-width: 0; }
+        .dash-card .dash-body .dash-label { font-size: 12px; opacity: 0.7; margin-bottom: 4px; font-weight: 500; }
+        .dash-card .dash-body .dash-value {
+            font-family: 'Outfit', sans-serif; font-size: 26px;
+            font-weight: 800; letter-spacing: -0.5px; line-height: 1;
+        }
+        .dash-card .dash-body .dash-sub { font-size: 11.5px; opacity: 0.6; margin-top: 4px; }
+
+        .dash-card .dash-trend {
+            display: flex; align-items: center; gap: 3px;
+            padding: 3px 10px; border-radius: 20px;
+            font-size: 12px; font-weight: 700; flex-shrink: 0;
+        }
+        .dash-card.new-tickets .dash-trend { background: rgba(255,255,255,0.15); color: #fff; }
+
+        .dash-card.new-tickets .dash-glow {
+            position: absolute; bottom: -30px; right: -30px;
+            width: 120px; height: 120px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+        }
+
+        .dash-card.proposals {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-card);
+        }
+        .dash-card.proposals:hover {
+            border-color: var(--expert);
+            box-shadow: 0 4px 20px rgba(15,138,106,0.1), var(--shadow-card);
+        }
+        .dash-card.proposals .dash-icon { background: var(--expert-soft); }
+        .dash-card.proposals .dash-body .dash-label { color: var(--text-tertiary); opacity: 1; }
+        .dash-card.proposals .dash-body .dash-value { color: var(--text-primary); }
+        .dash-card.proposals .dash-body .dash-sub { color: var(--text-muted); opacity: 1; }
+
+        .dash-card.proposals .dash-mini-bar {
+            width: 60px; flex-shrink: 0;
+            display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+        }
+        .dash-mini-bar .bar-label { font-size: 10px; color: var(--text-muted); font-weight: 600; }
+        .dash-mini-bar .bar-track { width: 100%; height: 4px; background: var(--border-light); border-radius: 2px; overflow: hidden; }
+        .dash-mini-bar .bar-fill { height: 100%; border-radius: 2px; background: var(--expert); transition: width 0.6s var(--ease-out); }
+
+        .dash-card.rating {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-card);
+        }
+        .dash-card.rating:hover {
+            border-color: var(--yellow);
+            box-shadow: 0 4px 20px rgba(196,136,10,0.1), var(--shadow-card);
+        }
+        .dash-card.rating .dash-icon { background: var(--yellow-soft); }
+        .dash-card.rating .dash-body .dash-label { color: var(--text-tertiary); opacity: 1; }
+        .dash-card.rating .dash-body .dash-value { color: var(--text-primary); }
+        .dash-card.rating .dash-body .dash-sub { color: var(--text-muted); opacity: 1; }
+
+        .dash-card.rating .star-row { display: flex; gap: 2px; flex-shrink: 0; }
+        .star-row .star { color: var(--yellow); font-size: 14px; }
+        .star-row .star.empty { color: var(--border); }
+
+        /* ─── SECTION ─── */
+        .section { padding-top: 56px; }
+
+        .sec-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .sec-title {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* decorative underline on section titles */
+        .sec-title::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 28px;
+            height: 3px;
+            background: var(--grad-warm);
+            border-radius: 2px;
+        }
+        body.expert-mode .sec-title::after {
+            background: var(--grad-expert);
+        }
+
+        .sec-more {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .sec-more:hover { color: var(--accent); }
+        body.expert-mode .sec-more:hover { color: var(--expert); }
+
+        /* ─── CATEGORIES ─── */
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+        }
+
+        .cat-item {
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 22px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.35s var(--ease-out);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* unique subtle gradient per category */
+        .cat-item:nth-child(1) { background: linear-gradient(160deg, #ffffff 40%, #f0faf5 100%); }
+        .cat-item:nth-child(2) { background: linear-gradient(160deg, #ffffff 40%, #f0f7fa 100%); }
+        .cat-item:nth-child(3) { background: linear-gradient(160deg, #ffffff 40%, #fef5e8 100%); }
+        .cat-item:nth-child(4) { background: linear-gradient(160deg, #ffffff 40%, #fef0e8 100%); }
+        .cat-item:nth-child(5) { background: linear-gradient(160deg, #ffffff 40%, #f5f0fa 100%); }
+        .cat-item:nth-child(6) { background: linear-gradient(160deg, #ffffff 40%, #fef0f5 100%); }
+        .cat-item:nth-child(7) { background: linear-gradient(160deg, #ffffff 40%, #eaf1fb 100%); }
+        .cat-item:nth-child(8) { background: linear-gradient(160deg, #ffffff 40%, #f8f0ff 100%); }
+        .cat-item:nth-child(9) { background: linear-gradient(160deg, #ffffff 40%, #fff5e5 100%); }
+        .cat-item:nth-child(10) { background: linear-gradient(160deg, #ffffff 40%, #eef6eb 100%); }
+
+        .cat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border);
+        }
+
+        .cat-emoji {
+            font-size: 34px; line-height: 1; margin-bottom: 10px; display: block;
+            transition: transform 0.4s var(--ease-out);
+        }
+        .cat-item:hover .cat-emoji { transform: scale(1.18) translateY(-2px); }
+
+        .cat-name { font-size: 13px; font-weight: 700; color: var(--text-primary); word-break: keep-all; }
+        .cat-count {
+            font-size: 11px; color: var(--text-muted); margin-top: 3px;
+            font-family: 'Outfit', sans-serif; font-weight: 500;
+        }
+
+        /* ─── EXPERT CARDS ─── */
+        .expert-scroll {
+            display: flex; gap: 18px; overflow-x: auto;
+            padding-bottom: 12px; scrollbar-width: none;
+            scroll-snap-type: x mandatory;
+        }
+        .expert-scroll::-webkit-scrollbar { display: none; }
+
+        .expert-card {
+            flex: 0 0 240px;
+            scroll-snap-align: start;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.35s var(--ease-out);
+            box-shadow: var(--shadow-card);
+        }
+        .expert-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .expert-thumb {
+            height: 130px;
+            background: linear-gradient(135deg, #f5f2ee 0%, #eae6e0 100%);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 46px;
+            position: relative;
+        }
+        /* subtle gradient overlay on thumbs */
+        .expert-thumb::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(26,26,26,0.03) 100%);
+            pointer-events: none;
+        }
+
+        .expert-badge {
+            position: absolute; top: 10px; left: 10px;
+            padding: 3px 10px;
+            background: var(--bg-card);
+            border-radius: 100px;
+            font-size: 10px; font-weight: 800;
+            letter-spacing: 0.3px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            /* gradient text for badge */
+            background: var(--bg-card);
+            color: var(--accent);
+        }
+        body.expert-mode .expert-badge { color: var(--expert); }
+
+        .expert-body { padding: 16px 18px 18px; }
+        .expert-cat {
+            font-size: 11.5px; font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.2px; margin-bottom: 5px;
+        }
+        body.expert-mode .expert-cat { color: var(--expert); }
+
+        .expert-name { font-size: 15.5px; font-weight: 700; margin-bottom: 8px; }
+        .expert-rating {
+            display: flex; align-items: center; gap: 4px;
+            font-size: 12.5px; color: var(--text-secondary);
+        }
+        .star-icon { color: var(--yellow); font-size: 13px; }
+
+        .expert-tags { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+        .expert-tag {
+            padding: 3px 9px;
+            background: var(--bg); border-radius: 6px;
+            font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+        }
+
+        /* ─── TICKET FEED ─── */
+        .ticket-feed { display: flex; flex-direction: column; gap: 12px; }
+
+        .ticket-row {
+            display: flex; align-items: center;
+            padding: 18px 22px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            cursor: pointer; transition: var(--transition);
+            gap: 16px;
+            box-shadow: var(--shadow-card);
+        }
+        .ticket-row:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border);
+        }
+
+        .t-type {
+            flex-shrink: 0; padding: 5px 11px;
+            border-radius: var(--radius-sm);
+            font-size: 11.5px; font-weight: 700; white-space: nowrap;
+        }
+        .t-offline { background: var(--yellow-soft); color: #8a6e07; }
+        .t-online { background: var(--blue-soft); color: var(--blue); }
+
+        .t-body { flex: 1; min-width: 0; }
+        .t-title {
+            font-size: 15px; font-weight: 700; margin-bottom: 4px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .t-meta {
+            font-size: 12.5px; color: var(--text-tertiary);
+            display: flex; align-items: center; gap: 7px;
+        }
+        .t-meta span { white-space: nowrap; }
+        .t-dot { color: var(--text-muted); }
+
+        .t-right { flex-shrink: 0; text-align: right; }
+        .t-budget {
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px; font-weight: 700; color: var(--expert); margin-bottom: 2px;
+        }
+        .t-proposals { font-size: 11.5px; color: var(--text-muted); }
+        .t-time { font-size: 11.5px; color: var(--text-muted); flex-shrink: 0; white-space: nowrap; }
+
+        /* ─── PROMO BANNER ─── */
+        .promo-banner {
+            display: flex; align-items: center; justify-content: space-between;
+            border-radius: var(--radius-xl);
+            padding: 36px 44px;
+            margin-top: 56px;
+            color: #fff;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative; overflow: hidden;
+            /* rich mesh gradient */
+            background:
+                radial-gradient(ellipse 60% 120% at 10% 50%, rgba(232,98,42,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 100% at 90% 50%, rgba(212,85,31,0.1) 0%, transparent 50%),
+                linear-gradient(135deg, #1a1a1a 0%, #252525 40%, #2c2c2c 100%);
+        }
+        .promo-banner::before {
+            content: '';
+            position: absolute; top: -50%; right: -10%;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(232,98,42,0.2) 0%, transparent 60%);
+            border-radius: 50%; pointer-events: none;
+            animation: float-orb 10s ease-in-out infinite;
+        }
+        .promo-banner:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(26,26,26,0.25);
+        }
+
+        .promo-text h3 { font-size: 19px; font-weight: 700; margin-bottom: 6px; }
+        .promo-text p { font-size: 14px; color: rgba(255,255,255,0.45); }
+
+        .promo-cta {
+            padding: 12px 28px;
+            border-radius: var(--radius);
+            background: var(--grad-warm);
+            color: #fff;
+            font-size: 14px; font-weight: 700;
+            border: none; cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap; position: relative;
+            box-shadow: 0 2px 10px rgba(232,98,42,0.3);
+        }
+        body.expert-mode .promo-cta {
+            background: var(--grad-expert);
+            box-shadow: 0 2px 10px rgba(15,138,106,0.3);
+        }
+        .promo-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(232,98,42,0.4); }
+
+        /* ─── HOW IT WORKS ─── */
+        .how-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            position: relative;
+        }
+
+        .how-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 28px 20px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            transition: all 0.35s var(--ease-out);
+        }
+        .how-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .how-num {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--grad-warm);
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px;
+            box-shadow: 0 3px 12px rgba(232,98,42,0.25);
+        }
+        body.expert-mode .how-num {
+            background: var(--grad-expert);
+            box-shadow: 0 3px 12px rgba(15,138,106,0.25);
+        }
+
+        .how-title { font-size: 14.5px; font-weight: 700; margin-bottom: 6px; }
+        .how-desc { font-size: 12.5px; color: var(--text-tertiary); line-height: 1.55; }
+
+        .how-arrow {
+            position: absolute; top: 46px; right: -14px;
+            color: var(--border); font-size: 18px; z-index: 1;
+        }
+        .how-card:last-child .how-arrow { display: none; }
+
+        /* ─── REVIEWS ─── */
+        .review-scroll {
+            display: flex; gap: 18px; overflow-x: auto;
+            padding-bottom: 12px; scrollbar-width: none;
+        }
+        .review-scroll::-webkit-scrollbar { display: none; }
+
+        .review-card {
+            flex: 0 0 290px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            box-shadow: var(--shadow-card);
+            transition: all 0.35s var(--ease-out);
+            position: relative;
+        }
+        .review-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+        /* colored top accent bar */
+        .review-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 22px;
+            width: 32px; height: 3px;
+            border-radius: 0 0 3px 3px;
+        }
+        .review-card:nth-child(1)::before { background: var(--accent); }
+        .review-card:nth-child(2)::before { background: var(--blue); }
+        .review-card:nth-child(3)::before { background: var(--expert); }
+        .review-card:nth-child(4)::before { background: var(--yellow); }
+
+        .review-top {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+        }
+        .review-avatar {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: var(--bg);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 17px;
+        }
+        .review-info { flex: 1; }
+        .review-name { font-size: 13.5px; font-weight: 700; }
+        .review-cat { font-size: 11.5px; color: var(--text-tertiary); }
+        .review-stars { font-size: 12px; color: var(--yellow); letter-spacing: 1.5px; }
+        .review-text {
+            font-size: 13.5px; color: var(--text-secondary); line-height: 1.65;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .review-tag {
+            display: inline-block; margin-top: 14px;
+            padding: 4px 10px; background: var(--blue-soft);
+            border-radius: 6px; font-size: 10.5px; font-weight: 700; color: var(--blue);
+        }
+
+        /* ─── FOOTER ─── */
+        .footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            margin-top: 72px;
+        }
+        .footer-inner {
+            max-width: 1200px; margin: 0 auto;
+            padding: 44px 28px;
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+        .footer-brand {
+            font-size: 18px; font-weight: 800; margin-bottom: 12px;
+            background: var(--grad-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .footer-desc { font-size: 13px; color: var(--text-tertiary); line-height: 1.7; }
+        .footer-col h4 {
+            font-size: 12.5px; font-weight: 700; color: var(--text-primary);
+            margin-bottom: 16px; letter-spacing: 0.3px;
+        }
+        .footer-col a {
+            display: block; font-size: 13px; color: var(--text-tertiary);
+            padding: 4px 0; transition: var(--transition);
+        }
+        .footer-col a:hover { color: var(--text-primary); }
+        .footer-bottom {
+            max-width: 1200px; margin: 0 auto; padding: 16px 28px;
+            border-top: 1px solid var(--border-light);
+            font-size: 11.5px; color: var(--text-muted);
+            display: flex; justify-content: space-between;
+        }
+
+        /* ─── VISIBILITY ─── */
+        .client-only { display: block; }
+        .expert-only { display: none; }
+        body.expert-mode .client-only { display: none; }
+        body.expert-mode .expert-only { display: block; }
+
+        .client-flex { display: flex; }
+        .expert-flex { display: none; }
+        body.expert-mode .client-flex { display: none; }
+        body.expert-mode .expert-flex { display: flex; }
+
+        .client-grid { display: grid; }
+        .expert-grid { display: none; }
+        body.expert-mode .client-grid { display: none; }
+        body.expert-mode .expert-grid { display: grid; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1024px) {
+            .hero-grid { grid-template-columns: 1fr; }
+            .hero-side { flex-direction: row; gap: 10px; }
+            .action-card, .dash-card { flex: 1; }
+            .action-card.find-expert .action-num { font-size: 22px; }
+            .action-card .action-body p { display: none; }
+            .dash-card .dash-body .dash-sub { display: none; }
+            .cat-grid { grid-template-columns: repeat(5, 1fr); }
+            .how-grid { grid-template-columns: repeat(2, 1fr); }
+            .how-card:nth-child(2) .how-arrow { display: none; }
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .header-inner { gap: 12px; padding: 0 16px; }
+            .search-bar { display: none; }
+            .nav-tabs { gap: 0; margin-left: 0; }
+            .nav-tab { padding: 8px 10px; font-size: 13px; }
+            .hero { padding: 24px 0 8px; }
+            .hero-main { padding: 32px 24px; }
+            .hero-title { font-size: 26px; }
+            .hero-search-row { flex-direction: column; }
+            .hero-input, .hero-cta { width: 100%; }
+            .hero-side { flex-direction: column; gap: 10px; }
+            .action-card .action-body p { display: block; }
+            .dash-card .dash-body .dash-sub { display: block; }
+            .content { padding: 0 16px; }
+            .cat-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .how-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .promo-banner { flex-direction: column; text-align: center; gap: 20px; padding: 28px 24px; }
+            .footer-inner { grid-template-columns: 1fr; gap: 24px; }
+            .footer-bottom { flex-direction: column; gap: 6px; }
+            .btn-auth { padding: 7px 12px; font-size: 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .cat-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .cat-item { padding: 16px 8px; }
+            .cat-emoji { font-size: 28px; }
+            .how-grid { grid-template-columns: 1fr; }
+            .how-card .how-arrow { display: none; }
+            .action-card { padding: 16px 18px; }
+            .action-card .action-icon { width: 40px; height: 40px; }
+            .dash-card { padding: 16px 18px; }
+            .dash-card .dash-icon { width: 38px; height: 38px; }
+            .dash-card .dash-body .dash-value { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="header">
+    <div class="header-inner">
+        <a class="logo" href="index.html">
+            <div class="logo-mark">O</div>
+            <span class="logo-text">원포인트</span>
+        </a>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active">홈</button>
+            <a class="nav-tab" href="chat.html">채팅 <span class="nav-badge"></span></a>
+            <a class="nav-tab client-only" style="display:inline-flex" href="coupon.html">쿠폰충전</a>
+            <a class="nav-tab client-only" style="display:inline-flex" href="my-tickets.html">내 의뢰</a>
+            <a class="nav-tab expert-only" style="display:none" href="my-proposals.html">내 제안서</a>
+            <a class="nav-tab expert-only" style="display:none" href="expert-portfolio.html">포트폴리오</a>
+            <a class="nav-tab" href="mypage.html">마이페이지</a>
+        </nav>
+
+        <div class="search-bar">
+            <input type="text" id="headerSearch" placeholder="어떤 레슨을 찾고 계세요?">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+
+        <div class="header-right">
+            <div class="role-toggle">
+                <button class="role-btn active" id="btnClient" onclick="setRole('client')">의뢰인</button>
+                <button class="role-btn" id="btnExpert" onclick="setRole('expert')">전문가</button>
+            </div>
+            <button class="btn-auth btn-login" onclick="location.href='login.html'">로그인</button>
+            <button class="btn-auth btn-signup" onclick="location.href='signup.html'">회원가입</button>
+        </div>
+    </div>
+</header>
+
+<div class="content">
+
+    <!-- ═══ HERO (의뢰인) ═══ -->
+    <div class="hero client-only">
+        <div class="hero-grid reveal">
+            <div class="hero-main">
+                <div class="hero-label">1회성 레슨 매칭 플랫폼</div>
+                <h1 class="hero-title">배우고 싶은 게 있다면,<br><span class="accent">딱 한 번</span>만 시작하세요</h1>
+                <p class="hero-desc">의뢰를 등록하면 전문가가 먼저 제안서를 보내드려요.<br>구독 없이, 장기 계약 없이. 쿠폰 한 장이면 충분합니다.</p>
+                <div class="hero-search-row">
+                    <input type="text" class="hero-input" placeholder="예) 골프 스윙 교정, 기타 기초, 이력서 첨삭...">
+                    <button class="hero-cta" onclick="location.href='create-ticket.html'">의뢰 등록</button>
+                </div>
+                <div class="hero-tags">
+                    <span class="hero-tag">골프 스윙 교정</span>
+                    <span class="hero-tag">피아노 1회 레슨</span>
+                    <span class="hero-tag">포트폴리오 피드백</span>
+                    <span class="hero-tag">타로 상담</span>
+                    <span class="hero-tag">보컬 트레이닝</span>
+                </div>
+            </div>
+            <div class="hero-side">
+                <button class="action-card find-expert" onclick="alert('전문가 찾기')">
+                    <div class="action-glow"></div>
+                    <div class="action-icon">
+                        <svg width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M15 15l5 5"/><circle cx="10" cy="10" r="3" stroke-dasharray="2 2"/></svg>
+                    </div>
+                    <div class="action-body">
+                        <h3>전문가 찾기</h3>
+                        <p>분야별 전문가를 탐색하세요</p>
+                    </div>
+                    <div class="action-num">230<span style="font-size:14px;opacity:0.5">+</span></div>
+                </button>
+
+                <button class="action-card direct-request" onclick="location.href='create-ticket.html'">
+                    <div class="action-icon">
+                        <svg width="20" height="20" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M14 2l4 4-9 9H5v-4L14 2z"/><path d="M12 4l4 4" opacity="0.4"/></svg>
+                    </div>
+                    <div class="action-body">
+                        <h3>의뢰 등록하기</h3>
+                        <p>배우고 싶은 것을 등록하면 전문가가 찾아와요</p>
+                    </div>
+                    <div class="action-arrow">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 2l6 5-6 5"/></svg>
+                    </div>
+                </button>
+
+                <button class="action-card coupon-charge" onclick="location.href='coupon.html'">
+                    <div class="coupon-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="action-icon">
+                        <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="16" height="12" rx="3"/><path d="M2 9h16" opacity="0.4"/><circle cx="14" cy="13" r="1.5" fill="#fff" stroke="none" opacity="0.5"/></svg>
+                    </div>
+                    <div class="action-body">
+                        <h3>쿠폰 충전</h3>
+                        <p>쿠폰 1장으로 의뢰 1건 등록</p>
+                    </div>
+                    <div class="action-price">&#8361;2,000~</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ HERO (전문가) ═══ -->
+    <div class="hero expert-only">
+        <div class="hero-grid reveal">
+            <div class="hero-main">
+                <div class="hero-label">중개 수수료 0%</div>
+                <h1 class="hero-title">오늘의 <span class="accent">의뢰</span>를<br>확인하세요</h1>
+                <p class="hero-desc">내 전문 분야 의뢰에 제안서를 보내세요.<br>발송 비용 무료, 채택 시 채팅이 열립니다.</p>
+                <div class="hero-search-row">
+                    <input type="text" class="hero-input" placeholder="관심 분야나 키워드로 의뢰 검색...">
+                    <button class="hero-cta">의뢰 탐색</button>
+                </div>
+                <div class="hero-tags">
+                    <span class="hero-tag">서울 골프</span>
+                    <span class="hero-tag">온라인 음악</span>
+                    <span class="hero-tag">커리어 상담</span>
+                    <span class="hero-tag">피트니스</span>
+                </div>
+            </div>
+            <div class="hero-side">
+                <button class="dash-card new-tickets" onclick="location.href='ticket-feed.html'">
+                    <div class="dash-glow"></div>
+                    <div class="dash-icon">
+                        <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="14" height="14" rx="3"/><path d="M7 8h6M7 11h4"/></svg>
+                    </div>
+                    <div class="dash-body">
+                        <div class="dash-label">오늘 신규 의뢰</div>
+                        <div class="dash-value">48<span style="font-size:14px;font-weight:500;opacity:0.5;margin-left:2px">건</span></div>
+                    </div>
+                    <div class="dash-trend">
+                        <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 7L5 3l4 4"/></svg>
+                        +12
+                    </div>
+                </button>
+
+                <button class="dash-card proposals" onclick="location.href='my-proposals.html'">
+                    <div class="dash-icon">
+                        <svg width="20" height="20" fill="none" stroke="var(--expert)" stroke-width="2" stroke-linecap="round"><path d="M16 11v5a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2h5"/><path d="M12 2l4 4-7 7H5v-4L12 2z"/></svg>
+                    </div>
+                    <div class="dash-body">
+                        <div class="dash-label">보낸 제안서</div>
+                        <div class="dash-value">3<span style="font-size:14px;font-weight:500;opacity:0.5;margin-left:2px">건</span></div>
+                        <div class="dash-sub">대기 중 2 · 채택 1</div>
+                    </div>
+                    <div class="dash-mini-bar">
+                        <div class="bar-label">채택률</div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width:33%"></div>
+                        </div>
+                    </div>
+                </button>
+
+                <button class="dash-card rating" onclick="alert('내 리뷰')">
+                    <div class="dash-icon">
+                        <svg width="20" height="20" fill="var(--yellow)" stroke="var(--yellow)" stroke-width="1.5"><path d="M10 1.5l2.5 5.2 5.5.8-4 3.9.9 5.6L10 14.5 5.1 17l.9-5.6-4-3.9 5.5-.8z"/></svg>
+                    </div>
+                    <div class="dash-body">
+                        <div class="dash-label">내 평점</div>
+                        <div class="dash-value">4.9</div>
+                        <div class="dash-sub">리뷰 27개</div>
+                    </div>
+                    <div class="star-row">
+                        <svg class="star" width="14" height="14" fill="currentColor" stroke="none"><path d="M7 1l1.8 3.6L13 5.2l-3 2.9.7 4.1L7 10.3 3.3 12.2l.7-4.1-3-2.9 4.2-.6z"/></svg>
+                        <svg class="star" width="14" height="14" fill="currentColor" stroke="none"><path d="M7 1l1.8 3.6L13 5.2l-3 2.9.7 4.1L7 10.3 3.3 12.2l.7-4.1-3-2.9 4.2-.6z"/></svg>
+                        <svg class="star" width="14" height="14" fill="currentColor" stroke="none"><path d="M7 1l1.8 3.6L13 5.2l-3 2.9.7 4.1L7 10.3 3.3 12.2l.7-4.1-3-2.9 4.2-.6z"/></svg>
+                        <svg class="star" width="14" height="14" fill="currentColor" stroke="none"><path d="M7 1l1.8 3.6L13 5.2l-3 2.9.7 4.1L7 10.3 3.3 12.2l.7-4.1-3-2.9 4.2-.6z"/></svg>
+                        <svg class="star" width="14" height="14" fill="currentColor" stroke="none" style="opacity:0.7"><path d="M7 1l1.8 3.6L13 5.2l-3 2.9.7 4.1L7 10.3 3.3 12.2l.7-4.1-3-2.9 4.2-.6z"/></svg>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ CATEGORIES ═══ -->
+    <div class="section" id="catSection">
+        <div class="sec-header reveal">
+            <h2 class="sec-title">카테고리별 탐색</h2>
+            <a class="sec-more" href="category-browse.html">전체보기 &#8250;</a>
+        </div>
+        <div class="cat-grid reveal">
+            <a class="cat-item" href="category-browse.html?cat=골프" id="catLink0">
+                <span class="cat-emoji">&#9971;</span>
+                <div class="cat-name">골프</div>
+                <div class="cat-count" id="catCount0">32건</div>
+            </a>
+            <a class="cat-item" href="category-browse.html?cat=테니스" id="catLink1">
+                <span class="cat-emoji">&#127934;</span>
+                <div class="cat-name">테니스</div>
+                <div class="cat-count" id="catCount1">28건</div>
+            </a>
+            <a class="cat-item" href="category-browse.html?cat=피트니스" id="catLink2">
+                <span class="cat-emoji">&#127947;</span>
+                <div class="cat-name">피트니스</div>
+                <div class="cat-count" id="catCount2">45건</div>
+            </a>
+            <a class="cat-item" href="category-browse.html?cat=기타" id="catLink3">
+                <span class="cat-emoji">&#127928;</span>
+                <div class="cat-name">기타</div>
+                <div class="cat-count" id="catCount3">19건</div>
+            </a>
+            <a class="cat-item" href="category-browse.html?cat=피아노" id="catLink4">
+                <span class="cat-emoji">&#127929;</span>
+                <div class="cat-name">피아노</div>
+                <div class="cat-count" id="catCount4">24건</div>
+            </a>
+            <a class="cat-item" href="category-browse.html?cat=보컬" id="catLink5">
+                <span class="cat-emoji">&#127908;</span>
+                <div class="cat-name">보컬</div>
+                <div class="cat-count" id="catCount5">17건</div>
+            </a>
+            <a class="cat-item" href="category-browse.html?cat=작곡" id="catLink6">
+                <span class="cat-emoji">&#127926;</span>
+                <div class="cat-name">작곡</div>
+                <div class="cat-count" id="catCount6">8건</div>
+            </a>
+            <a class="cat-item" href="category-browse.html?cat=타로/운세" id="catLink7">
+                <span class="cat-emoji">&#128302;</span>
+                <div class="cat-name">타로/운세</div>
+                <div class="cat-count" id="catCount7">56건</div>
+            </a>
+            <a class="cat-item" href="category-browse.html?cat=사진/영상" id="catLink8">
+                <span class="cat-emoji">&#128247;</span>
+                <div class="cat-name">사진/영상</div>
+                <div class="cat-count" id="catCount8">15건</div>
+            </a>
+            <a class="cat-item" href="category-browse.html?cat=커리어/취업" id="catLink9">
+                <span class="cat-emoji">&#128188;</span>
+                <div class="cat-name">커리어/취업</div>
+                <div class="cat-count" id="catCount9">38건</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- ═══ TOP EXPERTS (의뢰인) ═══ -->
+    <div class="section client-only">
+        <div class="sec-header reveal">
+            <h2 class="sec-title">인기 전문가</h2>
+            <span class="sec-more">더보기 &#8250;</span>
+        </div>
+        <div class="expert-scroll reveal">
+            <a class="expert-card" href="expert-detail.html">
+                <div class="expert-thumb">&#127947;<span class="expert-badge">EARLY BIRD</span></div>
+                <div class="expert-body">
+                    <div class="expert-cat">골프</div>
+                    <div class="expert-name">김민수 코치</div>
+                    <div class="expert-rating"><span class="star-icon">&#9733;</span> 4.9 &middot; 리뷰 87건</div>
+                    <div class="expert-tags"><span class="expert-tag">오프라인</span><span class="expert-tag">서울</span></div>
+                </div>
+            </a>
+            <a class="expert-card" href="expert-detail.html">
+                <div class="expert-thumb">&#127929;</div>
+                <div class="expert-body">
+                    <div class="expert-cat">피아노</div>
+                    <div class="expert-name">박지은 선생님</div>
+                    <div class="expert-rating"><span class="star-icon">&#9733;</span> 4.8 &middot; 리뷰 63건</div>
+                    <div class="expert-tags"><span class="expert-tag">온라인</span><span class="expert-tag">오프라인</span></div>
+                </div>
+            </a>
+            <a class="expert-card" href="expert-detail.html">
+                <div class="expert-thumb">&#128188;<span class="expert-badge">EARLY BIRD</span></div>
+                <div class="expert-body">
+                    <div class="expert-cat">커리어/취업</div>
+                    <div class="expert-name">이준혁 멘토</div>
+                    <div class="expert-rating"><span class="star-icon">&#9733;</span> 4.9 &middot; 리뷰 112건</div>
+                    <div class="expert-tags"><span class="expert-tag">온라인</span></div>
+                </div>
+            </a>
+            <a class="expert-card" href="expert-detail.html">
+                <div class="expert-thumb">&#127934;</div>
+                <div class="expert-body">
+                    <div class="expert-cat">테니스</div>
+                    <div class="expert-name">정소연 강사</div>
+                    <div class="expert-rating"><span class="star-icon">&#9733;</span> 4.7 &middot; 리뷰 45건</div>
+                    <div class="expert-tags"><span class="expert-tag">오프라인</span><span class="expert-tag">경기</span></div>
+                </div>
+            </a>
+            <a class="expert-card" href="expert-detail.html">
+                <div class="expert-thumb">&#128302;</div>
+                <div class="expert-body">
+                    <div class="expert-cat">타로/운세</div>
+                    <div class="expert-name">한서윤 상담사</div>
+                    <div class="expert-rating"><span class="star-icon">&#9733;</span> 4.9 &middot; 리뷰 201건</div>
+                    <div class="expert-tags"><span class="expert-tag">온라인</span></div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- ═══ LATEST TICKETS (전문가) ═══ -->
+    <div class="section expert-only">
+        <div class="sec-header reveal">
+            <h2 class="sec-title">최신 의뢰</h2>
+            <a class="sec-more" href="ticket-feed.html">전체보기 &#8250;</a>
+        </div>
+        <div class="ticket-feed reveal">
+            <div class="ticket-row">
+                <span class="t-type t-offline">오프라인</span>
+                <div class="t-body">
+                    <div class="t-title">강남에서 골프 스윙 교정 1회 레슨</div>
+                    <div class="t-meta"><span>서울 강남구</span><span class="t-dot">&middot;</span><span>토요일 희망</span><span class="t-dot">&middot;</span><span>1시간</span></div>
+                </div>
+                <div class="t-right">
+                    <div class="t-budget">50,000원</div>
+                    <div class="t-proposals">제안서 3건</div>
+                </div>
+                <span class="t-time">5분 전</span>
+            </div>
+            <div class="ticket-row">
+                <span class="t-type t-online">온라인</span>
+                <div class="t-body">
+                    <div class="t-title">이직 준비 포트폴리오 피드백 (IT/개발)</div>
+                    <div class="t-meta"><span>화상 미팅</span><span class="t-dot">&middot;</span><span>평일 저녁</span><span class="t-dot">&middot;</span><span>1시간</span></div>
+                </div>
+                <div class="t-right">
+                    <div class="t-budget">40,000원</div>
+                    <div class="t-proposals">제안서 5건</div>
+                </div>
+                <span class="t-time">12분 전</span>
+            </div>
+            <div class="ticket-row">
+                <span class="t-type t-offline">오프라인</span>
+                <div class="t-body">
+                    <div class="t-title">어쿠스틱 기타 기초 1회 레슨 (완전 초보)</div>
+                    <div class="t-meta"><span>서울 마포구</span><span class="t-dot">&middot;</span><span>주말 오전</span><span class="t-dot">&middot;</span><span>1.5시간</span></div>
+                </div>
+                <div class="t-right">
+                    <div class="t-budget">35,000원</div>
+                    <div class="t-proposals">제안서 2건</div>
+                </div>
+                <span class="t-time">23분 전</span>
+            </div>
+            <div class="ticket-row">
+                <span class="t-type t-online">온라인</span>
+                <div class="t-body">
+                    <div class="t-title">타로 1:1 상담 (연애/진로)</div>
+                    <div class="t-meta"><span>화상 미팅</span><span class="t-dot">&middot;</span><span>이번 주 내</span><span class="t-dot">&middot;</span><span>30분</span></div>
+                </div>
+                <div class="t-right">
+                    <div class="t-budget">25,000원</div>
+                    <div class="t-proposals">제안서 7건</div>
+                </div>
+                <span class="t-time">41분 전</span>
+            </div>
+            <div class="ticket-row">
+                <span class="t-type t-online">온라인</span>
+                <div class="t-body">
+                    <div class="t-title">보컬 트레이닝 1회 (팝송 위주)</div>
+                    <div class="t-meta"><span>화상 미팅</span><span class="t-dot">&middot;</span><span>주중 저녁</span><span class="t-dot">&middot;</span><span>1시간</span></div>
+                </div>
+                <div class="t-right">
+                    <div class="t-budget">45,000원</div>
+                    <div class="t-proposals">제안서 1건</div>
+                </div>
+                <span class="t-time">1시간 전</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ PROMO BANNER ═══ -->
+    <div class="client-flex reveal">
+        <div class="promo-banner" onclick="location.href='coupon.html'">
+            <div class="promo-text">
+                <h3>쿠폰 충전하고 의뢰 등록하세요</h3>
+                <p>쿠폰 1장 = 의뢰 1건 &middot; 5장 패키지 &#8361;10,000 (장당 &#8361;2,000)</p>
+            </div>
+            <button class="promo-cta">쿠폰 구매 &#8250;</button>
+        </div>
+    </div>
+
+    <div class="expert-flex reveal">
+        <div class="promo-banner" onclick="location.href='expert-portfolio.html'">
+            <div class="promo-text">
+                <h3>전문가로 등록하고 의뢰를 받아보세요</h3>
+                <p>중개 수수료 0% &middot; 선착순 100명 EARLY BIRD 혜택</p>
+            </div>
+            <button class="promo-cta">전문가 등록 &#8250;</button>
+        </div>
+    </div>
+
+    <!-- ═══ HOW IT WORKS (의뢰인) ═══ -->
+    <div class="section client-only">
+        <div class="sec-header reveal">
+            <h2 class="sec-title">이용 방법</h2>
+        </div>
+        <div class="how-grid reveal">
+            <div class="how-card">
+                <div class="how-num">1</div>
+                <div class="how-title">의뢰 등록</div>
+                <div class="how-desc">배우고 싶은 내용과<br>희망 일시를 입력하세요</div>
+                <span class="how-arrow">&#8250;</span>
+            </div>
+            <div class="how-card">
+                <div class="how-num">2</div>
+                <div class="how-title">제안서 수신</div>
+                <div class="how-desc">전문가들이 금액과 일시를<br>담은 제안서를 보내옵니다</div>
+                <span class="how-arrow">&#8250;</span>
+            </div>
+            <div class="how-card">
+                <div class="how-num">3</div>
+                <div class="how-title">전문가 선택</div>
+                <div class="how-desc">제안서를 비교하고<br>마음에 드는 전문가를 선택</div>
+                <span class="how-arrow">&#8250;</span>
+            </div>
+            <div class="how-card">
+                <div class="how-num">4</div>
+                <div class="how-title">레슨 진행</div>
+                <div class="how-desc">채팅으로 협의 후<br>오프라인/온라인으로 진행</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ HOW IT WORKS (전문가) ═══ -->
+    <div class="section expert-only">
+        <div class="sec-header reveal">
+            <h2 class="sec-title">전문가 이용 방법</h2>
+        </div>
+        <div class="how-grid reveal">
+            <div class="how-card">
+                <div class="how-num">1</div>
+                <div class="how-title"><a href="expert-portfolio.html" style="color:inherit">전문가 등록</a></div>
+                <div class="how-desc">프로필, 자격증,<br>포트폴리오를 등록하세요</div>
+                <span class="how-arrow">&#8250;</span>
+            </div>
+            <div class="how-card">
+                <div class="how-num">2</div>
+                <div class="how-title">의뢰 탐색</div>
+                <div class="how-desc">내 분야 의뢰를<br>피드에서 확인하세요</div>
+                <span class="how-arrow">&#8250;</span>
+            </div>
+            <div class="how-card">
+                <div class="how-num">3</div>
+                <div class="how-title">제안서 발송</div>
+                <div class="how-desc">금액과 가능 일시를<br>담아 제안하세요 (무료)</div>
+                <span class="how-arrow">&#8250;</span>
+            </div>
+            <div class="how-card">
+                <div class="how-num">4</div>
+                <div class="how-title">매칭 & 정산</div>
+                <div class="how-desc">채택 시 채팅 오픈,<br>완료 후 빠르게 정산</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ REVIEWS ═══ -->
+    <div class="section">
+        <div class="sec-header reveal">
+            <h2 class="sec-title">실제 이용 후기</h2>
+            <span class="sec-more">더보기 &#8250;</span>
+        </div>
+        <div class="review-scroll reveal">
+            <div class="review-card">
+                <div class="review-top">
+                    <div class="review-avatar">&#128075;</div>
+                    <div class="review-info">
+                        <div class="review-name">김*현</div>
+                        <div class="review-cat">골프 &middot; 오프라인</div>
+                    </div>
+                    <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                </div>
+                <p class="review-text">코치님이 스윙 자세를 정확하게 짚어주시고, 바로 교정해 주셨어요. 1회 레슨인데도 확실히 달라진 걸 느꼈습니다. 다음에 또 의뢰할 예정이에요!</p>
+                <span class="review-tag">채팅 기반 투명 리뷰</span>
+            </div>
+            <div class="review-card">
+                <div class="review-top">
+                    <div class="review-avatar">&#128588;</div>
+                    <div class="review-info">
+                        <div class="review-name">박*우</div>
+                        <div class="review-cat">커리어/취업 &middot; 온라인</div>
+                    </div>
+                    <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                </div>
+                <p class="review-text">포트폴리오 피드백이 정말 구체적이었어요. 어디를 어떻게 고쳐야 하는지 명확하게 알려주셔서 바로 수정할 수 있었습니다.</p>
+                <span class="review-tag">채팅 기반 투명 리뷰</span>
+            </div>
+            <div class="review-card">
+                <div class="review-top">
+                    <div class="review-avatar">&#127925;</div>
+                    <div class="review-info">
+                        <div class="review-name">이*서</div>
+                        <div class="review-cat">피아노 &middot; 오프라인</div>
+                    </div>
+                    <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+                </div>
+                <p class="review-text">완전 초보인데 쉽게 설명해주셔서 좋았어요. 한 곡을 바로 칠 수 있게 되었어요. 장기 레슨은 부담스러웠는데 1회성이라 좋았습니다.</p>
+                <span class="review-tag">채팅 기반 투명 리뷰</span>
+            </div>
+            <div class="review-card">
+                <div class="review-top">
+                    <div class="review-avatar">&#128171;</div>
+                    <div class="review-info">
+                        <div class="review-name">최*진</div>
+                        <div class="review-cat">피트니스 &middot; 오프라인</div>
+                    </div>
+                    <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                </div>
+                <p class="review-text">운동 루틴을 딱 제 몸 상태에 맞게 짜주시고, 자세도 하나하나 교정해주셨어요. 헬스장 PT보다 만족스러웠습니다.</p>
+                <span class="review-tag">채팅 기반 투명 리뷰</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<div class="footer">
+    <div class="footer-inner">
+        <div>
+            <div class="footer-brand">원포인트</div>
+            <p class="footer-desc">
+                딱 한 번의 레슨, 딱 맞는 전문가.<br>
+                구독 없이, 장기 계약 없이. 쿠폰 한 장으로 시작하세요.
+            </p>
+        </div>
+        <div class="footer-col">
+            <h4>서비스</h4>
+            <a href="create-ticket.html">의뢰 등록</a>
+            <a href="#">전문가 찾기</a>
+            <a href="coupon.html">쿠폰 구매</a>
+            <a href="#">카테고리</a>
+        </div>
+        <div class="footer-col">
+            <h4>전문가</h4>
+            <a href="expert-portfolio.html">전문가 등록</a>
+            <a href="ticket-feed.html">의뢰 피드</a>
+            <a href="#">정산 안내</a>
+            <a href="#">수수료 정책</a>
+        </div>
+        <div class="footer-col">
+            <h4>지원</h4>
+            <a href="#">이용약관</a>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">고객센터</a>
+            <a href="#">FAQ</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>&copy; 2026 원포인트. All rights reserved.</span>
+        <span>사업자등록번호 000-00-00000</span>
+    </div>
+</div>
+    <script>
+    // ─── ROLE SWITCH ───
+    function setRole(role) {
+        const isExpert = role === 'expert';
+        document.body.classList.toggle('expert-mode', isExpert);
+        document.getElementById('btnClient').classList.toggle('active', !isExpert);
+        document.getElementById('btnExpert').classList.toggle('active', isExpert);
+
+        document.getElementById('headerSearch').placeholder = isExpert
+            ? '어떤 의뢰를 찾고 계세요?'
+            : '어떤 레슨을 찾고 계세요?';
+
+        document.querySelectorAll('.nav-tabs .client-only').forEach(el => {
+            el.style.display = isExpert ? 'none' : 'inline-flex';
+        });
+        document.querySelectorAll('.nav-tabs .expert-only').forEach(el => {
+            el.style.display = isExpert ? 'inline-flex' : 'none';
+        });
+
+        document.querySelectorAll('#catSection .cat-item').forEach(el => {
+            const base = el.href.split('&mode=')[0];
+            el.href = isExpert ? base + '&mode=expert' : base;
+        });
+        const catMore = document.querySelector('#catSection .sec-more');
+        if (catMore) catMore.href = isExpert ? 'category-browse.html?mode=expert' : 'category-browse.html';
+
+        const expertCounts = ['2명','1명','2명','1명','1명','1명','1명','1명','1명','1명'];
+        const ticketCounts = ['2건','1건','1건','1건','1건','1건','1건','1건','1건','2건'];
+        const counts = isExpert ? ticketCounts : expertCounts;
+        for (let i = 0; i < counts.length; i++) {
+            const el = document.getElementById('catCount' + i);
+            if (el) el.textContent = counts[i];
+        }
+
+        requestAnimationFrame(initReveal);
+    }
+
+    // ─── SCROLL REVEAL ───
+    function initReveal() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+    }
+
+    initReveal();
+
+    // ─── SEARCH ───
+    document.getElementById('headerSearch').addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+            const q = e.target.value.trim();
+            if (q) alert('검색: ' + q);
+        }
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1810 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전문가 상세 - 원포인트</title>
+    <style>
+        :root {
+            --bg: #fafaf7;
+            --bg-card: #ffffff;
+            --bg-elevated: #ffffff;
+            --border: #eae8e4;
+            --border-light: #f2f0ec;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555550;
+            --text-tertiary: #8a8a82;
+            --text-muted: #b5b5ad;
+            --accent: #e8622a;
+            --accent-soft: #fef0e8;
+            --accent-hover: #d4551f;
+            --expert: #0f8a6a;
+            --expert-soft: #e8f6f1;
+            --expert-hover: #0a7358;
+            --blue: #2e6fce;
+            --blue-soft: #eaf1fb;
+            --yellow: #d4940a;
+            --yellow-soft: #fdf5e0;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(26,26,26,0.04), 0 4px 12px rgba(26,26,26,0.03);
+            --shadow-hover: 0 4px 16px rgba(26,26,26,0.08), 0 8px 32px rgba(26,26,26,0.04);
+            --shadow-elevated: 0 8px 24px rgba(26,26,26,0.06);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ─── SCROLL REVEAL ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── HEADER ─── */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(250,250,247,0.88);
+            backdrop-filter: blur(20px) saturate(1.6);
+            -webkit-backdrop-filter: blur(20px) saturate(1.6);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 28px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .logo-mark {
+            width: 34px; height: 34px;
+            background: var(--accent);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-size: 17px; font-weight: 800; color: #fff;
+            transition: transform 0.3s var(--ease-out);
+        }
+        .logo:hover .logo-mark { transform: rotate(-6deg) scale(1.05); }
+
+        .logo-text { font-size: 19px; font-weight: 800; letter-spacing: -0.5px; color: var(--text-primary); }
+
+        .nav-tabs { display: flex; align-items: center; gap: 2px; margin-left: 8px; }
+
+        .nav-tab {
+            position: relative;
+            padding: 8px 16px;
+            font-size: 14.5px; font-weight: 600;
+            color: var(--text-tertiary);
+            border: none; background: none;
+            cursor: pointer; font-family: inherit;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .nav-tab:hover { color: var(--text-primary); background: rgba(0,0,0,0.03); }
+        .nav-tab.active { color: var(--accent); font-weight: 700; }
+        .nav-tab .nav-badge {
+            position: absolute; top: 4px; right: 6px;
+            width: 7px; height: 7px;
+            background: var(--accent); border-radius: 50%; border: 2px solid var(--bg);
+        }
+
+        .search-bar { flex: 1; max-width: 400px; position: relative; }
+        .search-bar input {
+            width: 100%; height: 40px;
+            padding: 0 40px 0 16px;
+            border: 1.5px solid var(--border); border-radius: 100px;
+            font-size: 13.5px; font-family: inherit;
+            background: var(--bg-card); color: var(--text-primary);
+            transition: var(--transition); outline: none;
+        }
+        .search-bar input::placeholder { color: var(--text-muted); }
+        .search-bar input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+        .search-icon {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            width: 18px; height: 18px; color: var(--text-muted); pointer-events: none;
+        }
+
+        .header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
+
+        .btn-auth {
+            padding: 8px 18px; border-radius: var(--radius-sm);
+            font-size: 13.5px; font-weight: 700; font-family: inherit;
+            cursor: pointer; transition: var(--transition); border: none;
+        }
+        .btn-login { background: var(--text-primary); color: #fff; }
+        .btn-login:hover { opacity: 0.85; }
+        .btn-signup { background: var(--accent-soft); color: var(--accent); }
+        .btn-signup:hover { opacity: 0.85; }
+
+        /* ─── BREADCRUMB ─── */
+        .breadcrumb {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 28px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .breadcrumb a { color: var(--text-tertiary); transition: var(--transition); }
+        .breadcrumb a:hover { color: var(--text-primary); }
+        .breadcrumb .sep { font-size: 11px; }
+
+        /* ─── CONTENT ─── */
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+
+        /* ─── PROFILE HERO ─── */
+        .profile-hero {
+            padding: 32px 0 0;
+            display: flex;
+            gap: 28px;
+            align-items: flex-start;
+        }
+
+        .profile-avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, #f0ede8 0%, #e4e0d8 100%);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(26,26,26,0.08);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .grade-badge {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--accent);
+            color: #fff;
+            font-size: 8.5px;
+            font-weight: 800;
+            padding: 3px 0;
+            text-align: center;
+            letter-spacing: 0.8px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .profile-info { flex: 1; min-width: 0; padding-top: 2px; }
+
+        .profile-top-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+
+        .profile-cats {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .profile-cat {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: var(--expert-soft);
+            color: var(--expert);
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 100px;
+        }
+
+        .verified-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: var(--blue-soft);
+            color: var(--blue);
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 100px;
+        }
+        .verified-chip svg { width: 12px; height: 12px; }
+
+        .profile-name {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+            margin-bottom: 2px;
+        }
+
+        .profile-career {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            margin-bottom: 10px;
+        }
+
+        .profile-intro-short {
+            font-size: 14.5px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* ─── STAT STRIP + CTA ─── */
+        .hero-bottom {
+            display: flex;
+            align-items: stretch;
+            gap: 16px;
+            margin-top: 24px;
+            padding-bottom: 24px;
+        }
+
+        .stat-strip {
+            flex: 1;
+            display: flex;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .stat-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 8px;
+            position: relative;
+            transition: background 0.2s;
+        }
+        .stat-item:hover {
+            background: var(--bg);
+        }
+        .stat-item + .stat-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 1px;
+            background: var(--border-light);
+        }
+
+        .stat-num {
+            font-size: 22px;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -0.8px;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .stat-num.star { color: var(--yellow); }
+        .stat-num.accent { color: var(--accent); }
+        .stat-num.expert-c { color: var(--expert); }
+        .stat-num.blue { color: var(--blue); }
+
+        .stat-label {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+        }
+
+        .hero-cta {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            min-width: 200px;
+        }
+
+        .cta-main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 28px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 15.5px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .cta-main:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(232,98,42,0.3);
+        }
+        .cta-main svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+        /* ─── INFO BAR ─── */
+        .info-bar {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 16px 0;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .info-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+        .info-chip:hover {
+            border-color: var(--text-muted);
+        }
+        .info-chip svg { width: 14px; height: 14px; color: var(--text-muted); flex-shrink: 0; }
+        .info-chip .info-sep {
+            width: 1px;
+            height: 12px;
+            background: var(--border);
+            margin: 0 2px;
+        }
+
+        .tag-chip {
+            padding: 5px 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* ─── TAB NAV ─── */
+        .detail-tabs-wrap {
+            position: sticky;
+            top: 64px;
+            z-index: 40;
+            background: rgba(250,250,247,0.92);
+            backdrop-filter: blur(16px) saturate(1.4);
+            -webkit-backdrop-filter: blur(16px) saturate(1.4);
+            border-bottom: 1px solid var(--border-light);
+            margin-top: 8px;
+        }
+
+        .detail-tabs {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 28px;
+            display: flex;
+            gap: 0;
+        }
+
+        .detail-tab {
+            padding: 14px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: inherit;
+            position: relative;
+            transition: var(--transition);
+        }
+        .detail-tab:hover { color: var(--text-primary); }
+        .detail-tab.active {
+            color: var(--accent);
+            font-weight: 700;
+        }
+        .detail-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            right: 20px;
+            height: 2.5px;
+            background: var(--accent);
+            border-radius: 2px 2px 0 0;
+        }
+        .detail-tab .tab-count {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-left: 4px;
+        }
+        .detail-tab.active .tab-count { color: var(--accent); opacity: 0.6; }
+
+        /* ─── TAB CONTENT ─── */
+        .tab-body {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+
+        .tab-panel {
+            display: none;
+            padding: 32px 0 64px;
+        }
+        .tab-panel.active { display: block; }
+
+        /* ─── SECTION COMMON ─── */
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title .count {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* ─── INTRO: 2 COLUMN LAYOUT ─── */
+        .intro-layout {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 32px;
+            align-items: start;
+        }
+
+        .intro-main { min-width: 0; }
+
+        .intro-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+
+        .sidebar-card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            letter-spacing: 0.3px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .sidebar-card-title svg { width: 15px; height: 15px; color: var(--text-muted); }
+
+        /* ─── DETAIL INTRO ─── */
+        .detail-intro {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.85;
+            white-space: pre-line;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+        }
+
+        /* ─── BENEFITS ─── */
+        .benefit-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 32px;
+        }
+        .benefit-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--yellow-soft);
+            border: 1px solid rgba(212,148,10,0.15);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--yellow);
+        }
+        .benefit-chip svg { width: 14px; height: 14px; }
+
+        /* ─── CERTIFICATIONS ─── */
+        .cert-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cert-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+        .cert-item:hover {
+            box-shadow: var(--shadow-card);
+            border-color: var(--border);
+        }
+
+        .cert-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--blue-soft);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .cert-icon svg { width: 20px; height: 20px; color: var(--blue); }
+
+        .cert-body { flex: 1; min-width: 0; }
+        .cert-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        .cert-issuer {
+            font-size: 12.5px;
+            color: var(--text-tertiary);
+        }
+        .cert-link {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--blue);
+            padding: 6px 12px;
+            border: 1px solid var(--blue-soft);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .cert-link:hover {
+            background: var(--blue-soft);
+        }
+
+        /* ─── AVAIL LIST (sidebar) ─── */
+        .avail-list { display: flex; flex-direction: column; gap: 5px; }
+        .avail-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 10px;
+            background: var(--bg);
+            border-radius: 8px;
+            font-size: 13px;
+        }
+        .avail-day {
+            font-weight: 700;
+            color: var(--text-primary);
+            min-width: 20px;
+        }
+        .avail-time { display: flex; gap: 4px; }
+        .avail-badge {
+            padding: 2px 8px;
+            background: var(--expert-soft);
+            color: var(--expert);
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 100px;
+        }
+
+        .region-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .region-tag {
+            padding: 5px 12px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--bg);
+        }
+
+        /* ─── PORTFOLIO ─── */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .portfolio-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .portfolio-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-3px);
+        }
+
+        .portfolio-thumb {
+            aspect-ratio: 16 / 10;
+            background: linear-gradient(135deg, #f0ede8 0%, #e4e0d8 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .portfolio-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .portfolio-type-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 4px 10px;
+            background: rgba(26,26,26,0.7);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 100px;
+        }
+        .portfolio-count-badge {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            padding: 4px 10px;
+            background: rgba(26,26,26,0.6);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 100px;
+        }
+
+        .portfolio-body { padding: 14px 16px; }
+        .portfolio-desc {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* ─── REVIEWS ─── */
+        .review-summary-bar {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+        }
+
+        .review-big-rating {
+            text-align: center;
+            min-width: 80px;
+        }
+        .review-big-num {
+            font-size: 42px;
+            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: -2px;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+        .review-big-stars {
+            display: flex;
+            gap: 2px;
+            justify-content: center;
+            margin-top: 6px;
+            color: var(--yellow);
+            font-size: 14px;
+        }
+        .review-big-count {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .review-bar-chart { flex: 1; }
+        .rating-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        .rating-bar-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            min-width: 14px;
+            text-align: right;
+        }
+        .rating-bar-track {
+            flex: 1;
+            height: 6px;
+            background: var(--border-light);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+        .rating-bar-fill {
+            height: 100%;
+            background: var(--yellow);
+            border-radius: 100px;
+            transition: width 0.6s var(--ease-out);
+        }
+        .rating-bar-count {
+            font-size: 11px;
+            color: var(--text-muted);
+            min-width: 28px;
+            text-align: right;
+        }
+
+        .review-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 140px;
+            padding-left: 24px;
+            border-left: 1px solid var(--border-light);
+        }
+        .metric-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .metric-icon {
+            width: 28px; height: 28px;
+            background: var(--expert-soft);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .metric-icon svg { width: 14px; height: 14px; color: var(--expert); }
+        .metric-text { font-size: 12px; color: var(--text-secondary); }
+        .metric-text strong { font-weight: 700; color: var(--text-primary); }
+
+        /* ─── REVIEW CARD ─── */
+        .review-list { display: flex; flex-direction: column; gap: 16px; }
+
+        .review-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .review-card:hover {
+            box-shadow: var(--shadow-card);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 20px 14px;
+        }
+
+        .review-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-soft) 0%, #fde0d0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .review-author-info { flex: 1; }
+        .review-author-name {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .review-ticket-title {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 1px;
+        }
+
+        .review-rating-badge {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            padding: 4px 10px;
+            background: var(--yellow-soft);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--yellow);
+            font-family: 'Outfit', sans-serif;
+        }
+        .review-rating-badge .star { font-size: 12px; }
+
+        .review-type-badge {
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .review-type-badge.offline {
+            background: var(--expert-soft);
+            color: var(--expert);
+        }
+        .review-type-badge.online {
+            background: var(--blue-soft);
+            color: var(--blue);
+        }
+
+        /* ─── CHAT SNAPSHOT ─── */
+        .chat-snapshot {
+            background: #f5f4f0;
+            margin: 0 12px;
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .snap-msg {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .snap-msg.expert { flex-direction: row-reverse; }
+
+        .snap-bubble {
+            max-width: 72%;
+            padding: 10px 14px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            border-radius: 14px;
+            position: relative;
+        }
+        .snap-msg.client .snap-bubble {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 4px 14px 14px 14px;
+        }
+        .snap-msg.expert .snap-bubble {
+            background: var(--accent);
+            color: #fff;
+            border-radius: 14px 4px 14px 14px;
+        }
+
+        .snap-sender {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+        .snap-msg.expert .snap-sender {
+            text-align: right;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .snap-hidden {
+            max-width: 72%;
+            padding: 10px 14px;
+            background: var(--border-light);
+            border-radius: 14px;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .snap-more {
+            text-align: center;
+            padding: 4px;
+        }
+        .snap-more a {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--accent);
+            cursor: pointer;
+        }
+        .snap-more a:hover { text-decoration: underline; }
+
+        .review-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px 16px;
+        }
+        .review-date {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .review-helpful {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            background: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        .review-helpful:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-soft);
+        }
+        .review-helpful svg { width: 14px; height: 14px; }
+
+        /* ─── EXPERT REPLY ─── */
+        .expert-reply {
+            margin: 0 12px 12px;
+            padding: 14px 16px;
+            background: var(--expert-soft);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--expert);
+        }
+        .expert-reply-label {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--expert);
+            margin-bottom: 4px;
+        }
+        .expert-reply-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ─── LOAD MORE ─── */
+        .load-more-row {
+            text-align: center;
+            padding-top: 24px;
+        }
+        .load-more-btn {
+            padding: 12px 32px;
+            border: 1.5px solid var(--border);
+            border-radius: 100px;
+            background: var(--bg-card);
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        .load-more-btn:hover {
+            border-color: var(--text-muted);
+            box-shadow: var(--shadow-card);
+        }
+
+        /* ─── EMPTY STATE ─── */
+        .empty-state {
+            text-align: center;
+            padding: 56px 20px;
+            color: var(--text-muted);
+        }
+        .empty-state .empty-icon { font-size: 40px; margin-bottom: 12px; }
+        .empty-state p { font-size: 14px; }
+
+        /* ─── STICKY CTA (mobile + scroll) ─── */
+        .sticky-cta-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 90;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid var(--border);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            transform: translateY(100%);
+            transition: transform 0.35s var(--ease-out);
+        }
+        .sticky-cta-bar.visible {
+            transform: translateY(0);
+        }
+        .sticky-cta-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sticky-cta-name {
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .sticky-cta-rating {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--yellow);
+            font-family: 'Outfit', sans-serif;
+        }
+        .sticky-cta-btn {
+            padding: 12px 28px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14.5px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .sticky-cta-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        /* ─── FOOTER ─── */
+        .footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            margin-top: 0;
+        }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 44px 28px;
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+        .footer-brand { font-size: 18px; font-weight: 800; margin-bottom: 12px; }
+        .footer-desc { font-size: 13px; color: var(--text-tertiary); line-height: 1.7; }
+        .footer-col h4 {
+            font-size: 12.5px; font-weight: 700; color: var(--text-primary);
+            margin-bottom: 16px; letter-spacing: 0.3px;
+        }
+        .footer-col a {
+            display: block; font-size: 13px; color: var(--text-tertiary);
+            padding: 4px 0; transition: var(--transition);
+        }
+        .footer-col a:hover { color: var(--text-primary); }
+        .footer-bottom {
+            max-width: 1200px; margin: 0 auto; padding: 16px 28px;
+            border-top: 1px solid var(--border-light);
+            font-size: 11.5px; color: var(--text-muted);
+            display: flex; justify-content: space-between;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1024px) {
+            .intro-layout { grid-template-columns: 1fr; }
+            .intro-sidebar {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-inner { gap: 12px; padding: 0 16px; }
+            .search-bar { display: none; }
+            .nav-tabs { gap: 0; margin-left: 0; }
+            .nav-tab { padding: 8px 10px; font-size: 13px; }
+            .content { padding: 0 16px; }
+            .breadcrumb { padding: 12px 16px 0; }
+            .profile-hero { flex-direction: column; align-items: center; text-align: center; }
+            .profile-top-row { justify-content: center; }
+            .profile-avatar { width: 90px; height: 90px; }
+            .profile-name { font-size: 24px; }
+            .hero-bottom { flex-direction: column; }
+            .hero-cta { min-width: 0; }
+            .stat-strip { min-width: 0; }
+            .stat-num { font-size: 18px; }
+            .info-bar { justify-content: center; }
+            .portfolio-grid { grid-template-columns: 1fr; }
+            .detail-tabs { padding: 0 16px; overflow-x: auto; }
+            .review-summary-bar { flex-direction: column; gap: 16px; }
+            .review-metrics { border-left: none; padding-left: 0; padding-top: 16px; border-top: 1px solid var(--border-light); flex-direction: row; flex-wrap: wrap; }
+            .tab-body { padding: 0 16px; }
+            .footer-inner { grid-template-columns: 1fr; gap: 24px; }
+            .footer-bottom { flex-direction: column; gap: 6px; }
+            .btn-auth { padding: 7px 12px; font-size: 12px; }
+            .intro-sidebar { grid-template-columns: 1fr; }
+            .sticky-cta-bar { padding: 10px 16px; }
+            .sticky-cta-info { display: none; }
+            .sticky-cta-btn { width: 100%; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .snap-bubble { max-width: 85%; }
+            .stat-item { padding: 12px 4px; }
+            .stat-num { font-size: 16px; }
+            .stat-label { font-size: 10.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="header">
+    <div class="header-inner">
+        <a class="logo" href="index.html">
+            <div class="logo-mark">O</div>
+            <span class="logo-text">원포인트</span>
+        </a>
+
+        <nav class="nav-tabs">
+            <a class="nav-tab" href="index.html">홈</a>
+            <a class="nav-tab" href="chat.html">채팅 <span class="nav-badge"></span></a>
+            <a class="nav-tab" href="coupon.html">쿠폰충전</a>
+            <a class="nav-tab" href="my-tickets.html">내 의뢰</a>
+            <a class="nav-tab" href="mypage.html">마이페이지</a>
+        </nav>
+
+        <div class="search-bar">
+            <input type="text" placeholder="어떤 레슨을 찾고 계세요?">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+
+        <div class="header-right">
+            <button class="btn-auth btn-login" onclick="location.href='login.html'">로그인</button>
+            <button class="btn-auth btn-signup" onclick="location.href='signup.html'">회원가입</button>
+        </div>
+    </div>
+</header>
+
+<!-- ═══ BREADCRUMB ═══ -->
+<div class="breadcrumb">
+    <a href="index.html">홈</a>
+    <span class="sep">&#8250;</span>
+    <a href="#">전문가 찾기</a>
+    <span class="sep">&#8250;</span>
+    <span>김민수 코치</span>
+</div>
+
+<!-- ═══ PROFILE HERO ═══ -->
+<div class="content">
+    <div class="profile-hero reveal" id="heroSection">
+        <div class="profile-avatar">
+            &#127947;
+            <span class="grade-badge">EARLY BIRD</span>
+        </div>
+        <div class="profile-info">
+            <div class="profile-top-row">
+                <div class="profile-cats">
+                    <span class="profile-cat">&#9971; 골프</span>
+                    <span class="profile-cat">&#127947; 스포츠 일반</span>
+                </div>
+                <span class="verified-chip">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+                    인증 완료
+                </span>
+            </div>
+            <h1 class="profile-name">김민수 코치</h1>
+            <div class="profile-career">경력 8년 &middot; 레슨 500명+</div>
+            <p class="profile-intro-short">
+                KPGA 투어프로 출신, 8년간 500명+ 레슨 경험. 스윙 분석과 맞춤 드릴로 한 번의 레슨에서도 확실한 변화를 만들어 드립니다.
+            </p>
+        </div>
+    </div>
+
+    <!-- ─── STAT STRIP + CTA ─── -->
+    <div class="hero-bottom reveal">
+        <div class="stat-strip">
+            <div class="stat-item">
+                <div class="stat-num star">&#9733; 4.9</div>
+                <div class="stat-label">평균 별점</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num accent">87</div>
+                <div class="stat-label">리뷰 수</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num expert-c">124</div>
+                <div class="stat-label">총 매칭</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num blue">97%</div>
+                <div class="stat-label">응답률</div>
+            </div>
+        </div>
+        <button class="cta-main" onclick="location.href='create-ticket.html'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="M9 15h6"/></svg>
+            이 전문가에게 의뢰하기
+        </button>
+    </div>
+
+    <!-- ─── INFO BAR ─── -->
+    <div class="info-bar reveal">
+        <span class="info-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            서울 강남구
+            <span class="info-sep"></span>
+            서초구
+            <span class="info-sep"></span>
+            송파구
+        </span>
+        <span class="info-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            평일 오전~오후
+            <span class="info-sep"></span>
+            주말 오전
+        </span>
+        <span class="tag-chip">오프라인</span>
+        <span class="tag-chip">1회 레슨</span>
+        <span class="tag-chip">스윙교정 전문</span>
+    </div>
+</div>
+
+<!-- ═══ TAB NAV ═══ -->
+<div class="detail-tabs-wrap">
+    <div class="detail-tabs">
+        <button class="detail-tab active" onclick="switchTab('intro')">소개</button>
+        <button class="detail-tab" onclick="switchTab('portfolio')">포트폴리오 <span class="tab-count">4</span></button>
+        <button class="detail-tab" onclick="switchTab('reviews')">리뷰 <span class="tab-count">87</span></button>
+    </div>
+</div>
+
+<!-- ═══ TAB BODY ═══ -->
+<div class="tab-body">
+
+    <!-- ── 소개 TAB ── -->
+    <div class="tab-panel active" id="panel-intro">
+        <div class="intro-layout reveal">
+            <div class="intro-main">
+                <h3 class="section-title">상세 소개</h3>
+                <div class="detail-intro">안녕하세요, KPGA 투어프로 출신 김민수입니다.
+
+8년간 초보부터 싱글까지 500명 이상의 골퍼를 지도해 왔습니다. 특히 스윙 분석을 통한 맞춤형 교정에 강점이 있습니다.
+
+&#10003; 트랙맨(TrackMan) 기반 정밀 스윙 분석
+&#10003; 개인별 체형·유연성에 맞춘 커스텀 드릴
+&#10003; 레슨 후 연습 가이드 PDF 제공
+&#10003; 촬영 영상 비교 분석 포함
+
+"한 번의 레슨으로도 달라질 수 있다"는 것을 보여드리겠습니다.
+단 1회만으로도 확실한 변화를 느끼실 수 있습니다.</div>
+
+                <h3 class="section-title">혜택</h3>
+                <div class="benefit-row">
+                    <span class="benefit-chip">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                        첫 레슨 10% 할인
+                    </span>
+                    <span class="benefit-chip">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>
+                        레슨 후 연습 가이드 제공
+                    </span>
+                    <span class="benefit-chip">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg>
+                        영상 비교 분석 무료
+                    </span>
+                </div>
+
+                <h3 class="section-title">자격 &middot; 인증 <span class="count">3</span></h3>
+                <div class="cert-list">
+                    <div class="cert-item">
+                        <div class="cert-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+                        </div>
+                        <div class="cert-body">
+                            <div class="cert-name">생활스포츠지도사 2급 (골프)</div>
+                            <div class="cert-issuer">대한체육회</div>
+                        </div>
+                        <a class="cert-link" href="#">인증서 보기</a>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+                        </div>
+                        <div class="cert-body">
+                            <div class="cert-name">KPGA 투어프로 자격</div>
+                            <div class="cert-issuer">한국프로골프협회</div>
+                        </div>
+                        <a class="cert-link" href="#">인증서 보기</a>
+                    </div>
+                    <div class="cert-item">
+                        <div class="cert-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+                        </div>
+                        <div class="cert-body">
+                            <div class="cert-name">TrackMan Level 2 Certified</div>
+                            <div class="cert-issuer">TrackMan A/S</div>
+                        </div>
+                        <a class="cert-link" href="#">인증서 보기</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── INTRO SIDEBAR ─── -->
+            <div class="intro-sidebar">
+                <div class="sidebar-card">
+                    <div class="sidebar-card-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        활동 가능 시간
+                    </div>
+                    <div class="avail-list">
+                        <div class="avail-row">
+                            <span class="avail-day">월</span>
+                            <div class="avail-time"><span class="avail-badge">오전</span><span class="avail-badge">오후</span></div>
+                        </div>
+                        <div class="avail-row">
+                            <span class="avail-day">화</span>
+                            <div class="avail-time"><span class="avail-badge">오전</span><span class="avail-badge">오후</span></div>
+                        </div>
+                        <div class="avail-row">
+                            <span class="avail-day">수</span>
+                            <div class="avail-time"><span class="avail-badge">오전</span></div>
+                        </div>
+                        <div class="avail-row">
+                            <span class="avail-day">토</span>
+                            <div class="avail-time"><span class="avail-badge">오전</span></div>
+                        </div>
+                        <div class="avail-row">
+                            <span class="avail-day">일</span>
+                            <div class="avail-time"><span class="avail-badge">오전</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <div class="sidebar-card-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                        활동 지역
+                    </div>
+                    <div class="region-tags">
+                        <span class="region-tag">서울 강남구</span>
+                        <span class="region-tag">서울 서초구</span>
+                        <span class="region-tag">서울 송파구</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── 포트폴리오 TAB ── -->
+    <div class="tab-panel" id="panel-portfolio">
+        <div class="reveal">
+            <h3 class="section-title">포트폴리오 <span class="count">4</span></h3>
+            <div class="portfolio-grid">
+                <div class="portfolio-card" onclick="alert('포트폴리오 상세')">
+                    <div class="portfolio-thumb" style="background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);">
+                        <span class="portfolio-type-badge">IMAGE</span>
+                        <span class="portfolio-count-badge">&#128247; 5장</span>
+                    </div>
+                    <div class="portfolio-body">
+                        <div class="portfolio-desc">트랙맨 기반 스윙 분석 레슨 현장 — 비포/애프터 비교</div>
+                    </div>
+                </div>
+                <div class="portfolio-card" onclick="alert('포트폴리오 상세')">
+                    <div class="portfolio-thumb" style="background: linear-gradient(135deg, #bbdefb 0%, #90caf9 100%);">
+                        <span class="portfolio-type-badge">VIDEO</span>
+                    </div>
+                    <div class="portfolio-body">
+                        <div class="portfolio-desc">초보 골퍼 1회 레슨 후 드라이버 비거리 20m 증가</div>
+                    </div>
+                </div>
+                <div class="portfolio-card" onclick="alert('포트폴리오 상세')">
+                    <div class="portfolio-thumb" style="background: linear-gradient(135deg, #ffe0b2 0%, #ffcc80 100%);">
+                        <span class="portfolio-type-badge">IMAGE</span>
+                        <span class="portfolio-count-badge">&#128247; 7장</span>
+                    </div>
+                    <div class="portfolio-body">
+                        <div class="portfolio-desc">그린 주변 숏게임 교정 — 어프로치 & 벙커샷 레슨 사례</div>
+                    </div>
+                </div>
+                <div class="portfolio-card" onclick="alert('포트폴리오 상세')">
+                    <div class="portfolio-thumb" style="background: linear-gradient(135deg, #f8bbd0 0%, #f48fb1 100%);">
+                        <span class="portfolio-type-badge">LINK</span>
+                    </div>
+                    <div class="portfolio-body">
+                        <div class="portfolio-desc">블로그: 골프 스윙 자가 진단법 5가지 (조회수 12,000+)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── 리뷰 TAB ── -->
+    <div class="tab-panel" id="panel-reviews">
+        <div class="reveal">
+
+            <!-- Review Summary -->
+            <div class="review-summary-bar">
+                <div class="review-big-rating">
+                    <div class="review-big-num">4.9</div>
+                    <div class="review-big-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                    <div class="review-big-count">87개의 리뷰</div>
+                </div>
+                <div class="review-bar-chart">
+                    <div class="rating-bar-row">
+                        <span class="rating-bar-label">5</span>
+                        <div class="rating-bar-track"><div class="rating-bar-fill" style="width:82%"></div></div>
+                        <span class="rating-bar-count">71</span>
+                    </div>
+                    <div class="rating-bar-row">
+                        <span class="rating-bar-label">4</span>
+                        <div class="rating-bar-track"><div class="rating-bar-fill" style="width:13%"></div></div>
+                        <span class="rating-bar-count">11</span>
+                    </div>
+                    <div class="rating-bar-row">
+                        <span class="rating-bar-label">3</span>
+                        <div class="rating-bar-track"><div class="rating-bar-fill" style="width:4%"></div></div>
+                        <span class="rating-bar-count">3</span>
+                    </div>
+                    <div class="rating-bar-row">
+                        <span class="rating-bar-label">2</span>
+                        <div class="rating-bar-track"><div class="rating-bar-fill" style="width:2%"></div></div>
+                        <span class="rating-bar-count">2</span>
+                    </div>
+                    <div class="rating-bar-row">
+                        <span class="rating-bar-label">1</span>
+                        <div class="rating-bar-track"><div class="rating-bar-fill" style="width:0%"></div></div>
+                        <span class="rating-bar-count">0</span>
+                    </div>
+                </div>
+                <div class="review-metrics">
+                    <div class="metric-row">
+                        <div class="metric-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg>
+                        </div>
+                        <div class="metric-text">평균 응답 <strong>12분</strong></div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <div class="metric-text">첫 응답 <strong>5분</strong></div>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <div class="metric-text">매칭 완료 <strong>124건</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="section-title">채팅 리뷰</h3>
+
+            <!-- Review 1 -->
+            <div class="review-list">
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar">&#128567;</div>
+                        <div class="review-author-info">
+                            <div class="review-author-name">golf****</div>
+                            <div class="review-ticket-title">강남에서 골프 스윙 교정 1회 레슨</div>
+                        </div>
+                        <span class="review-type-badge offline">오프라인</span>
+                        <div class="review-rating-badge"><span class="star">&#9733;</span> 5.0</div>
+                    </div>
+                    <div class="chat-snapshot">
+                        <div class="snap-msg client">
+                            <div>
+                                <div class="snap-sender">golf****</div>
+                                <div class="snap-bubble">안녕하세요! 골프 시작한 지 3개월 된 초보입니다. 드라이버 슬라이스가 너무 심해서요...</div>
+                            </div>
+                        </div>
+                        <div class="snap-msg expert">
+                            <div>
+                                <div class="snap-sender">김민수 코치</div>
+                                <div class="snap-bubble">안녕하세요! 슬라이스 교정은 제 전문 분야입니다. 보통 그립과 백스윙 탑 자세에서 원인을 찾을 수 있어요. 레슨 때 트랙맨으로 정확한 원인 분석해 드리겠습니다.</div>
+                            </div>
+                        </div>
+                        <div class="snap-msg client">
+                            <div>
+                                <div class="snap-sender">golf****</div>
+                                <div class="snap-bubble">와 트랙맨으로 분석해주시는 거예요? 레슨 진행하고 싶습니다!</div>
+                            </div>
+                        </div>
+                        <div class="snap-msg expert">
+                            <div>
+                                <div class="snap-sender">김민수 코치</div>
+                                <div class="snap-bubble">네! 비포/애프터 데이터도 정리해서 보내드릴게요. 연습장은 강남 OO골프에서 진행하는데 괜찮으실까요?</div>
+                            </div>
+                        </div>
+                        <div class="snap-more"><a>대화 더보기 (총 23개 메시지)</a></div>
+                    </div>
+                    <div class="review-footer">
+                        <span class="review-date">2026.02.25</span>
+                        <button class="review-helpful">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/></svg>
+                            도움이 됐어요 12
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar" style="background: linear-gradient(135deg, var(--blue-soft) 0%, #d0e4ff 100%);">&#128566;</div>
+                        <div class="review-author-info">
+                            <div class="review-author-name">park****</div>
+                            <div class="review-ticket-title">퍼팅 교정 원데이 레슨</div>
+                        </div>
+                        <span class="review-type-badge offline">오프라인</span>
+                        <div class="review-rating-badge"><span class="star">&#9733;</span> 5.0</div>
+                    </div>
+                    <div class="chat-snapshot">
+                        <div class="snap-msg client">
+                            <div>
+                                <div class="snap-sender">park****</div>
+                                <div class="snap-bubble">퍼팅이 항상 왼쪽으로 빠지는데, 1회 레슨으로 교정 가능할까요?</div>
+                            </div>
+                        </div>
+                        <div class="snap-msg expert">
+                            <div>
+                                <div class="snap-sender">김민수 코치</div>
+                                <div class="snap-bubble">충분히 가능합니다! 퍼팅 방향 문제는 대부분 셋업과 스트로크 경로에서 원인을 찾을 수 있어요. 레이저 얼라인먼트 도구도 함께 사용해서 교정해 드리겠습니다.</div>
+                            </div>
+                        </div>
+                        <div class="snap-msg client">
+                            <div>
+                                <div class="snap-sender">park****</div>
+                                <div class="snap-bubble">셋업 자세 교정만으로 바로 방향이 잡히네요... 진작 레슨 받을 걸 그랬어요 &#128079;</div>
+                            </div>
+                        </div>
+                        <div class="snap-more"><a>대화 더보기 (총 18개 메시지)</a></div>
+                    </div>
+                    <div class="expert-reply">
+                        <div class="expert-reply-label">&#128172; 전문가 답변</div>
+                        <div class="expert-reply-text">레슨 후에도 매일 5분씩 거울 앞에서 셋업 연습 해보시면 더 좋은 결과 있으실 거예요. 다음에 또 필요하시면 편하게 연락 주세요!</div>
+                    </div>
+                    <div class="review-footer">
+                        <span class="review-date">2026.02.18</span>
+                        <button class="review-helpful">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/></svg>
+                            도움이 됐어요 8
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="review-avatar" style="background: linear-gradient(135deg, var(--expert-soft) 0%, #c8edd8 100%);">&#128526;</div>
+                        <div class="review-author-info">
+                            <div class="review-author-name">lee_****</div>
+                            <div class="review-ticket-title">드라이버 비거리 늘리기 코칭</div>
+                        </div>
+                        <span class="review-type-badge offline">오프라인</span>
+                        <div class="review-rating-badge"><span class="star">&#9733;</span> 4.5</div>
+                    </div>
+                    <div class="chat-snapshot">
+                        <div class="snap-msg client">
+                            <div>
+                                <div class="snap-sender">lee_****</div>
+                                <div class="snap-bubble">드라이버 비거리가 180m 정도인데, 200m 넘기고 싶습니다</div>
+                            </div>
+                        </div>
+                        <div class="snap-msg expert">
+                            <div>
+                                <div class="snap-sender">김민수 코치</div>
+                                <div class="snap-bubble">비거리 향상은 클럽 헤드 스피드와 임팩트 효율 두 가지를 봐야 합니다. 트랙맨 측정 후 어디서 손실이 발생하는지 파악한 뒤, 맞춤 드릴 알려드릴게요!</div>
+                            </div>
+                        </div>
+                        <div class="snap-msg client">
+                            <div>
+                                <div class="snap-bubble snap-hidden">비공개 처리된 메시지입니다</div>
+                            </div>
+                        </div>
+                        <div class="snap-msg expert">
+                            <div>
+                                <div class="snap-sender">김민수 코치</div>
+                                <div class="snap-bubble">레슨 후 홈 트레이닝 루틴도 같이 짜드릴게요. 2주 정도 꾸준히 하시면 확실히 차이 나실 겁니다!</div>
+                            </div>
+                        </div>
+                        <div class="snap-more"><a>대화 더보기 (총 31개 메시지)</a></div>
+                    </div>
+                    <div class="review-footer">
+                        <span class="review-date">2026.02.10</span>
+                        <button class="review-helpful">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/></svg>
+                            도움이 됐어요 5
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="load-more-row">
+                <button class="load-more-btn">리뷰 더보기 (84개 남음)</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ STICKY CTA BAR ═══ -->
+<div class="sticky-cta-bar" id="stickyCta">
+    <div class="sticky-cta-info">
+        <span class="sticky-cta-name">김민수 코치</span>
+        <span class="sticky-cta-rating">&#9733; 4.9</span>
+    </div>
+    <button class="sticky-cta-btn" onclick="location.href='create-ticket.html'">이 전문가에게 의뢰하기</button>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<div class="footer">
+    <div class="footer-inner">
+        <div>
+            <div class="footer-brand">원포인트</div>
+            <p class="footer-desc">
+                딱 한 번의 레슨, 딱 맞는 전문가.<br>
+                구독 없이, 장기 계약 없이. 쿠폰 한 장으로 시작하세요.
+            </p>
+        </div>
+        <div class="footer-col">
+            <h4>서비스</h4>
+            <a href="create-ticket.html">의뢰 등록</a>
+            <a href="#">전문가 찾기</a>
+            <a href="#">쿠폰 구매</a>
+            <a href="#">카테고리</a>
+        </div>
+        <div class="footer-col">
+            <h4>전문가</h4>
+            <a href="expert-portfolio.html">전문가 등록</a>
+            <a href="ticket-feed.html">의뢰 피드</a>
+            <a href="#">정산 안내</a>
+            <a href="#">수수료 정책</a>
+        </div>
+        <div class="footer-col">
+            <h4>지원</h4>
+            <a href="#">이용약관</a>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">고객센터</a>
+            <a href="#">FAQ</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>&copy; 2026 원포인트. All rights reserved.</span>
+        <span>사업자등록번호 000-00-00000</span>
+    </div>
+</div>
+    <script>
+    // ─── TAB SWITCHING ───
+    function switchTab(tabName) {
+        document.querySelectorAll('.detail-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+        event.currentTarget.classList.add('active');
+        const panel = document.getElementById('panel-' + tabName);
+        if (panel) {
+            panel.classList.add('active');
+            requestAnimationFrame(() => {
+                panel.querySelectorAll('.reveal:not(.visible)').forEach(el => {
+                    observer.observe(el);
+                });
+            });
+        }
+    }
+
+    // ─── SCROLL REVEAL ───
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ─── RATING BAR ANIMATION ───
+    const barObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.querySelectorAll('.rating-bar-fill').forEach(bar => {
+                    const w = bar.style.width;
+                    bar.style.width = '0%';
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            bar.style.width = w;
+                        });
+                    });
+                });
+                barObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    const barChart = document.querySelector('.review-bar-chart');
+    if (barChart) barObserver.observe(barChart);
+
+    // ─── STICKY CTA ───
+    const heroSection = document.getElementById('heroSection');
+    const stickyCta = document.getElementById('stickyCta');
+
+    if (heroSection && stickyCta) {
+        const stickyObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    stickyCta.classList.add('visible');
+                } else {
+                    stickyCta.classList.remove('visible');
+                }
+            });
+        }, { threshold: 0, rootMargin: '-100px 0px 0px 0px' });
+
+        stickyObserver.observe(heroSection);
+    }
+    </script>
+</body>
+</html>

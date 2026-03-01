@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지 - 원포인트</title>
+    <style>
+        :root {
+            --bg: #f5f5f0;
+            --bg-card: #ffffff;
+            --bg-inset: #f0efea;
+            --border: #eae8e4;
+            --border-light: #f2f0ec;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555550;
+            --text-tertiary: #8a8a82;
+            --text-muted: #b5b5ad;
+            --accent: #e8622a;
+            --accent-soft: #fef0e8;
+            --accent-hover: #d4551f;
+            --expert: #0f8a6a;
+            --expert-soft: #e8f6f1;
+            --expert-hover: #0a7358;
+            --expert-deep: #064d3a;
+            --blue: #2e6fce;
+            --blue-soft: #eaf1fb;
+            --red: #d44040;
+            --red-soft: #fdeaea;
+            --yellow: #c4880a;
+            --yellow-soft: #fdf5e0;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(26,26,26,0.04), 0 4px 12px rgba(26,26,26,0.03);
+            --shadow-hover: 0 4px 16px rgba(26,26,26,0.08), 0 8px 32px rgba(26,26,26,0.04);
+            --shadow-elevated: 0 12px 40px rgba(26,26,26,0.1), 0 4px 12px rgba(26,26,26,0.04);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+        @keyframes countUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        @keyframes ringPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(232,98,42,0.2); } 50% { box-shadow: 0 0 0 6px rgba(232,98,42,0); } }
+
+        .anim { animation: fadeUp 0.5s var(--ease-out) both; }
+        .anim-d1 { animation-delay: 0.05s; }
+        .anim-d2 { animation-delay: 0.1s; }
+        .anim-d3 { animation-delay: 0.15s; }
+        .anim-d4 { animation-delay: 0.2s; }
+        .anim-d5 { animation-delay: 0.25s; }
+        .anim-d6 { animation-delay: 0.3s; }
+        .anim-d7 { animation-delay: 0.35s; }
+
+        /* ─── HEADER ─── */
+        .header {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(245,245,240,0.88);
+            backdrop-filter: blur(20px) saturate(1.6);
+            -webkit-backdrop-filter: blur(20px) saturate(1.6);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .header-inner {
+            max-width: 960px; margin: 0 auto; padding: 0 24px; height: 60px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .header-left { display: flex; align-items: center; gap: 14px; }
+        .back-btn {
+            width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+            border-radius: var(--radius-sm); transition: var(--transition); color: var(--text-secondary);
+        }
+        .back-btn:hover { background: var(--bg-inset); color: var(--text-primary); }
+        .header-logo { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 19px; color: var(--accent); letter-spacing: -0.3px; }
+        body.expert-mode .header-logo { color: var(--expert); }
+        .header-logo span { color: var(--text-muted); font-weight: 500; font-size: 13px; margin-left: 8px; letter-spacing: 0; }
+        .header-right { display: flex; align-items: center; gap: 8px; }
+        .hdr-btn {
+            height: 36px; padding: 0 14px; border-radius: var(--radius-sm);
+            font-size: 13px; font-weight: 600; transition: var(--transition);
+            display: flex; align-items: center; gap: 6px; color: var(--text-secondary);
+        }
+        .hdr-btn:hover { background: var(--bg-inset); color: var(--text-primary); }
+        .hdr-btn .notif-dot {
+            width: 7px; height: 7px; border-radius: 50%; background: var(--red);
+            position: relative; top: -6px; left: -4px; margin-right: -8px;
+        }
+
+        /* ─── CONTAINER ─── */
+        .container { max-width: 960px; margin: 0 auto; padding: 0 24px 100px; }
+
+        /* ─── PROFILE HERO ─── */
+        .profile-hero {
+            padding: 36px 0 0;
+            display: flex; align-items: flex-start; gap: 24px;
+        }
+
+        .avatar-area { position: relative; flex-shrink: 0; }
+        .avatar {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-soft) 0%, var(--border-light) 100%);
+            border: 3px solid var(--bg-card);
+            box-shadow: var(--shadow-card);
+            object-fit: cover;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; font-weight: 700; color: var(--accent);
+            overflow: hidden;
+        }
+        body.expert-mode .avatar { color: var(--expert); background: linear-gradient(135deg, var(--expert-soft) 0%, var(--border-light) 100%); }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-badge {
+            position: absolute; bottom: -2px; right: -2px;
+            width: 26px; height: 26px; border-radius: 50%;
+            background: var(--accent); color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            border: 2.5px solid var(--bg);
+            box-shadow: 0 2px 6px rgba(232,98,42,0.25);
+        }
+        body.expert-mode .avatar-badge { background: var(--expert); box-shadow: 0 2px 6px rgba(15,138,106,0.25); }
+
+        .profile-info { flex: 1; min-width: 0; padding-top: 4px; }
+        .profile-name-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .profile-name { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; }
+        .role-chip {
+            padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .role-chip.client { background: var(--accent-soft); color: var(--accent); }
+        .role-chip.expert { background: var(--expert-soft); color: var(--expert); }
+        .grade-chip {
+            padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+            background: var(--yellow-soft); color: var(--yellow);
+            display: inline-flex; align-items: center; gap: 3px;
+        }
+        .profile-email { font-size: 13.5px; color: var(--text-tertiary); margin-top: 4px; }
+        .profile-since { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+        .profile-actions { display: flex; gap: 8px; margin-top: 14px; }
+        .pf-btn {
+            height: 36px; padding: 0 16px; border-radius: var(--radius-sm);
+            font-size: 13px; font-weight: 600; transition: var(--transition);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .pf-btn.primary { background: var(--accent); color: #fff; }
+        body.expert-mode .pf-btn.primary { background: var(--expert); }
+        .pf-btn.primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(232,98,42,0.2); }
+        body.expert-mode .pf-btn.primary:hover { box-shadow: 0 4px 12px rgba(15,138,106,0.2); }
+        .pf-btn.outline { border: 1.5px solid var(--border); color: var(--text-secondary); }
+        .pf-btn.outline:hover { border-color: var(--text-muted); background: var(--bg-inset); }
+
+        /* ─── ROLE TOGGLE ─── */
+        .role-toggle-area {
+            margin-top: 28px;
+            padding-bottom: 4px;
+            border-bottom: 2px solid var(--border-light);
+            display: flex; gap: 4px; position: relative;
+        }
+        .role-tab {
+            padding: 10px 20px; font-size: 14px; font-weight: 600;
+            color: var(--text-tertiary); border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+            transition: var(--transition); position: relative;
+        }
+        .role-tab:hover { color: var(--text-secondary); background: var(--bg-inset); }
+        .role-tab.active { color: var(--accent); }
+        body.expert-mode .role-tab.active { color: var(--expert); }
+        .role-indicator {
+            position: absolute; bottom: -2px; height: 2px;
+            background: var(--accent); border-radius: 1px;
+            transition: all 0.35s var(--ease-out);
+        }
+        body.expert-mode .role-indicator { background: var(--expert); }
+
+        /* ─── ROLE CONTENT ─── */
+        .role-content { display: none; padding-top: 24px; }
+        .role-content.active { display: block; animation: fadeUp 0.4s var(--ease-out) both; }
+
+        /* ─── STAT STRIP ─── */
+        .stat-strip {
+            display: grid; gap: 12px;
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .stat-box {
+            background: var(--bg-card); border: 1px solid var(--border-light);
+            border-radius: var(--radius); padding: 18px 20px;
+            transition: var(--transition); cursor: pointer;
+        }
+        .stat-box:hover { border-color: var(--border); box-shadow: var(--shadow-card); transform: translateY(-2px); }
+        .stat-box .stat-label { font-size: 12px; color: var(--text-tertiary); font-weight: 600; margin-bottom: 8px; }
+        .stat-box .stat-value {
+            font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800;
+            letter-spacing: -0.5px; line-height: 1;
+            animation: countUp 0.5s var(--ease-out) both;
+        }
+        .stat-box .stat-value .unit { font-size: 14px; font-weight: 500; color: var(--text-muted); margin-left: 2px; }
+        .stat-box .stat-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+        .stat-box .stat-sub .up { color: var(--expert); font-weight: 700; }
+        .stat-box .stat-sub .down { color: var(--red); font-weight: 700; }
+
+        /* Color accents per stat */
+        .stat-box.coupon .stat-value { color: var(--accent); }
+        body.expert-mode .stat-box.coupon .stat-value { color: var(--expert); }
+        .stat-box.ticket .stat-value { color: var(--blue); }
+        .stat-box.match .stat-value { color: var(--expert); }
+        .stat-box.review .stat-value { color: var(--yellow); }
+        .stat-box.proposal .stat-value { color: var(--expert); }
+        .stat-box.rating .stat-value { color: var(--yellow); }
+        .stat-box.earnings .stat-value { color: var(--accent); }
+
+        /* ─── SECTION ─── */
+        .sec { margin-top: 28px; }
+        .sec-head {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .sec-title { font-size: 16px; font-weight: 800; letter-spacing: -0.2px; }
+        .sec-more {
+            font-size: 13px; font-weight: 600; color: var(--text-muted);
+            transition: var(--transition); display: flex; align-items: center; gap: 4px;
+        }
+        .sec-more:hover { color: var(--accent); }
+        body.expert-mode .sec-more:hover { color: var(--expert); }
+
+        /* ─── TICKET / PROPOSAL LIST ─── */
+        .item-list { display: flex; flex-direction: column; gap: 8px; }
+
+        .item-card {
+            background: var(--bg-card); border: 1px solid var(--border-light);
+            border-radius: var(--radius); padding: 18px 20px;
+            display: flex; align-items: center; gap: 14px;
+            transition: var(--transition); cursor: pointer;
+        }
+        .item-card:hover { border-color: var(--border); box-shadow: var(--shadow-card); transform: translateY(-1px); }
+
+        .item-status {
+            width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+        }
+        .item-status.open { background: var(--expert); animation: ringPulse 2s ease infinite; }
+        .item-status.review { background: var(--blue); }
+        .item-status.matched { background: var(--accent); }
+        .item-status.progress { background: var(--yellow); }
+        .item-status.completed { background: var(--text-muted); }
+        .item-status.pending { background: var(--blue); }
+        .item-status.selected { background: var(--expert); }
+        .item-status.rejected { background: var(--red); }
+
+        .item-body { flex: 1; min-width: 0; }
+        .item-title {
+            font-size: 14px; font-weight: 600;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .item-meta {
+            font-size: 12px; color: var(--text-tertiary); margin-top: 3px;
+            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+        }
+        .item-meta .sep { color: var(--border); }
+
+        .item-badge {
+            padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+            flex-shrink: 0; white-space: nowrap;
+        }
+        .item-badge.open { background: var(--expert-soft); color: var(--expert); }
+        .item-badge.review { background: var(--blue-soft); color: var(--blue); }
+        .item-badge.matched { background: var(--accent-soft); color: var(--accent); }
+        .item-badge.progress { background: var(--yellow-soft); color: var(--yellow); }
+        .item-badge.completed { background: var(--bg-inset); color: var(--text-tertiary); }
+        .item-badge.pending { background: var(--blue-soft); color: var(--blue); }
+        .item-badge.selected { background: var(--expert-soft); color: var(--expert); }
+        .item-badge.rejected { background: var(--red-soft); color: var(--red); }
+        .item-badge.withdrawn { background: var(--bg-inset); color: var(--text-tertiary); }
+
+        .item-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+        .item-price { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; }
+        .item-date { font-size: 11px; color: var(--text-muted); }
+
+        /* ─── COUPON CARD ─── */
+        .coupon-banner {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: var(--radius-lg); padding: 24px 28px;
+            display: flex; align-items: center; justify-content: space-between;
+            color: #fff; position: relative; overflow: hidden;
+        }
+        .coupon-banner .cb-glow {
+            position: absolute; top: -40px; right: -40px;
+            width: 160px; height: 160px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(232,98,42,0.2) 0%, transparent 70%);
+        }
+        .coupon-banner .cb-body { position: relative; z-index: 1; }
+        .coupon-banner .cb-label { font-size: 12px; opacity: 0.6; font-weight: 500; margin-bottom: 6px; }
+        .coupon-banner .cb-value { display: flex; align-items: baseline; gap: 6px; }
+        .coupon-banner .cb-num { font-family: 'Outfit', sans-serif; font-size: 36px; font-weight: 800; }
+        .coupon-banner .cb-unit { font-size: 15px; font-weight: 500; opacity: 0.6; }
+        .coupon-banner .cb-detail { font-size: 12px; opacity: 0.45; margin-top: 4px; }
+        .coupon-banner .cb-btn {
+            position: relative; z-index: 1;
+            height: 40px; padding: 0 20px; border-radius: var(--radius-sm);
+            background: var(--accent); color: #fff;
+            font-size: 13.5px; font-weight: 700; transition: var(--transition);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .coupon-banner .cb-btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
+        /* ─── QUICK LINKS GRID ─── */
+        .quick-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+        }
+        .quick-link {
+            background: var(--bg-card); border: 1px solid var(--border-light);
+            border-radius: var(--radius); padding: 20px 16px;
+            text-align: center; transition: var(--transition); display: block;
+        }
+        .quick-link:hover { border-color: var(--border); box-shadow: var(--shadow-card); transform: translateY(-2px); }
+        .quick-link .ql-icon {
+            width: 44px; height: 44px; border-radius: 12px; margin: 0 auto 10px;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+        }
+        .quick-link:hover .ql-icon { transform: scale(1.08); }
+        .quick-link .ql-name { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+        .quick-link .ql-desc { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+        .ql-icon.orange { background: var(--accent-soft); color: var(--accent); }
+        .ql-icon.green { background: var(--expert-soft); color: var(--expert); }
+        .ql-icon.blue { background: var(--blue-soft); color: var(--blue); }
+        .ql-icon.yellow { background: var(--yellow-soft); color: var(--yellow); }
+        .ql-icon.dark { background: var(--bg-inset); color: var(--text-secondary); }
+
+        /* ─── NOTIFICATION LIST ─── */
+        .notif-list { display: flex; flex-direction: column; gap: 6px; }
+
+        .notif-item {
+            background: var(--bg-card); border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm); padding: 14px 16px;
+            display: flex; align-items: flex-start; gap: 12px;
+            transition: var(--transition); cursor: pointer;
+        }
+        .notif-item:hover { background: var(--bg-inset); }
+        .notif-item.unread { border-left: 3px solid var(--accent); }
+        body.expert-mode .notif-item.unread { border-left-color: var(--expert); }
+
+        .notif-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 5px; }
+        body.expert-mode .notif-dot { background: var(--expert); }
+        .notif-item:not(.unread) .notif-dot { background: transparent; }
+
+        .notif-body { flex: 1; min-width: 0; }
+        .notif-title { font-size: 13.5px; font-weight: 600; margin-bottom: 2px; }
+        .notif-desc { font-size: 12.5px; color: var(--text-tertiary); line-height: 1.5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .notif-time { font-size: 11px; color: var(--text-muted); flex-shrink: 0; margin-top: 2px; }
+
+        /* ─── SETTINGS SECTION ─── */
+        .settings-list { display: flex; flex-direction: column; gap: 2px; }
+        .settings-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 20px; background: var(--bg-card);
+            border: 1px solid var(--border-light); border-radius: var(--radius-sm);
+            transition: var(--transition); cursor: pointer;
+        }
+        .settings-item:hover { background: var(--bg-inset); }
+        .settings-item .si-left { display: flex; align-items: center; gap: 12px; }
+        .settings-item .si-icon {
+            width: 36px; height: 36px; border-radius: var(--radius-sm);
+            background: var(--bg-inset); display: flex; align-items: center; justify-content: center;
+            color: var(--text-tertiary);
+        }
+        .settings-item .si-label { font-size: 14px; font-weight: 600; }
+        .settings-item .si-desc { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+        .settings-item .si-arrow { color: var(--text-muted); }
+
+        /* Toggle switch */
+        .toggle-sw {
+            width: 44px; height: 24px; border-radius: 12px;
+            background: var(--border); position: relative;
+            transition: var(--transition); cursor: pointer;
+        }
+        .toggle-sw.on { background: var(--accent); }
+        body.expert-mode .toggle-sw.on { background: var(--expert); }
+        .toggle-sw::after {
+            content: ''; position: absolute; top: 2px; left: 2px;
+            width: 20px; height: 20px; border-radius: 50%;
+            background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+            transition: var(--transition);
+        }
+        .toggle-sw.on::after { transform: translateX(20px); }
+
+        /* ─── EMPTY STATE ─── */
+        .empty-msg {
+            text-align: center; padding: 32px 20px;
+            background: var(--bg-card); border: 1.5px dashed var(--border);
+            border-radius: var(--radius); color: var(--text-tertiary);
+            font-size: 13.5px; font-weight: 500;
+        }
+
+        /* ─── EXPERT PROFILE CARD ─── */
+        .expert-summary {
+            background: var(--bg-card); border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg); padding: 24px; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 20px;
+        }
+        .expert-summary .es-icon {
+            width: 56px; height: 56px; border-radius: var(--radius);
+            background: linear-gradient(135deg, var(--expert-soft) 0%, #c0e8dc 100%);
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .expert-summary .es-body { flex: 1; min-width: 0; }
+        .expert-summary .es-intro {
+            font-size: 14.5px; font-weight: 600; line-height: 1.5;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .expert-summary .es-tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+        .expert-summary .es-tag {
+            padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+            background: var(--bg-inset); color: var(--text-secondary);
+        }
+        .expert-summary .es-link {
+            padding: 8px 16px; border-radius: var(--radius-sm);
+            font-size: 13px; font-weight: 600; color: var(--expert);
+            background: var(--expert-soft); transition: var(--transition);
+            flex-shrink: 0; display: flex; align-items: center; gap: 4px;
+        }
+        .expert-summary .es-link:hover { background: var(--expert); color: #fff; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .container { padding: 0 16px 80px; }
+            .header-inner { padding: 0 16px; height: 54px; }
+            .profile-hero { gap: 16px; }
+            .avatar { width: 64px; height: 64px; font-size: 26px; }
+            .profile-name { font-size: 19px; }
+            .stat-strip { grid-template-columns: repeat(2, 1fr); }
+            .quick-grid { grid-template-columns: repeat(2, 1fr); }
+            .coupon-banner { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px 22px; }
+            .coupon-banner .cb-btn { width: 100%; justify-content: center; }
+            .expert-summary { flex-direction: column; text-align: center; gap: 14px; }
+            .expert-summary .es-tags { justify-content: center; }
+        }
+
+        @media (max-width: 480px) {
+            .stat-strip { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .stat-box { padding: 14px 16px; }
+            .stat-box .stat-value { font-size: 24px; }
+            .quick-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .profile-actions { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="header">
+    <div class="header-inner">
+        <div class="header-left">
+            <a href="index.html" class="back-btn">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 10H5M5 10l5-5M5 10l5 5"/></svg>
+            </a>
+            <a href="index.html" class="header-logo">OnePoint <span>마이페이지</span></a>
+        </div>
+        <div class="header-right">
+            <button class="hdr-btn" onclick="alert('알림')">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 16.5c.8 0 1.5-.7 1.5-1.5h-3c0 .8.7 1.5 1.5 1.5zM14 11V8a5 5 0 00-10 0v3l-1.5 2h13L14 11z"/></svg>
+                <span class="notif-dot"></span>
+            </button>
+            <button class="hdr-btn" onclick="alert('설정')">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="2.5"/><path d="M14.7 11a1.2 1.2 0 00.2 1.3l.1.1a1.5 1.5 0 11-2.1 2.1l-.1-.1a1.2 1.2 0 00-1.3-.2 1.2 1.2 0 00-.7 1.1v.2a1.5 1.5 0 11-3 0v-.1a1.2 1.2 0 00-.8-1.1 1.2 1.2 0 00-1.3.2l-.1.1a1.5 1.5 0 11-2.1-2.1l.1-.1A1.2 1.2 0 003.8 11a1.2 1.2 0 00-1.1-.7h-.2a1.5 1.5 0 110-3h.1a1.2 1.2 0 001.1-.8 1.2 1.2 0 00-.2-1.3l-.1-.1A1.5 1.5 0 115.5 3l.1.1a1.2 1.2 0 001.3.2h.1a1.2 1.2 0 00.7-1.1v-.2a1.5 1.5 0 113 0v.1a1.2 1.2 0 00.8 1.1 1.2 1.2 0 001.3-.2l.1-.1A1.5 1.5 0 1115 5.1l-.1.1a1.2 1.2 0 00-.2 1.3v.1a1.2 1.2 0 001.1.7h.2a1.5 1.5 0 110 3h-.1a1.2 1.2 0 00-1.1.8z"/></svg>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- ═══ PROFILE HERO ═══ -->
+    <div class="profile-hero anim">
+        <div class="avatar-area">
+            <div class="avatar" id="avatarEl">민</div>
+            <div class="avatar-badge">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 4L5 8 3 6"/></svg>
+            </div>
+        </div>
+        <div class="profile-info">
+            <div class="profile-name-row">
+                <span class="profile-name">김민석</span>
+                <span class="role-chip client" id="roleChip">의뢰인</span>
+                <span class="grade-chip" id="gradeChip" style="display:none">
+                    <svg width="10" height="10" fill="currentColor"><path d="M5 0l1.2 3.5H10L7 5.7l1.1 3.5L5 7l-3.1 2.2L3 5.7 0 3.5h3.8z"/></svg>
+                    EARLY BIRD
+                </span>
+            </div>
+            <div class="profile-email">minseok@example.com</div>
+            <div class="profile-since">2026년 1월 가입</div>
+            <div class="profile-actions">
+                <button class="pf-btn primary" onclick="alert('프로필 편집')">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2l4 4M3 7l5-5 4 4-5 5H3V7z"/></svg>
+                    프로필 편집
+                </button>
+                <button class="pf-btn outline" onclick="alert('공개 프로필 보기')">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="7" cy="7" r="6"/><path d="M7 4v3l2 1"/></svg>
+                    공개 프로필
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ ROLE TOGGLE ═══ -->
+    <div class="role-toggle-area anim anim-d1" id="roleToggle">
+        <button class="role-tab active" data-role="client" onclick="switchRole('client')">의뢰인</button>
+        <button class="role-tab" data-role="expert" onclick="switchRole('expert')">전문가</button>
+        <div class="role-indicator" id="roleIndicator"></div>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         의뢰인 MODE
+    ══════════════════════════════════════════ -->
+    <div class="role-content active" id="content-client">
+
+        <!-- Stat Strip -->
+        <div class="stat-strip anim anim-d2">
+            <div class="stat-box coupon" onclick="alert('쿠폰 상세')">
+                <div class="stat-label">보유 쿠폰</div>
+                <div class="stat-value">5<span class="unit">장</span></div>
+                <div class="stat-sub">예약 중 1장</div>
+            </div>
+            <div class="stat-box ticket" onclick="alert('내 의뢰')">
+                <div class="stat-label">진행 중 의뢰</div>
+                <div class="stat-value">2<span class="unit">건</span></div>
+                <div class="stat-sub"><span class="up">+1</span> 이번 주</div>
+            </div>
+            <div class="stat-box match" onclick="alert('매칭 내역')">
+                <div class="stat-label">완료 매칭</div>
+                <div class="stat-value">8<span class="unit">건</span></div>
+                <div class="stat-sub">총 누적</div>
+            </div>
+            <div class="stat-box review" onclick="alert('받은 리뷰')">
+                <div class="stat-label">작성 리뷰</div>
+                <div class="stat-value">6<span class="unit">건</span></div>
+                <div class="stat-sub">평균 4.7점</div>
+            </div>
+        </div>
+
+        <!-- Coupon Banner -->
+        <div class="sec anim anim-d3">
+            <div class="coupon-banner">
+                <div class="cb-glow"></div>
+                <div class="cb-body">
+                    <div class="cb-label">보유 쿠폰</div>
+                    <div class="cb-value">
+                        <span class="cb-num">5</span>
+                        <span class="cb-unit">장</span>
+                    </div>
+                    <div class="cb-detail">예약 중 1장 · AVAILABLE 4장</div>
+                </div>
+                <button class="cb-btn" onclick="alert('쿠폰 구매')">
+                    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7.5 3v9M3 7.5h9"/></svg>
+                    쿠폰 충전
+                </button>
+            </div>
+        </div>
+
+        <!-- My Tickets -->
+        <div class="sec anim anim-d4">
+            <div class="sec-head">
+                <div class="sec-title">내 의뢰</div>
+                <a class="sec-more" href="#">전체보기 <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 2l5 4-5 4"/></svg></a>
+            </div>
+            <div class="item-list">
+                <div class="item-card" onclick="alert('의뢰 상세')">
+                    <div class="item-status review"></div>
+                    <div class="item-body">
+                        <div class="item-title">골프 스윙 교정 1회 레슨 원합니다</div>
+                        <div class="item-meta">
+                            <span>골프</span> <span class="sep">|</span>
+                            <span>오프라인</span> <span class="sep">|</span>
+                            <span>제안 3건</span>
+                        </div>
+                    </div>
+                    <div class="item-right">
+                        <span class="item-badge review">제안 검토중</span>
+                        <span class="item-date">3일 전</span>
+                    </div>
+                </div>
+                <div class="item-card" onclick="alert('의뢰 상세')">
+                    <div class="item-status progress"></div>
+                    <div class="item-body">
+                        <div class="item-title">React 포트폴리오 코드 리뷰 부탁드려요</div>
+                        <div class="item-meta">
+                            <span>프로그래밍</span> <span class="sep">|</span>
+                            <span>온라인</span> <span class="sep">|</span>
+                            <span>매칭 완료</span>
+                        </div>
+                    </div>
+                    <div class="item-right">
+                        <span class="item-badge progress">진행 중</span>
+                        <span class="item-date">1주 전</span>
+                    </div>
+                </div>
+                <div class="item-card" onclick="alert('의뢰 상세')">
+                    <div class="item-status completed"></div>
+                    <div class="item-body">
+                        <div class="item-title">피아노 기초 1시간 레슨</div>
+                        <div class="item-meta">
+                            <span>음악</span> <span class="sep">|</span>
+                            <span>오프라인</span> <span class="sep">|</span>
+                            <span>리뷰 완료</span>
+                        </div>
+                    </div>
+                    <div class="item-right">
+                        <span class="item-badge completed">완료</span>
+                        <span class="item-date">2주 전</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="sec anim anim-d5">
+            <div class="sec-head">
+                <div class="sec-title">바로가기</div>
+            </div>
+            <div class="quick-grid">
+                <a class="quick-link" href="create-ticket.html">
+                    <div class="ql-icon orange">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2l4 4M3 13l9-9 4 4-9 9H3v-4z"/></svg>
+                    </div>
+                    <div class="ql-name">의뢰 등록</div>
+                    <div class="ql-desc">새 의뢰 작성</div>
+                </a>
+                <a class="quick-link" href="#">
+                    <div class="ql-icon blue">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M10 6v4l2.5 1.5"/></svg>
+                    </div>
+                    <div class="ql-name">구매 내역</div>
+                    <div class="ql-desc">쿠폰 결제 기록</div>
+                </a>
+                <a class="quick-link" href="chat.html">
+                    <div class="ql-icon green">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 14V5a2 2 0 012-2h10a2 2 0 012 2v6a2 2 0 01-2 2H7l-4 3z"/></svg>
+                    </div>
+                    <div class="ql-name">채팅</div>
+                    <div class="ql-desc">전문가와 대화</div>
+                </a>
+                <a class="quick-link" href="#">
+                    <div class="ql-icon dark">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="5" r="3"/><path d="M3 18v-2a5 5 0 0110 0v2"/></svg>
+                    </div>
+                    <div class="ql-name">계정 설정</div>
+                    <div class="ql-desc">비밀번호·알림</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="sec anim anim-d6">
+            <div class="sec-head">
+                <div class="sec-title">알림</div>
+                <button class="sec-more" onclick="alert('전체 읽음')">모두 읽음 처리</button>
+            </div>
+            <div class="notif-list">
+                <div class="notif-item unread">
+                    <div class="notif-dot"></div>
+                    <div class="notif-body">
+                        <div class="notif-title">새 제안서가 도착했어요</div>
+                        <div class="notif-desc">골프전문가 김프로님이 '골프 스윙 교정' 의뢰에 제안서를 보냈습니다</div>
+                    </div>
+                    <div class="notif-time">2분 전</div>
+                </div>
+                <div class="notif-item unread">
+                    <div class="notif-dot"></div>
+                    <div class="notif-body">
+                        <div class="notif-title">채팅 메시지</div>
+                        <div class="notif-desc">React 코드 리뷰 건 전문가로부터 새 메시지가 도착했습니다</div>
+                    </div>
+                    <div class="notif-time">1시간 전</div>
+                </div>
+                <div class="notif-item">
+                    <div class="notif-dot"></div>
+                    <div class="notif-body">
+                        <div class="notif-title">쿠폰 구매 완료</div>
+                        <div class="notif-desc">5장 패키지 구매가 완료되어 쿠폰이 충전되었습니다</div>
+                    </div>
+                    <div class="notif-time">어제</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="sec anim anim-d7">
+            <div class="sec-head">
+                <div class="sec-title">설정</div>
+            </div>
+            <div class="settings-list">
+                <div class="settings-item">
+                    <div class="si-left">
+                        <div class="si-icon">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 16.5c.8 0 1.5-.7 1.5-1.5h-3c0 .8.7 1.5 1.5 1.5zM14 11V8a5 5 0 00-10 0v3l-1.5 2h13L14 11z"/></svg>
+                        </div>
+                        <div>
+                            <div class="si-label">푸시 알림</div>
+                            <div class="si-desc">새 제안서·메시지 알림 수신</div>
+                        </div>
+                    </div>
+                    <div class="toggle-sw on" onclick="this.classList.toggle('on')"></div>
+                </div>
+                <div class="settings-item" onclick="alert('채팅 리뷰 동의 관리')">
+                    <div class="si-left">
+                        <div class="si-icon">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H4a2 2 0 00-2 2v12l4-3h8a2 2 0 002-2V4a2 2 0 00-2-2z"/><path d="M6 7h6M6 10h3"/></svg>
+                        </div>
+                        <div>
+                            <div class="si-label">채팅 리뷰 동의</div>
+                            <div class="si-desc">채팅 내역 기반 리뷰 공개 동의 상태</div>
+                        </div>
+                    </div>
+                    <div class="si-arrow">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 2l5 5-5 5"/></svg>
+                    </div>
+                </div>
+                <div class="settings-item" onclick="alert('로그아웃')">
+                    <div class="si-left">
+                        <div class="si-icon">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 15H3a1 1 0 01-1-1V4a1 1 0 011-1h3M11 12l4-3-4-3M15 9H7"/></svg>
+                        </div>
+                        <div>
+                            <div class="si-label">로그아웃</div>
+                        </div>
+                    </div>
+                    <div class="si-arrow">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 2l5 5-5 5"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         전문가 MODE
+    ══════════════════════════════════════════ -->
+    <div class="role-content" id="content-expert">
+
+        <!-- Expert Summary Card -->
+        <div class="expert-summary anim anim-d2">
+            <div class="es-icon">
+                <svg width="26" height="26" fill="none" stroke="#0f8a6a" stroke-width="1.8" stroke-linecap="round"><path d="M13 17l-4 4v5l4-2.5 4 2.5v-5l-4-4z"/><circle cx="13" cy="10" r="7"/><path d="M10 10l2 2 4-4"/></svg>
+            </div>
+            <div class="es-body">
+                <div class="es-intro">10년 경력의 골프 전문가 | 스윙 교정 전문</div>
+                <div class="es-tags">
+                    <span class="es-tag">골프</span>
+                    <span class="es-tag">오프라인/온라인</span>
+                    <span class="es-tag" style="background:var(--expert-soft);color:var(--expert)">승인됨</span>
+                </div>
+            </div>
+            <a class="es-link" href="expert-portfolio.html">
+                프로필 관리
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 2l5 4-5 4"/></svg>
+            </a>
+        </div>
+
+        <!-- Stat Strip -->
+        <div class="stat-strip anim anim-d3">
+            <div class="stat-box proposal" onclick="location.href='my-proposals.html'">
+                <div class="stat-label">보낸 제안서</div>
+                <div class="stat-value">12<span class="unit">건</span></div>
+                <div class="stat-sub">대기 3 · 채택 7</div>
+            </div>
+            <div class="stat-box match" onclick="alert('매칭 내역')">
+                <div class="stat-label">진행 중</div>
+                <div class="stat-value">2<span class="unit">건</span></div>
+                <div class="stat-sub"><span class="up">+1</span> 이번 주</div>
+            </div>
+            <div class="stat-box rating" onclick="alert('리뷰 상세')">
+                <div class="stat-label">평균 평점</div>
+                <div class="stat-value">4.9</div>
+                <div class="stat-sub">리뷰 27건</div>
+            </div>
+            <div class="stat-box earnings" onclick="alert('정산 내역')">
+                <div class="stat-label">총 수익</div>
+                <div class="stat-value" style="font-size:22px">540<span class="unit" style="font-size:13px">만원</span></div>
+                <div class="stat-sub">이번 달 +80만</div>
+            </div>
+        </div>
+
+        <!-- My Proposals -->
+        <div class="sec anim anim-d4">
+            <div class="sec-head">
+                <div class="sec-title">내 제안서</div>
+                <a class="sec-more" href="my-proposals.html">전체보기 <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 2l5 4-5 4"/></svg></a>
+            </div>
+            <div class="item-list">
+                <div class="item-card" onclick="alert('제안서 상세')">
+                    <div class="item-status selected"></div>
+                    <div class="item-body">
+                        <div class="item-title">골프 스윙 교정 1회 레슨 원합니다</div>
+                        <div class="item-meta">
+                            <span>의뢰인: 박지영</span> <span class="sep">|</span>
+                            <span>오프라인</span>
+                        </div>
+                    </div>
+                    <div class="item-right">
+                        <span class="item-badge selected">채택됨</span>
+                        <span class="item-price">80,000원</span>
+                    </div>
+                </div>
+                <div class="item-card" onclick="alert('제안서 상세')">
+                    <div class="item-status pending"></div>
+                    <div class="item-body">
+                        <div class="item-title">테니스 포핸드 교정 레슨</div>
+                        <div class="item-meta">
+                            <span>의뢰인: 이수현</span> <span class="sep">|</span>
+                            <span>오프라인</span>
+                        </div>
+                    </div>
+                    <div class="item-right">
+                        <span class="item-badge pending">대기 중</span>
+                        <span class="item-price">60,000원</span>
+                    </div>
+                </div>
+                <div class="item-card" onclick="alert('제안서 상세')">
+                    <div class="item-status rejected"></div>
+                    <div class="item-body">
+                        <div class="item-title">초보자 피트니스 PT 1회</div>
+                        <div class="item-meta">
+                            <span>의뢰인: 최동욱</span> <span class="sep">|</span>
+                            <span>오프라인</span>
+                        </div>
+                    </div>
+                    <div class="item-right">
+                        <span class="item-badge rejected">미채택</span>
+                        <span class="item-price">50,000원</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Links (Expert) -->
+        <div class="sec anim anim-d5">
+            <div class="sec-head">
+                <div class="sec-title">바로가기</div>
+            </div>
+            <div class="quick-grid">
+                <a class="quick-link" href="ticket-feed.html">
+                    <div class="ql-icon green">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="14" height="14" rx="3"/><path d="M7 8h6M7 11h4"/></svg>
+                    </div>
+                    <div class="ql-name">의뢰 피드</div>
+                    <div class="ql-desc">새 의뢰 탐색</div>
+                </a>
+                <a class="quick-link" href="expert-portfolio.html">
+                    <div class="ql-icon blue">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="16" height="16" rx="3"/><circle cx="7" cy="7" r="2"/><path d="M2 14l5-5 3 3 4-4 4 4"/></svg>
+                    </div>
+                    <div class="ql-name">포트폴리오</div>
+                    <div class="ql-desc">작업물·자격증</div>
+                </a>
+                <a class="quick-link" href="chat.html">
+                    <div class="ql-icon orange">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 14V5a2 2 0 012-2h10a2 2 0 012 2v6a2 2 0 01-2 2H7l-4 3z"/></svg>
+                    </div>
+                    <div class="ql-name">채팅</div>
+                    <div class="ql-desc">의뢰인과 대화</div>
+                </a>
+                <a class="quick-link" href="#">
+                    <div class="ql-icon yellow">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="16" height="12" rx="3"/><path d="M2 9h16"/><circle cx="14" cy="13" r="1.5"/></svg>
+                    </div>
+                    <div class="ql-name">정산 계좌</div>
+                    <div class="ql-desc">입금 계좌 관리</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Notifications (Expert) -->
+        <div class="sec anim anim-d6">
+            <div class="sec-head">
+                <div class="sec-title">알림</div>
+                <button class="sec-more" onclick="alert('전체 읽음')">모두 읽음 처리</button>
+            </div>
+            <div class="notif-list">
+                <div class="notif-item unread">
+                    <div class="notif-dot"></div>
+                    <div class="notif-body">
+                        <div class="notif-title">제안서가 채택되었어요!</div>
+                        <div class="notif-desc">'골프 스윙 교정' 의뢰에서 제안이 채택되어 채팅이 열렸습니다</div>
+                    </div>
+                    <div class="notif-time">5분 전</div>
+                </div>
+                <div class="notif-item">
+                    <div class="notif-dot"></div>
+                    <div class="notif-body">
+                        <div class="notif-title">관심 분야 새 의뢰</div>
+                        <div class="notif-desc">골프 카테고리에 새 의뢰 3건이 등록되었습니다</div>
+                    </div>
+                    <div class="notif-time">3시간 전</div>
+                </div>
+                <div class="notif-item">
+                    <div class="notif-dot"></div>
+                    <div class="notif-body">
+                        <div class="notif-title">리뷰가 등록되었어요</div>
+                        <div class="notif-desc">박지영님이 별점 5.0을 남겼습니다</div>
+                    </div>
+                    <div class="notif-time">어제</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings (Expert) -->
+        <div class="sec anim anim-d7">
+            <div class="sec-head">
+                <div class="sec-title">설정</div>
+            </div>
+            <div class="settings-list">
+                <div class="settings-item">
+                    <div class="si-left">
+                        <div class="si-icon">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 16.5c.8 0 1.5-.7 1.5-1.5h-3c0 .8.7 1.5 1.5 1.5zM14 11V8a5 5 0 00-10 0v3l-1.5 2h13L14 11z"/></svg>
+                        </div>
+                        <div>
+                            <div class="si-label">푸시 알림</div>
+                            <div class="si-desc">새 의뢰·채택 알림 수신</div>
+                        </div>
+                    </div>
+                    <div class="toggle-sw on" onclick="this.classList.toggle('on')"></div>
+                </div>
+                <div class="settings-item" onclick="alert('정산 계좌')">
+                    <div class="si-left">
+                        <div class="si-icon">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="4" width="14" height="10" rx="2"/><path d="M2 8h14"/></svg>
+                        </div>
+                        <div>
+                            <div class="si-label">정산 계좌 관리</div>
+                            <div class="si-desc">국민은행 ****1234</div>
+                        </div>
+                    </div>
+                    <div class="si-arrow">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 2l5 5-5 5"/></svg>
+                    </div>
+                </div>
+                <div class="settings-item" onclick="alert('로그아웃')">
+                    <div class="si-left">
+                        <div class="si-icon">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 15H3a1 1 0 01-1-1V4a1 1 0 011-1h3M11 12l4-3-4-3M15 9H7"/></svg>
+                        </div>
+                        <div>
+                            <div class="si-label">로그아웃</div>
+                        </div>
+                    </div>
+                    <div class="si-arrow">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 2l5 5-5 5"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+    <script>
+/* ──────────────────────────────────
+   ROLE SWITCHING
+────────────────────────────────── */
+function switchRole(role) {
+    const isExpert = role === 'expert';
+    document.body.classList.toggle('expert-mode', isExpert);
+
+    // Tab active state
+    document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector(`.role-tab[data-role="${role}"]`).classList.add('active');
+
+    // Content
+    document.querySelectorAll('.role-content').forEach(c => c.classList.remove('active'));
+    document.getElementById(`content-${role}`).classList.add('active');
+
+    // Role chip
+    const chip = document.getElementById('roleChip');
+    chip.textContent = isExpert ? '전문가' : '의뢰인';
+    chip.className = `role-chip ${isExpert ? 'expert' : 'client'}`;
+
+    // Grade chip (expert only)
+    document.getElementById('gradeChip').style.display = isExpert ? 'inline-flex' : 'none';
+
+    updateRoleIndicator();
+}
+
+function updateRoleIndicator() {
+    const activeTab = document.querySelector('.role-tab.active');
+    const container = document.getElementById('roleToggle');
+    const indicator = document.getElementById('roleIndicator');
+    if (activeTab && container) {
+        const cRect = container.getBoundingClientRect();
+        const tRect = activeTab.getBoundingClientRect();
+        indicator.style.left = (tRect.left - cRect.left) + 'px';
+        indicator.style.width = tRect.width + 'px';
+    }
+}
+
+requestAnimationFrame(() => {
+    updateRoleIndicator();
+    window.addEventListener('resize', updateRoleIndicator);
+});
+    </script>
+</body>
+</html>

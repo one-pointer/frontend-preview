@@ -1,0 +1,2040 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>포트폴리오 관리 - 원포인트</title>
+    <style>
+        :root {
+            --bg: #f5f5f0;
+            --bg-card: #ffffff;
+            --bg-elevated: #ffffff;
+            --bg-inset: #f0efea;
+            --border: #e4e2dc;
+            --border-light: #edebe6;
+            --border-focus: #0f8a6a;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555550;
+            --text-tertiary: #8a8a82;
+            --text-muted: #b5b5ad;
+            --expert: #0f8a6a;
+            --expert-soft: #e8f6f1;
+            --expert-hover: #0a7358;
+            --expert-deep: #064d3a;
+            --accent: #e8622a;
+            --accent-soft: #fef0e8;
+            --blue: #2e6fce;
+            --blue-soft: #eaf1fb;
+            --red: #d44040;
+            --red-soft: #fdeaea;
+            --yellow: #c4880a;
+            --yellow-soft: #fdf5e0;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --shadow-card: 0 1px 3px rgba(26,26,26,0.04), 0 4px 12px rgba(26,26,26,0.03);
+            --shadow-hover: 0 4px 16px rgba(26,26,26,0.08), 0 8px 32px rgba(26,26,26,0.04);
+            --shadow-elevated: 0 12px 40px rgba(26,26,26,0.1), 0 4px 12px rgba(26,26,26,0.04);
+            --shadow-inset: inset 0 2px 4px rgba(26,26,26,0.04);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; }
+        input, textarea, select { font-family: inherit; }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes pulseRing {
+            0% { box-shadow: 0 0 0 0 rgba(15,138,106,0.25); }
+            70% { box-shadow: 0 0 0 8px rgba(15,138,106,0); }
+            100% { box-shadow: 0 0 0 0 rgba(15,138,106,0); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+
+        .anim-stagger { animation: fadeUp 0.6s var(--ease-out) both; }
+        .anim-stagger:nth-child(1) { animation-delay: 0.05s; }
+        .anim-stagger:nth-child(2) { animation-delay: 0.1s; }
+        .anim-stagger:nth-child(3) { animation-delay: 0.15s; }
+        .anim-stagger:nth-child(4) { animation-delay: 0.2s; }
+        .anim-stagger:nth-child(5) { animation-delay: 0.25s; }
+        .anim-stagger:nth-child(6) { animation-delay: 0.3s; }
+
+        /* ─── HEADER ─── */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(245,245,240,0.88);
+            backdrop-filter: blur(20px) saturate(1.6);
+            -webkit-backdrop-filter: blur(20px) saturate(1.6);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 28px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo { display: flex; align-items: center; gap: 9px; cursor: pointer; flex-shrink: 0; }
+        .logo-mark {
+            width: 34px; height: 34px; background: var(--expert); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 800; color: #fff;
+            transition: transform 0.3s var(--ease-out);
+        }
+        .logo:hover .logo-mark { transform: rotate(-6deg) scale(1.05); }
+        .logo-text { font-size: 19px; font-weight: 800; letter-spacing: -0.5px; }
+
+        .nav-tabs { display: flex; align-items: center; gap: 2px; margin-left: 8px; }
+        .nav-tab {
+            position: relative; padding: 8px 16px; font-size: 14.5px; font-weight: 600;
+            color: var(--text-tertiary); border: none; background: none; cursor: pointer;
+            font-family: inherit; border-radius: var(--radius-sm); transition: var(--transition); white-space: nowrap;
+        }
+        .nav-tab:hover { color: var(--text-primary); background: rgba(0,0,0,0.03); }
+        .nav-tab.active { color: var(--expert); font-weight: 700; }
+        .nav-tab .nav-badge {
+            position: absolute; top: 4px; right: 6px; width: 7px; height: 7px;
+            background: var(--accent); border-radius: 50%; border: 2px solid var(--bg);
+        }
+
+        .header-spacer { flex: 1; }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+
+        .header-btn {
+            height: 36px;
+            padding: 0 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-ghost {
+            color: var(--text-secondary);
+        }
+        .btn-ghost:hover { background: var(--bg-inset); color: var(--text-primary); }
+
+        .btn-primary {
+            background: var(--expert);
+            color: #fff;
+        }
+        .btn-primary:hover { background: var(--expert-hover); }
+
+        /* ─── LAYOUT ─── */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ─── PAGE HEADER ─── */
+        .page-hero {
+            padding: 40px 0 0;
+            animation: fadeUp 0.6s var(--ease-out) both;
+        }
+
+        .page-hero h1 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .page-hero p {
+            font-size: 14.5px;
+            color: var(--text-tertiary);
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+
+        /* ─── TAB NAV ─── */
+        .tab-nav {
+            display: flex;
+            gap: 4px;
+            margin-top: 28px;
+            border-bottom: 2px solid var(--border-light);
+            position: relative;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            font-size: 14.5px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            position: relative;
+            transition: var(--transition);
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+        }
+        .tab-btn:hover { color: var(--text-secondary); background: var(--bg-inset); }
+        .tab-btn.active { color: var(--expert); }
+        .tab-btn .count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-left: 6px;
+            background: var(--bg-inset);
+            color: var(--text-tertiary);
+            transition: var(--transition);
+        }
+        .tab-btn.active .count {
+            background: var(--expert-soft);
+            color: var(--expert);
+        }
+
+        .tab-indicator {
+            position: absolute;
+            bottom: -2px;
+            height: 2px;
+            background: var(--expert);
+            border-radius: 1px;
+            transition: all 0.35s var(--ease-out);
+        }
+
+        /* ─── TAB CONTENT ─── */
+        .tab-content {
+            display: none;
+            padding: 28px 0 120px;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeUp 0.4s var(--ease-out) both;
+        }
+
+        /* ─── SECTION HEADER ─── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .section-counter {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+        .section-counter strong {
+            color: var(--expert);
+            font-weight: 700;
+        }
+
+        .add-btn {
+            height: 38px;
+            padding: 0 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--expert);
+            background: var(--expert-soft);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+        .add-btn:hover {
+            background: var(--expert);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(15,138,106,0.2);
+        }
+
+        /* ─── EMPTY STATE ─── */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--bg-card);
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-lg);
+            animation: fadeUp 0.5s var(--ease-out) both;
+        }
+
+        .empty-state .empty-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 16px;
+            background: var(--bg-inset);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .empty-state h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .empty-state p {
+            font-size: 13.5px;
+            color: var(--text-tertiary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .empty-state .add-first-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 42px;
+            padding: 0 20px;
+            background: var(--expert);
+            color: #fff;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .empty-state .add-first-btn:hover {
+            background: var(--expert-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(15,138,106,0.25);
+        }
+
+        /* ─── PORTFOLIO CARD ─── */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .portfolio-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+        .portfolio-card:hover {
+            border-color: var(--border);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .portfolio-card .image-area {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: var(--bg-inset);
+            overflow: hidden;
+        }
+
+        .portfolio-card .image-area img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s var(--ease-out);
+        }
+        .portfolio-card:hover .image-area img {
+            transform: scale(1.04);
+        }
+
+        .portfolio-card .image-area .image-count {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .portfolio-card .type-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .type-badge.image { background: rgba(46,111,206,0.88); color: #fff; backdrop-filter: blur(8px); }
+        .type-badge.video { background: rgba(232,98,42,0.88); color: #fff; backdrop-filter: blur(8px); }
+        .type-badge.link { background: rgba(15,138,106,0.88); color: #fff; backdrop-filter: blur(8px); }
+
+        .portfolio-card .card-body {
+            padding: 14px 16px 16px;
+        }
+
+        .portfolio-card .card-desc {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .portfolio-card .card-actions {
+            display: flex;
+            gap: 4px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .card-action-btn {
+            flex: 1;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            transition: var(--transition);
+        }
+        .card-action-btn:hover { background: var(--bg-inset); color: var(--text-primary); }
+        .card-action-btn.delete:hover { background: var(--red-soft); color: var(--red); }
+
+        /* ─── NO IMAGE PLACEHOLDER ─── */
+        .no-image-placeholder {
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, var(--bg-inset) 0%, var(--border-light) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: var(--text-muted);
+        }
+        .no-image-placeholder svg { opacity: 0.5; }
+        .no-image-placeholder span { font-size: 12px; font-weight: 500; }
+
+        /* ─── CERTIFICATION CARD ─── */
+        .cert-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cert-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            transition: var(--transition);
+            position: relative;
+        }
+        .cert-card:hover {
+            border-color: var(--border);
+            box-shadow: var(--shadow-card);
+        }
+
+        .cert-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, var(--expert-soft) 0%, #d0efe5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .cert-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .cert-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .cert-issuer {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .cert-file {
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--bg-inset);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .cert-file:hover { background: var(--border-light); }
+
+        .cert-actions {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .cert-action-btn {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+        .cert-action-btn:hover { background: var(--bg-inset); color: var(--text-primary); }
+        .cert-action-btn.delete:hover { background: var(--red-soft); color: var(--red); }
+
+        .cert-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .cert-status.pending { background: var(--yellow-soft); color: var(--yellow); }
+        .cert-status.approved { background: var(--expert-soft); color: var(--expert); }
+
+        /* ─── MODAL OVERLAY ─── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(26,26,26,0.45);
+            backdrop-filter: blur(6px);
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 20px;
+            overflow-y: auto;
+        }
+        .modal-overlay.open {
+            display: flex;
+            animation: fadeIn 0.2s ease both;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-elevated);
+            width: 100%;
+            max-width: 580px;
+            animation: scaleIn 0.3s var(--ease-out) both;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            padding: 24px 28px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h2 {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            color: var(--text-tertiary);
+            transition: var(--transition);
+        }
+        .modal-close:hover { background: var(--bg-inset); color: var(--text-primary); }
+
+        .modal-body {
+            padding: 20px 28px 28px;
+        }
+
+        /* ─── FORM ELEMENTS ─── */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group:last-child { margin-bottom: 0; }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        .form-label .required {
+            color: var(--red);
+            font-size: 12px;
+        }
+        .form-label .hint {
+            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-left: auto;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 44px;
+            padding: 0 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            color: var(--text-primary);
+            background: var(--bg-card);
+            transition: var(--transition);
+            outline: none;
+        }
+        .form-input::placeholder { color: var(--text-muted); }
+        .form-input:focus {
+            border-color: var(--expert);
+            box-shadow: 0 0 0 3px rgba(15,138,106,0.1);
+        }
+        .form-input.error {
+            border-color: var(--red);
+            box-shadow: 0 0 0 3px rgba(212,64,64,0.08);
+            animation: shake 0.3s ease;
+        }
+
+        .form-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            color: var(--text-primary);
+            background: var(--bg-card);
+            transition: var(--transition);
+            outline: none;
+            resize: vertical;
+            line-height: 1.6;
+        }
+        .form-textarea::placeholder { color: var(--text-muted); }
+        .form-textarea:focus {
+            border-color: var(--expert);
+            box-shadow: 0 0 0 3px rgba(15,138,106,0.1);
+        }
+
+        .form-helper {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+        .form-helper.error-msg {
+            color: var(--red);
+        }
+
+        /* ─── TYPE SELECTOR ─── */
+        .type-selector {
+            display: flex;
+            gap: 8px;
+        }
+
+        .type-option {
+            flex: 1;
+            padding: 14px 12px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+        .type-option:hover { border-color: var(--text-muted); }
+        .type-option.selected {
+            border-color: var(--expert);
+            background: var(--expert-soft);
+        }
+        .type-option .type-icon {
+            width: 36px;
+            height: 36px;
+            margin: 0 auto 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-inset);
+            transition: var(--transition);
+        }
+        .type-option.selected .type-icon {
+            background: var(--expert);
+            color: #fff;
+        }
+        .type-option .type-name {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .type-option .type-desc {
+            font-size: 11.5px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+        .type-option .check-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .type-option.selected .check-dot {
+            border-color: var(--expert);
+            background: var(--expert);
+        }
+        .type-option.selected .check-dot::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #fff;
+        }
+
+        /* ─── IMAGE UPLOAD ZONE ─── */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .upload-zone:hover {
+            border-color: var(--expert);
+            background: rgba(15,138,106,0.02);
+        }
+        .upload-zone.drag-over {
+            border-color: var(--expert);
+            background: var(--expert-soft);
+            animation: pulseRing 1.2s ease-in-out infinite;
+        }
+
+        .upload-zone .upload-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 10px;
+            background: var(--bg-inset);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            transition: var(--transition);
+        }
+        .upload-zone:hover .upload-icon {
+            background: var(--expert-soft);
+            color: var(--expert);
+        }
+
+        .upload-zone .upload-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .upload-zone .upload-text em {
+            color: var(--expert);
+            font-style: normal;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .upload-zone .upload-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        /* Image preview grid */
+        .image-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .image-preview-item {
+            position: relative;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            aspect-ratio: 1;
+            background: var(--bg-inset);
+            animation: scaleIn 0.3s var(--ease-spring) both;
+        }
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .image-preview-item .order-badge {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 20px;
+            height: 20px;
+            background: rgba(0,0,0,0.55);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-preview-item .remove-img {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 22px;
+            height: 22px;
+            background: rgba(0,0,0,0.55);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .image-preview-item:hover .remove-img { opacity: 1; }
+
+        /* ─── FILE UPLOAD (Certification) ─── */
+        .file-upload-area {
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .file-upload-area:hover { border-color: var(--expert); background: rgba(15,138,106,0.02); }
+
+        .file-upload-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-inset);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            flex-shrink: 0;
+        }
+
+        .file-upload-text {
+            flex: 1;
+            min-width: 0;
+        }
+        .file-upload-text .file-name {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-primary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .file-upload-text .file-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .file-upload-area.has-file .file-upload-icon {
+            background: var(--expert-soft);
+            color: var(--expert);
+        }
+
+        /* ─── MODAL FOOTER ─── */
+        .modal-footer {
+            padding: 0 28px 24px;
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            height: 44px;
+            padding: 0 24px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .modal-btn.cancel {
+            color: var(--text-secondary);
+            background: var(--bg-inset);
+        }
+        .modal-btn.cancel:hover { background: var(--border); }
+
+        .modal-btn.submit {
+            color: #fff;
+            background: var(--expert);
+        }
+        .modal-btn.submit:hover { background: var(--expert-hover); }
+        .modal-btn.submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* ─── LIMIT BAR ─── */
+        .limit-bar {
+            margin-bottom: 20px;
+            padding: 14px 18px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .limit-bar .bar-track {
+            flex: 1;
+            height: 6px;
+            background: var(--bg-inset);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .limit-bar .bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: var(--expert);
+            transition: width 0.5s var(--ease-out);
+        }
+        .limit-bar .bar-fill.warn { background: var(--yellow); }
+        .limit-bar .bar-fill.full { background: var(--red); }
+
+        .limit-bar .bar-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        .limit-bar .bar-text strong { color: var(--expert); }
+
+        /* ─── TOAST ─── */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--text-primary);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: var(--shadow-elevated);
+            z-index: 300;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.35s var(--ease-out);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.success { background: var(--expert-deep); }
+        .toast.error { background: var(--red); }
+
+        /* ─── DELETE CONFIRM ─── */
+        .confirm-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 250;
+            background: rgba(26,26,26,0.5);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+        }
+        .confirm-overlay.open { display: flex; animation: fadeIn 0.15s ease; }
+
+        .confirm-dialog {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-elevated);
+            padding: 28px;
+            width: 360px;
+            max-width: 90vw;
+            text-align: center;
+            animation: scaleIn 0.25s var(--ease-out) both;
+        }
+        .confirm-dialog .confirm-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 14px;
+            border-radius: 50%;
+            background: var(--red-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .confirm-dialog h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+        .confirm-dialog p { font-size: 13.5px; color: var(--text-tertiary); line-height: 1.6; margin-bottom: 20px; }
+        .confirm-actions { display: flex; gap: 8px; }
+        .confirm-actions button { flex: 1; height: 44px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; }
+        .confirm-cancel { background: var(--bg-inset); color: var(--text-secondary); }
+        .confirm-cancel:hover { background: var(--border); }
+        .confirm-delete { background: var(--red); color: #fff; }
+        .confirm-delete:hover { background: #c23636; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 680px) {
+            .container { padding: 0 16px; }
+            .header-inner { padding: 0 16px; height: 54px; }
+            .header-logo span { display: none; }
+            .page-hero { padding: 28px 0 0; }
+            .page-hero h1 { font-size: 22px; }
+            .portfolio-grid { grid-template-columns: 1fr; }
+            .modal { border-radius: var(--radius) var(--radius) 0 0; margin-top: auto; }
+            .modal-body { padding: 16px 20px 24px; }
+            .modal-header { padding: 20px 20px 0; }
+            .modal-footer { padding: 0 20px 20px; }
+            .image-preview-grid { grid-template-columns: repeat(3, 1fr); }
+            .type-selector { gap: 6px; }
+            .type-option { padding: 10px 8px; }
+            .type-option .type-desc { display: none; }
+            .cert-card { padding: 16px; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="header">
+    <div class="header-inner">
+        <a class="logo" href="index.html">
+            <div class="logo-mark">O</div>
+            <span class="logo-text">원포인트</span>
+        </a>
+        <nav class="nav-tabs">
+            <a class="nav-tab" href="index.html">홈</a>
+            <a class="nav-tab" href="chat.html">채팅 <span class="nav-badge"></span></a>
+            <a class="nav-tab" href="my-proposals.html">내 제안서</a>
+            <a class="nav-tab active" href="expert-portfolio.html">포트폴리오</a>
+            <a class="nav-tab" href="mypage.html">마이페이지</a>
+        </nav>
+        <div class="header-spacer"></div>
+        <div class="header-right">
+            <button class="header-btn btn-primary" onclick="showToast('프로필이 저장되었습니다', 'success')">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12.5 8.5v4a1 1 0 01-1 1h-9a1 1 0 01-1-1v-9a1 1 0 011-1h4"/><path d="M10 1.5h3.5V5M6.5 8.5L13.5 1.5"/></svg>
+                프로필 보기
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- ─── MAIN ─── -->
+<div class="container">
+
+    <!-- Page Hero -->
+    <div class="page-hero">
+        <h1>포트폴리오 · 자격증</h1>
+        <p>나를 어필할 수 있는 작업물과 자격증을 등록하면 의뢰인에게 신뢰를 줄 수 있어요.</p>
+
+        <!-- Tab Nav -->
+        <nav class="tab-nav" id="tabNav">
+            <button class="tab-btn active" data-tab="portfolio" onclick="switchTab('portfolio')">
+                포트폴리오
+                <span class="count" id="portfolioCount">3</span>
+            </button>
+            <button class="tab-btn" data-tab="certification" onclick="switchTab('certification')">
+                자격증
+                <span class="count" id="certCount">2</span>
+            </button>
+            <div class="tab-indicator" id="tabIndicator"></div>
+        </nav>
+    </div>
+
+    <!-- ═══════ PORTFOLIO TAB ═══════ -->
+    <div class="tab-content active" id="tab-portfolio">
+
+        <!-- Limit Bar -->
+        <div class="limit-bar">
+            <div class="bar-text"><strong id="portfolioUsed">3</strong> / 10</div>
+            <div class="bar-track">
+                <div class="bar-fill" id="portfolioBar" style="width: 30%"></div>
+            </div>
+            <button class="add-btn" onclick="openPortfolioModal()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg>
+                추가
+            </button>
+        </div>
+
+        <!-- Portfolio Grid -->
+        <div class="portfolio-grid" id="portfolioGrid">
+
+            <!-- Card 1 -->
+            <div class="portfolio-card anim-stagger">
+                <div class="image-area">
+                    <img src="https://images.unsplash.com/photo-1593642634367-d91a135587b5?w=600&h=450&fit=crop" alt="포트폴리오">
+                    <span class="type-badge image">IMAGE</span>
+                    <span class="image-count">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="1" width="10" height="10" rx="2"/><path d="M1 8l3-3 2 2 3-3 2 2"/></svg>
+                        4장
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="card-desc">React 기반 실시간 대시보드 개발 프로젝트 — 데이터 시각화와 차트 구현</div>
+                    <div class="card-actions">
+                        <button class="card-action-btn" onclick="openPortfolioModal('edit', 1)">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7.5 2.5l3 3M2 8l5.5-5.5 3 3L5 11H2V8z"/></svg>
+                            수정
+                        </button>
+                        <button class="card-action-btn delete" onclick="confirmDelete('portfolio', 1)">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 4h9M4 4V3a1 1 0 011-1h3a1 1 0 011 1v1M5 6.5v3M8 6.5v3M3.5 4l.5 7a1 1 0 001 1h3a1 1 0 001-1l.5-7"/></svg>
+                            삭제
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="portfolio-card anim-stagger">
+                <div class="image-area">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=450&fit=crop" alt="포트폴리오">
+                    <span class="type-badge video">VIDEO</span>
+                    <span class="image-count">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="1" width="10" height="10" rx="2"/><path d="M1 8l3-3 2 2 3-3 2 2"/></svg>
+                        2장
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="card-desc">스타트업 MVP 풀스택 개발 — Node.js, PostgreSQL, 결제 시스템 연동</div>
+                    <div class="card-actions">
+                        <button class="card-action-btn" onclick="openPortfolioModal('edit', 2)">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7.5 2.5l3 3M2 8l5.5-5.5 3 3L5 11H2V8z"/></svg>
+                            수정
+                        </button>
+                        <button class="card-action-btn delete" onclick="confirmDelete('portfolio', 2)">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 4h9M4 4V3a1 1 0 011-1h3a1 1 0 011 1v1M5 6.5v3M8 6.5v3M3.5 4l.5 7a1 1 0 001 1h3a1 1 0 001-1l.5-7"/></svg>
+                            삭제
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="portfolio-card anim-stagger">
+                <div class="image-area">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=450&fit=crop" alt="포트폴리오">
+                    <span class="type-badge link">LINK</span>
+                    <span class="image-count">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="1" width="10" height="10" rx="2"/><path d="M1 8l3-3 2 2 3-3 2 2"/></svg>
+                        5장
+                    </span>
+                </div>
+                <div class="card-body">
+                    <div class="card-desc">기업 브랜딩 웹사이트 리뉴얼 — 반응형 디자인, SEO 최적화, 다국어 지원</div>
+                    <div class="card-actions">
+                        <button class="card-action-btn" onclick="openPortfolioModal('edit', 3)">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7.5 2.5l3 3M2 8l5.5-5.5 3 3L5 11H2V8z"/></svg>
+                            수정
+                        </button>
+                        <button class="card-action-btn delete" onclick="confirmDelete('portfolio', 3)">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 4h9M4 4V3a1 1 0 011-1h3a1 1 0 011 1v1M5 6.5v3M8 6.5v3M3.5 4l.5 7a1 1 0 001 1h3a1 1 0 001-1l.5-7"/></svg>
+                            삭제
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══════ CERTIFICATION TAB ═══════ -->
+    <div class="tab-content" id="tab-certification">
+
+        <!-- Limit Bar -->
+        <div class="limit-bar">
+            <div class="bar-text"><strong id="certUsed">2</strong> / 5</div>
+            <div class="bar-track">
+                <div class="bar-fill" id="certBar" style="width: 40%"></div>
+            </div>
+            <button class="add-btn" onclick="openCertModal()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg>
+                추가
+            </button>
+        </div>
+
+        <!-- Certification List -->
+        <div class="cert-list" id="certList">
+
+            <!-- Cert 1 -->
+            <div class="cert-card anim-stagger">
+                <div class="cert-icon">
+                    <svg width="24" height="24" fill="none" stroke="#0f8a6a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15l-3 3v4l3-2 3 2v-4l-3-3z"/><circle cx="12" cy="9" r="6"/><path d="M9.5 9l1.5 1.5 3-3"/></svg>
+                </div>
+                <div class="cert-info">
+                    <div class="cert-name">
+                        정보처리기사
+                        <span class="cert-status approved">
+                            <svg width="10" height="10" fill="currentColor"><circle cx="5" cy="5" r="3"/></svg>
+                            승인됨
+                        </span>
+                    </div>
+                    <div class="cert-issuer">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="10" height="8" rx="1"/><path d="M1 6h10"/></svg>
+                        한국산업인력공단
+                    </div>
+                    <a class="cert-file" href="#" onclick="event.preventDefault()">
+                        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1H3a1 1 0 00-1 1v9a1 1 0 001 1h7a1 1 0 001-1V5L7 1z"/><path d="M7 1v4h4"/></svg>
+                        정보처리기사_자격증.pdf
+                    </a>
+                </div>
+                <div class="cert-actions">
+                    <button class="cert-action-btn" onclick="openCertModal('edit', 1)" title="수정">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 3l3 3M3 9l5.5-5.5 3 3L6 12H3V9z"/></svg>
+                    </button>
+                    <button class="cert-action-btn delete" onclick="confirmDelete('cert', 1)" title="삭제">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 5h9M5 5V4a1 1 0 011-1h3a1 1 0 011 1v1M6 7.5v3M9 7.5v3M4 5l.5 7a1 1 0 001 1h4a1 1 0 001-1L11 5"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cert 2 -->
+            <div class="cert-card anim-stagger">
+                <div class="cert-icon">
+                    <svg width="24" height="24" fill="none" stroke="#0f8a6a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15l-3 3v4l3-2 3 2v-4l-3-3z"/><circle cx="12" cy="9" r="6"/><path d="M9.5 9l1.5 1.5 3-3"/></svg>
+                </div>
+                <div class="cert-info">
+                    <div class="cert-name">
+                        SQLD (SQL 개발자)
+                        <span class="cert-status pending">
+                            <svg width="10" height="10" fill="currentColor"><circle cx="5" cy="5" r="3"/></svg>
+                            심사중
+                        </span>
+                    </div>
+                    <div class="cert-issuer">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="10" height="8" rx="1"/><path d="M1 6h10"/></svg>
+                        한국데이터산업진흥원
+                    </div>
+                    <a class="cert-file" href="#" onclick="event.preventDefault()">
+                        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1H3a1 1 0 00-1 1v9a1 1 0 001 1h7a1 1 0 001-1V5L7 1z"/><path d="M7 1v4h4"/></svg>
+                        SQLD_합격증.jpg
+                    </a>
+                </div>
+                <div class="cert-actions">
+                    <button class="cert-action-btn" onclick="openCertModal('edit', 2)" title="수정">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 3l3 3M3 9l5.5-5.5 3 3L6 12H3V9z"/></svg>
+                    </button>
+                    <button class="cert-action-btn delete" onclick="confirmDelete('cert', 2)" title="삭제">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 5h9M5 5V4a1 1 0 011-1h3a1 1 0 011 1v1M6 7.5v3M9 7.5v3M4 5l.5 7a1 1 0 001 1h4a1 1 0 001-1L11 5"/></svg>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- ═══════ PORTFOLIO MODAL ═══════ -->
+<div class="modal-overlay" id="portfolioModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 id="portfolioModalTitle">포트폴리오 추가</h2>
+            <button class="modal-close" onclick="closeModal('portfolioModal')">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <!-- Type -->
+            <div class="form-group">
+                <div class="form-label">유형 <span class="required">*</span></div>
+                <div class="type-selector">
+                    <div class="type-option selected" data-type="IMAGE" onclick="selectType(this)">
+                        <div class="check-dot"></div>
+                        <div class="type-icon">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="14" height="14" rx="3"/><circle cx="6.5" cy="6.5" r="1.5"/><path d="M2 13l4-4 3 3 3-3 4 4"/></svg>
+                        </div>
+                        <div class="type-name">이미지</div>
+                        <div class="type-desc">사진·디자인 작업물</div>
+                    </div>
+                    <div class="type-option" data-type="VIDEO" onclick="selectType(this)">
+                        <div class="check-dot"></div>
+                        <div class="type-icon">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="10" height="10" rx="2"/><path d="M12 7l4-2v8l-4-2"/></svg>
+                        </div>
+                        <div class="type-name">영상</div>
+                        <div class="type-desc">동영상·강의 클립</div>
+                    </div>
+                    <div class="type-option" data-type="LINK" onclick="selectType(this)">
+                        <div class="check-dot"></div>
+                        <div class="type-icon">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M7 11l4-4"/><path d="M8.5 5.5L10 4a2.12 2.12 0 013 3l-1.5 1.5M9.5 12.5L8 14a2.12 2.12 0 01-3-3l1.5-1.5"/></svg>
+                        </div>
+                        <div class="type-name">링크</div>
+                        <div class="type-desc">외부 URL·깃허브</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <div class="form-label">
+                    설명 <span class="required">*</span>
+                    <span class="hint" id="descCounter">0 / 200</span>
+                </div>
+                <textarea class="form-textarea" id="portfolioDesc" placeholder="이 포트폴리오에 대해 설명해주세요. (진행 배경, 기간, 역할, 성과 등)" maxlength="200" oninput="updateCounter(this, 'descCounter', 200)"></textarea>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="form-group">
+                <div class="form-label">
+                    이미지
+                    <span class="hint" id="imageCounter">0 / 7장</span>
+                </div>
+                <div class="upload-zone" id="uploadZone" onclick="document.getElementById('imageInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+                    <input type="file" id="imageInput" accept="image/*" multiple hidden onchange="handleFiles(this.files)">
+                    <div class="upload-icon">
+                        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 15l4-4 3 3 4-4 4 4"/><rect x="1" y="3" width="20" height="14" rx="3"/><circle cx="7" cy="8" r="2"/></svg>
+                    </div>
+                    <div class="upload-text">클릭 또는 <em>드래그 앤 드롭</em>으로 업로드</div>
+                    <div class="upload-hint">JPG, PNG, WEBP · 최대 7장 · 장당 5MB 이하</div>
+                </div>
+                <div class="image-preview-grid" id="imagePreviewGrid"></div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn cancel" onclick="closeModal('portfolioModal')">취소</button>
+            <button class="modal-btn submit" id="portfolioSubmitBtn" onclick="submitPortfolio()">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5L6.5 10.5 4 8"/></svg>
+                등록하기
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════ CERTIFICATION MODAL ═══════ -->
+<div class="modal-overlay" id="certModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 id="certModalTitle">자격증 추가</h2>
+            <button class="modal-close" onclick="closeModal('certModal')">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <!-- Cert Name -->
+            <div class="form-group">
+                <div class="form-label">자격증명 <span class="required">*</span></div>
+                <input type="text" class="form-input" id="certName" placeholder="예: 정보처리기사, 컬러리스트산업기사">
+            </div>
+
+            <!-- Issuer -->
+            <div class="form-group">
+                <div class="form-label">발급 기관 <span class="required">*</span></div>
+                <input type="text" class="form-input" id="certIssuer" placeholder="예: 한국산업인력공단, 대한상공회의소">
+            </div>
+
+            <!-- File Upload -->
+            <div class="form-group">
+                <div class="form-label">증빙 파일 <span class="required">*</span></div>
+                <div class="file-upload-area" id="certFileArea" onclick="document.getElementById('certFileInput').click()">
+                    <input type="file" id="certFileInput" accept=".pdf,.jpg,.jpeg,.png,.webp" hidden onchange="handleCertFile(this.files)">
+                    <div class="file-upload-icon">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 1H5a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8l-7-7z"/><path d="M10 1v7h7"/></svg>
+                    </div>
+                    <div class="file-upload-text">
+                        <div class="file-name" id="certFileName">파일을 선택해주세요</div>
+                        <div class="file-hint" id="certFileHint">PDF, JPG, PNG · 10MB 이하</div>
+                    </div>
+                </div>
+                <div class="form-helper">자격증 사본 또는 합격증 이미지를 업로드하면 관리자 심사 후 승인됩니다.</div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="modal-btn cancel" onclick="closeModal('certModal')">취소</button>
+            <button class="modal-btn submit" id="certSubmitBtn" onclick="submitCert()">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5L6.5 10.5 4 8"/></svg>
+                등록하기
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════ DELETE CONFIRM ═══════ -->
+<div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-dialog">
+        <div class="confirm-icon">
+            <svg width="24" height="24" fill="none" stroke="#d44040" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        </div>
+        <h3 id="confirmTitle">삭제하시겠습니까?</h3>
+        <p id="confirmDesc">삭제된 항목은 복구할 수 없습니다.</p>
+        <div class="confirm-actions">
+            <button class="confirm-cancel" onclick="closeConfirm()">취소</button>
+            <button class="confirm-delete" id="confirmDeleteBtn" onclick="executeDelete()">삭제</button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════ TOAST ═══════ -->
+<div class="toast" id="toast"></div>
+    <script>
+/* ──────────────────────────────────
+   STATE
+────────────────────────────────── */
+const API_URL = localStorage.getItem('op_api_url') || 'http://localhost:8080';
+const TOKEN = localStorage.getItem('op_token') || '';
+
+let portfolios = [
+    { id: 1, type: 'IMAGE', description: 'React 기반 실시간 대시보드 개발 프로젝트 — 데이터 시각화와 차트 구현', imageUrls: ['https://images.unsplash.com/photo-1593642634367-d91a135587b5?w=600&h=450&fit=crop','https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop','https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=300&fit=crop','https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&h=300&fit=crop'] },
+    { id: 2, type: 'VIDEO', description: '스타트업 MVP 풀스택 개발 — Node.js, PostgreSQL, 결제 시스템 연동', imageUrls: ['https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=450&fit=crop','https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=300&fit=crop'] },
+    { id: 3, type: 'LINK', description: '기업 브랜딩 웹사이트 리뉴얼 — 반응형 디자인, SEO 최적화, 다국어 지원', imageUrls: ['https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=450&fit=crop','https://images.unsplash.com/photo-1593642634367-d91a135587b5?w=400&h=300&fit=crop','https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=300&fit=crop','https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&h=300&fit=crop','https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop'] }
+];
+
+let certifications = [
+    { id: 1, name: '정보처리기사', issuer: '한국산업인력공단', fileUrl: '/files/cert1.pdf', status: 'APPROVED' },
+    { id: 2, name: 'SQLD (SQL 개발자)', issuer: '한국데이터산업진흥원', fileUrl: '/files/cert2.jpg', status: 'PENDING' }
+];
+
+let selectedImages = [];
+let certFileUrl = '';
+let editingId = null;
+let deleteTarget = { type: '', id: null };
+let selectedPortfolioType = 'IMAGE';
+
+/* ──────────────────────────────────
+   TAB SWITCHING
+────────────────────────────────── */
+function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+    const btn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
+    btn.classList.add('active');
+    document.getElementById(`tab-${tab}`).classList.add('active');
+
+    updateTabIndicator();
+}
+
+function updateTabIndicator() {
+    const activeBtn = document.querySelector('.tab-btn.active');
+    const nav = document.getElementById('tabNav');
+    const indicator = document.getElementById('tabIndicator');
+
+    if (activeBtn && nav) {
+        const navRect = nav.getBoundingClientRect();
+        const btnRect = activeBtn.getBoundingClientRect();
+        indicator.style.left = (btnRect.left - navRect.left) + 'px';
+        indicator.style.width = btnRect.width + 'px';
+    }
+}
+
+// Init indicator
+requestAnimationFrame(() => {
+    updateTabIndicator();
+    window.addEventListener('resize', updateTabIndicator);
+});
+
+/* ──────────────────────────────────
+   PORTFOLIO TYPE SELECTOR
+────────────────────────────────── */
+function selectType(el) {
+    document.querySelectorAll('.type-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedPortfolioType = el.dataset.type;
+}
+
+/* ──────────────────────────────────
+   TEXT COUNTER
+────────────────────────────────── */
+function updateCounter(textarea, counterId, max) {
+    const len = textarea.value.length;
+    document.getElementById(counterId).textContent = `${len} / ${max}`;
+}
+
+/* ──────────────────────────────────
+   IMAGE UPLOAD
+────────────────────────────────── */
+function handleDragOver(e) {
+    e.preventDefault();
+    e.currentTarget.classList.add('drag-over');
+}
+function handleDragLeave(e) {
+    e.currentTarget.classList.remove('drag-over');
+}
+function handleDrop(e) {
+    e.preventDefault();
+    e.currentTarget.classList.remove('drag-over');
+    handleFiles(e.dataTransfer.files);
+}
+
+function handleFiles(files) {
+    const remaining = 7 - selectedImages.length;
+    if (remaining <= 0) {
+        showToast('이미지는 최대 7장까지 등록 가능합니다', 'error');
+        return;
+    }
+
+    const toAdd = Array.from(files).slice(0, remaining);
+    toAdd.forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+        if (file.size > 5 * 1024 * 1024) {
+            showToast(`${file.name}: 5MB 이하만 가능합니다`, 'error');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            selectedImages.push({ url: e.target.result, name: file.name });
+            renderImagePreviews();
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+function renderImagePreviews() {
+    const grid = document.getElementById('imagePreviewGrid');
+    document.getElementById('imageCounter').textContent = `${selectedImages.length} / 7장`;
+
+    grid.innerHTML = selectedImages.map((img, i) => `
+        <div class="image-preview-item" style="animation-delay: ${i * 0.05}s">
+            <img src="${img.url}" alt="미리보기">
+            <span class="order-badge">${i + 1}</span>
+            <button class="remove-img" onclick="removeImage(${i})">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 3l6 6M9 3L3 9"/></svg>
+            </button>
+        </div>
+    `).join('');
+}
+
+function removeImage(idx) {
+    selectedImages.splice(idx, 1);
+    renderImagePreviews();
+}
+
+/* ──────────────────────────────────
+   CERT FILE UPLOAD
+────────────────────────────────── */
+function handleCertFile(files) {
+    if (!files.length) return;
+    const file = files[0];
+
+    if (file.size > 10 * 1024 * 1024) {
+        showToast('파일은 10MB 이하만 가능합니다', 'error');
+        return;
+    }
+
+    certFileUrl = URL.createObjectURL(file);
+    document.getElementById('certFileName').textContent = file.name;
+    document.getElementById('certFileHint').textContent = `${(file.size / 1024 / 1024).toFixed(1)}MB · ${file.type.split('/')[1].toUpperCase()}`;
+    document.getElementById('certFileArea').classList.add('has-file');
+}
+
+/* ──────────────────────────────────
+   MODALS
+────────────────────────────────── */
+function openPortfolioModal(mode = 'add', id = null) {
+    editingId = id;
+    const modal = document.getElementById('portfolioModal');
+    const title = document.getElementById('portfolioModalTitle');
+    const submitBtn = document.getElementById('portfolioSubmitBtn');
+
+    if (mode === 'edit' && id) {
+        const p = portfolios.find(x => x.id === id);
+        if (!p) return;
+
+        title.textContent = '포트폴리오 수정';
+        submitBtn.innerHTML = `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5L6.5 10.5 4 8"/></svg> 수정하기`;
+
+        // Pre-fill
+        document.getElementById('portfolioDesc').value = p.description;
+        updateCounter(document.getElementById('portfolioDesc'), 'descCounter', 200);
+        selectedPortfolioType = p.type;
+        document.querySelectorAll('.type-option').forEach(o => {
+            o.classList.toggle('selected', o.dataset.type === p.type);
+        });
+        selectedImages = p.imageUrls.map((url, i) => ({ url, name: `image_${i+1}` }));
+        renderImagePreviews();
+    } else {
+        title.textContent = '포트폴리오 추가';
+        submitBtn.innerHTML = `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5L6.5 10.5 4 8"/></svg> 등록하기`;
+        resetPortfolioForm();
+    }
+
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function openCertModal(mode = 'add', id = null) {
+    editingId = id;
+    const modal = document.getElementById('certModal');
+    const title = document.getElementById('certModalTitle');
+    const submitBtn = document.getElementById('certSubmitBtn');
+
+    if (mode === 'edit' && id) {
+        const c = certifications.find(x => x.id === id);
+        if (!c) return;
+
+        title.textContent = '자격증 수정';
+        submitBtn.innerHTML = `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5L6.5 10.5 4 8"/></svg> 수정하기`;
+
+        document.getElementById('certName').value = c.name;
+        document.getElementById('certIssuer').value = c.issuer;
+        document.getElementById('certFileName').textContent = c.fileUrl.split('/').pop();
+        document.getElementById('certFileArea').classList.add('has-file');
+        certFileUrl = c.fileUrl;
+    } else {
+        title.textContent = '자격증 추가';
+        submitBtn.innerHTML = `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5L6.5 10.5 4 8"/></svg> 등록하기`;
+        resetCertForm();
+    }
+
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+    editingId = null;
+}
+
+function resetPortfolioForm() {
+    document.getElementById('portfolioDesc').value = '';
+    document.getElementById('descCounter').textContent = '0 / 200';
+    selectedImages = [];
+    selectedPortfolioType = 'IMAGE';
+    document.querySelectorAll('.type-option').forEach(o => {
+        o.classList.toggle('selected', o.dataset.type === 'IMAGE');
+    });
+    renderImagePreviews();
+}
+
+function resetCertForm() {
+    document.getElementById('certName').value = '';
+    document.getElementById('certIssuer').value = '';
+    document.getElementById('certFileName').textContent = '파일을 선택해주세요';
+    document.getElementById('certFileHint').textContent = 'PDF, JPG, PNG · 10MB 이하';
+    document.getElementById('certFileArea').classList.remove('has-file');
+    certFileUrl = '';
+}
+
+/* ──────────────────────────────────
+   SUBMIT PORTFOLIO
+────────────────────────────────── */
+function submitPortfolio() {
+    const desc = document.getElementById('portfolioDesc').value.trim();
+
+    if (!desc) {
+        document.getElementById('portfolioDesc').classList.add('error');
+        setTimeout(() => document.getElementById('portfolioDesc').classList.remove('error'), 600);
+        showToast('설명을 입력해주세요', 'error');
+        return;
+    }
+
+    const payload = {
+        type: selectedPortfolioType,
+        description: desc,
+        imageUrls: selectedImages.map(img => img.url)
+    };
+
+    console.log(editingId ? 'PUT /v1/api/user/expert/portfolios/' + editingId : 'POST /v1/api/user/expert/portfolios');
+    console.log('Request:', JSON.stringify(payload, null, 2));
+
+    if (editingId) {
+        const idx = portfolios.findIndex(p => p.id === editingId);
+        if (idx >= 0) {
+            portfolios[idx] = { ...portfolios[idx], ...payload };
+        }
+        showToast('포트폴리오가 수정되었습니다', 'success');
+    } else {
+        const newId = Math.max(...portfolios.map(p => p.id), 0) + 1;
+        portfolios.push({ id: newId, ...payload });
+        showToast('포트폴리오가 추가되었습니다', 'success');
+    }
+
+    closeModal('portfolioModal');
+    renderPortfolios();
+}
+
+/* ──────────────────────────────────
+   SUBMIT CERTIFICATION
+────────────────────────────────── */
+function submitCert() {
+    const name = document.getElementById('certName').value.trim();
+    const issuer = document.getElementById('certIssuer').value.trim();
+
+    let hasError = false;
+
+    if (!name) {
+        document.getElementById('certName').classList.add('error');
+        setTimeout(() => document.getElementById('certName').classList.remove('error'), 600);
+        hasError = true;
+    }
+    if (!issuer) {
+        document.getElementById('certIssuer').classList.add('error');
+        setTimeout(() => document.getElementById('certIssuer').classList.remove('error'), 600);
+        hasError = true;
+    }
+    if (!certFileUrl) {
+        showToast('증빙 파일을 업로드해주세요', 'error');
+        hasError = true;
+    }
+
+    if (hasError) {
+        if (!certFileUrl) return;
+        showToast('필수 항목을 입력해주세요', 'error');
+        return;
+    }
+
+    const payload = {
+        name,
+        issuer,
+        fileUrl: certFileUrl
+    };
+
+    console.log(editingId ? 'PUT /v1/api/user/expert/certifications/' + editingId : 'POST /v1/api/user/expert/certifications');
+    console.log('Request:', JSON.stringify(payload, null, 2));
+
+    if (editingId) {
+        const idx = certifications.findIndex(c => c.id === editingId);
+        if (idx >= 0) {
+            certifications[idx] = { ...certifications[idx], ...payload, status: 'PENDING' };
+        }
+        showToast('자격증이 수정되었습니다', 'success');
+    } else {
+        const newId = Math.max(...certifications.map(c => c.id), 0) + 1;
+        certifications.push({ id: newId, ...payload, status: 'PENDING' });
+        showToast('자격증이 추가되었습니다', 'success');
+    }
+
+    closeModal('certModal');
+    renderCertifications();
+}
+
+/* ──────────────────────────────────
+   DELETE
+────────────────────────────────── */
+function confirmDelete(type, id) {
+    deleteTarget = { type, id };
+    const overlay = document.getElementById('confirmOverlay');
+
+    if (type === 'portfolio') {
+        document.getElementById('confirmTitle').textContent = '포트폴리오를 삭제할까요?';
+        document.getElementById('confirmDesc').textContent = '삭제된 포트폴리오는 복구할 수 없습니다. 첨부된 이미지도 함께 삭제됩니다.';
+    } else {
+        document.getElementById('confirmTitle').textContent = '자격증을 삭제할까요?';
+        document.getElementById('confirmDesc').textContent = '삭제된 자격증 정보는 복구할 수 없으며, 승인 상태도 초기화됩니다.';
+    }
+
+    overlay.classList.add('open');
+}
+
+function closeConfirm() {
+    document.getElementById('confirmOverlay').classList.remove('open');
+    deleteTarget = { type: '', id: null };
+}
+
+function executeDelete() {
+    const { type, id } = deleteTarget;
+
+    console.log(`DELETE /v1/api/user/expert/${type === 'portfolio' ? 'portfolios' : 'certifications'}/${id}`);
+
+    if (type === 'portfolio') {
+        portfolios = portfolios.filter(p => p.id !== id);
+        renderPortfolios();
+        showToast('포트폴리오가 삭제되었습니다', 'success');
+    } else {
+        certifications = certifications.filter(c => c.id !== id);
+        renderCertifications();
+        showToast('자격증이 삭제되었습니다', 'success');
+    }
+
+    closeConfirm();
+}
+
+/* ──────────────────────────────────
+   RENDER
+────────────────────────────────── */
+function renderPortfolios() {
+    const grid = document.getElementById('portfolioGrid');
+    const count = portfolios.length;
+
+    document.getElementById('portfolioCount').textContent = count;
+    document.getElementById('portfolioUsed').textContent = count;
+    const pct = (count / 10) * 100;
+    const bar = document.getElementById('portfolioBar');
+    bar.style.width = pct + '%';
+    bar.className = 'bar-fill' + (pct >= 100 ? ' full' : pct >= 70 ? ' warn' : '');
+
+    if (count === 0) {
+        grid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1/-1">
+                <div class="empty-icon">📂</div>
+                <h3>등록된 포트폴리오가 없습니다</h3>
+                <p>작업물을 등록해서 의뢰인에게 실력을 보여주세요.<br>이미지, 영상 링크, 외부 URL 모두 등록 가능합니다.</p>
+                <button class="add-first-btn" onclick="openPortfolioModal()">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg>
+                    첫 포트폴리오 등록
+                </button>
+            </div>`;
+        return;
+    }
+
+    grid.innerHTML = portfolios.map((p, i) => {
+        const img = p.imageUrls[0] || '';
+        const imgCount = p.imageUrls.length;
+        const typeClass = p.type.toLowerCase();
+
+        return `
+        <div class="portfolio-card anim-stagger" style="animation-delay: ${i * 0.06}s">
+            <div class="image-area">
+                ${img ?
+                    `<img src="${img}" alt="포트폴리오">` :
+                    `<div class="no-image-placeholder">
+                        <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="22" height="22" rx="4"/><circle cx="10" cy="10" r="2.5"/><path d="M3 20l6-6 4 4 5-5 7 7"/></svg>
+                        <span>이미지 없음</span>
+                    </div>`
+                }
+                <span class="type-badge ${typeClass}">${p.type}</span>
+                ${imgCount > 0 ? `
+                <span class="image-count">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="1" width="10" height="10" rx="2"/><path d="M1 8l3-3 2 2 3-3 2 2"/></svg>
+                    ${imgCount}장
+                </span>` : ''}
+            </div>
+            <div class="card-body">
+                <div class="card-desc">${p.description}</div>
+                <div class="card-actions">
+                    <button class="card-action-btn" onclick="openPortfolioModal('edit', ${p.id})">
+                        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7.5 2.5l3 3M2 8l5.5-5.5 3 3L5 11H2V8z"/></svg>
+                        수정
+                    </button>
+                    <button class="card-action-btn delete" onclick="confirmDelete('portfolio', ${p.id})">
+                        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 4h9M4 4V3a1 1 0 011-1h3a1 1 0 011 1v1M5 6.5v3M8 6.5v3M3.5 4l.5 7a1 1 0 001 1h3a1 1 0 001-1l.5-7"/></svg>
+                        삭제
+                    </button>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function renderCertifications() {
+    const list = document.getElementById('certList');
+    const count = certifications.length;
+
+    document.getElementById('certCount').textContent = count;
+    document.getElementById('certUsed').textContent = count;
+    const pct = (count / 5) * 100;
+    const bar = document.getElementById('certBar');
+    bar.style.width = pct + '%';
+    bar.className = 'bar-fill' + (pct >= 100 ? ' full' : pct >= 80 ? ' warn' : '');
+
+    if (count === 0) {
+        list.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">📜</div>
+                <h3>등록된 자격증이 없습니다</h3>
+                <p>관련 자격증을 등록하면 의뢰인에게 전문성을 증명할 수 있어요.<br>증빙 파일 업로드 후 관리자 심사를 거쳐 승인됩니다.</p>
+                <button class="add-first-btn" onclick="openCertModal()">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg>
+                    첫 자격증 등록
+                </button>
+            </div>`;
+        return;
+    }
+
+    list.innerHTML = certifications.map((c, i) => {
+        const statusClass = c.status === 'APPROVED' ? 'approved' : 'pending';
+        const statusLabel = c.status === 'APPROVED' ? '승인됨' : '심사중';
+        const fileName = c.fileUrl.split('/').pop();
+
+        return `
+        <div class="cert-card anim-stagger" style="animation-delay: ${i * 0.06}s">
+            <div class="cert-icon">
+                <svg width="24" height="24" fill="none" stroke="#0f8a6a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15l-3 3v4l3-2 3 2v-4l-3-3z"/><circle cx="12" cy="9" r="6"/><path d="M9.5 9l1.5 1.5 3-3"/></svg>
+            </div>
+            <div class="cert-info">
+                <div class="cert-name">
+                    ${c.name}
+                    <span class="cert-status ${statusClass}">
+                        <svg width="10" height="10" fill="currentColor"><circle cx="5" cy="5" r="3"/></svg>
+                        ${statusLabel}
+                    </span>
+                </div>
+                <div class="cert-issuer">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="10" height="8" rx="1"/><path d="M1 6h10"/></svg>
+                    ${c.issuer}
+                </div>
+                <a class="cert-file" href="#" onclick="event.preventDefault()">
+                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 1H3a1 1 0 00-1 1v9a1 1 0 001 1h7a1 1 0 001-1V5L7 1z"/><path d="M7 1v4h4"/></svg>
+                    ${fileName}
+                </a>
+            </div>
+            <div class="cert-actions">
+                <button class="cert-action-btn" onclick="openCertModal('edit', ${c.id})" title="수정">
+                    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 3l3 3M3 9l5.5-5.5 3 3L6 12H3V9z"/></svg>
+                </button>
+                <button class="cert-action-btn delete" onclick="confirmDelete('cert', ${c.id})" title="삭제">
+                    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 5h9M5 5V4a1 1 0 011-1h3a1 1 0 011 1v1M6 7.5v3M9 7.5v3M4 5l.5 7a1 1 0 001 1h4a1 1 0 001-1L11 5"/></svg>
+                </button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+/* ──────────────────────────────────
+   TOAST
+────────────────────────────────── */
+function showToast(msg, type = '') {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = 'toast show' + (type ? ` ${type}` : '');
+    clearTimeout(toast._timeout);
+    toast._timeout = setTimeout(() => {
+        toast.classList.remove('show');
+    }, 2600);
+}
+
+/* ──────────────────────────────────
+   MODAL OVERLAY CLICK-OUTSIDE
+────────────────────────────────── */
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+            editingId = null;
+        }
+    });
+});
+
+/* ──────────────────────────────────
+   KEYBOARD
+────────────────────────────────── */
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.open').forEach(m => {
+            m.classList.remove('open');
+            document.body.style.overflow = '';
+        });
+        closeConfirm();
+        editingId = null;
+    }
+});
+    </script>
+</body>
+</html>

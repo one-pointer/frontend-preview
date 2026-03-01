@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>의뢰 등록 - 원포인트</title>
+    <style>
+        :root {
+            --bg: #fafaf7;
+            --bg-card: #ffffff;
+            --bg-sub: #f5f4f0;
+            --border: #eae8e4;
+            --border-light: #f2f0ec;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555550;
+            --text-tertiary: #8a8a82;
+            --text-muted: #b5b5ad;
+            --accent: #e8622a;
+            --accent-light: #fef0e8;
+            --accent-hover: #d4551f;
+            --accent-soft: #fef0e8;
+            --expert: #0f8a6a;
+            --expert-soft: #e8f6f1;
+            --blue: #2e6fce;
+            --blue-light: #eaf1fb;
+            --yellow: #d4940a;
+            --red: #dc3545;
+            --red-light: #fef2f2;
+            --green: #0f8a6a;
+            --green-light: #e8f6f1;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --radius-lg: 20px;
+            --shadow-xs: 0 1px 2px rgba(26,26,26,0.04);
+            --shadow-sm: 0 1px 3px rgba(26,26,26,0.04), 0 4px 12px rgba(26,26,26,0.03);
+            --shadow-md: 0 4px 12px rgba(26,26,26,0.08);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ─── HEADER ─── */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(250,250,247,0.88);
+            backdrop-filter: blur(20px) saturate(1.6);
+            -webkit-backdrop-filter: blur(20px) saturate(1.6);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 28px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo { display: flex; align-items: center; gap: 9px; cursor: pointer; flex-shrink: 0; }
+        .logo-mark {
+            width: 34px; height: 34px; background: var(--accent); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 800; color: #fff;
+            transition: transform 0.3s var(--ease-out);
+        }
+        .logo:hover .logo-mark { transform: rotate(-6deg) scale(1.05); }
+        .logo-text { font-size: 19px; font-weight: 800; letter-spacing: -0.5px; }
+
+        .nav-tabs { display: flex; align-items: center; gap: 2px; margin-left: 8px; }
+        .nav-tab {
+            position: relative; padding: 8px 16px; font-size: 14.5px; font-weight: 600;
+            color: var(--text-tertiary); border: none; background: none; cursor: pointer;
+            font-family: inherit; border-radius: var(--radius-sm); transition: var(--transition); white-space: nowrap;
+        }
+        .nav-tab:hover { color: var(--text-primary); background: rgba(0,0,0,0.03); }
+        .nav-tab.active { color: var(--accent); font-weight: 700; }
+        .nav-tab .nav-badge {
+            position: absolute; top: 4px; right: 6px; width: 7px; height: 7px;
+            background: var(--accent); border-radius: 50%; border: 2px solid var(--bg);
+        }
+
+        .header-spacer { flex: 1; }
+
+        .header-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; margin-left: auto; }
+
+        .header-coupon {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            background: var(--accent-light);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .header-coupon svg { width: 16px; height: 16px; }
+
+        /* ─── LAYOUT ─── */
+        .page-wrap {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 24px 24px 120px;
+        }
+
+        /* ─── STEPPER ─── */
+        .stepper {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 32px;
+            padding: 0 8px;
+        }
+
+        .step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: var(--transition);
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .step-dot.active {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .step-dot.done {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .step-dot.done::after {
+            content: '';
+            width: 10px;
+            height: 6px;
+            border-left: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+            transform: rotate(-45deg);
+            position: absolute;
+            top: 7px;
+        }
+
+        .step-dot.done span { visibility: hidden; }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: var(--border);
+            transition: var(--transition);
+        }
+
+        .step-line.done { background: var(--accent); }
+
+        /* ─── FORM SECTIONS ─── */
+        .form-step {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .form-step.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-card-title {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .form-card-desc {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        /* ─── FORM CONTROLS ─── */
+        .field {
+            margin-bottom: 22px;
+        }
+
+        .field:last-child { margin-bottom: 0; }
+
+        .field-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .field-label .required {
+            color: var(--red);
+            font-size: 12px;
+        }
+
+        .field-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        /* Text Input */
+        .input {
+            width: 100%;
+            height: 46px;
+            padding: 0 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: var(--bg);
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .input::placeholder { color: var(--text-muted); }
+
+        .input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .input.error {
+            border-color: var(--red);
+            box-shadow: 0 0 0 3px var(--red-light);
+        }
+
+        /* Textarea */
+        .textarea {
+            width: 100%;
+            min-height: 140px;
+            padding: 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: var(--bg);
+            transition: var(--transition);
+            outline: none;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .textarea::placeholder { color: var(--text-muted); }
+
+        .textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        .char-count.warn { color: var(--red); }
+
+        /* Select */
+        .select-wrap {
+            position: relative;
+        }
+
+        .select {
+            width: 100%;
+            height: 46px;
+            padding: 0 36px 0 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: var(--bg);
+            transition: var(--transition);
+            outline: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--text-muted);
+        }
+
+        .select-arrow svg { width: 16px; height: 16px; }
+
+        /* Radio / Choice Cards */
+        .choice-group {
+            display: grid;
+            gap: 10px;
+        }
+
+        .choice-group.cols-2 { grid-template-columns: 1fr 1fr; }
+        .choice-group.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+        .choice-card {
+            position: relative;
+            padding: 16px 18px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--bg);
+        }
+
+        .choice-card:hover {
+            border-color: var(--text-muted);
+        }
+
+        .choice-card.selected {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .choice-card input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .choice-card-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .choice-card-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .choice-card-desc {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            line-height: 1.4;
+        }
+
+        .choice-card .check-dot {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .choice-card.selected .check-dot {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        .choice-card.selected .check-dot::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 8px;
+            height: 5px;
+            border-left: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+            transform: rotate(-45deg);
+        }
+
+        /* Chip select (for level, duration) */
+        .chip-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            padding: 10px 20px;
+            border: 1.5px solid var(--border);
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--bg);
+            color: var(--text-secondary);
+            user-select: none;
+        }
+
+        .chip:hover { border-color: var(--text-muted); }
+
+        .chip.selected {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .chip input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Budget Range */
+        .budget-range {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .budget-range .input { text-align: right; }
+
+        .budget-sep {
+            font-size: 14px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        /* Date Slots */
+        .date-slots {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .date-slot-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .date-slot-row .input { flex: 1; }
+
+        .date-slot-row .input[type="date"] {
+            flex: 1.2;
+        }
+
+        .btn-remove-date {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .btn-remove-date:hover {
+            background: var(--red-light);
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .btn-add-date {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px;
+            border: 1.5px dashed var(--border);
+            border-radius: var(--radius-sm);
+            background: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .btn-add-date:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        /* ─── BOTTOM BAR ─── */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border);
+            z-index: 100;
+            padding: 12px 24px;
+        }
+
+        .bottom-bar-inner {
+            max-width: 680px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .bottom-info {
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        .bottom-info strong {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .bottom-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-prev {
+            height: 46px;
+            padding: 0 24px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .btn-prev:hover { border-color: var(--text-muted); }
+
+        .btn-next {
+            height: 46px;
+            padding: 0 32px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: var(--accent);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .btn-next:hover { background: var(--accent-hover); }
+
+        .btn-next:disabled {
+            background: var(--border);
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .btn-submit {
+            height: 46px;
+            padding: 0 32px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: var(--accent);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .btn-submit:hover { background: var(--accent-hover); }
+
+        /* ─── REVIEW (Step 5) ─── */
+        .review-section {
+            margin-bottom: 20px;
+        }
+
+        .review-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .review-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .review-row:last-child { border-bottom: none; }
+
+        .review-row-label {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            flex-shrink: 0;
+            min-width: 100px;
+        }
+
+        .review-row-value {
+            font-size: 14px;
+            font-weight: 600;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .coupon-notice {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: var(--accent-light);
+            border: 1px solid rgba(255, 107, 53, 0.15);
+            border-radius: var(--radius);
+            margin-top: 16px;
+        }
+
+        .coupon-notice-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .coupon-notice-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .coupon-notice-text strong {
+            color: var(--accent);
+        }
+
+        /* ─── CONDITIONAL ─── */
+        .hidden { display: none !important; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 640px) {
+            .page-wrap { padding: 16px 16px 120px; }
+            .form-card { padding: 22px 18px; }
+            .choice-group.cols-2 { grid-template-columns: 1fr; }
+            .choice-group.cols-3 { grid-template-columns: 1fr; }
+            .budget-range { flex-direction: column; }
+            .budget-sep { display: none; }
+            .date-slot-row { flex-wrap: wrap; }
+            .date-slot-row .input { min-width: 0; }
+            .bottom-info { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════ HEADER ═══════ -->
+<header class="header">
+    <div class="header-inner">
+        <a class="logo" href="index.html">
+            <div class="logo-mark">O</div>
+            <span class="logo-text">원포인트</span>
+        </a>
+        <nav class="nav-tabs">
+            <a class="nav-tab" href="index.html">홈</a>
+            <a class="nav-tab" href="chat.html">채팅 <span class="nav-badge"></span></a>
+            <a class="nav-tab" href="coupon.html">쿠폰충전</a>
+            <a class="nav-tab" href="my-tickets.html">내 의뢰</a>
+            <a class="nav-tab" href="mypage.html">마이페이지</a>
+        </nav>
+        <div class="header-spacer"></div>
+        <div class="header-right">
+            <div class="header-coupon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2 10h20"/></svg>
+                보유 쿠폰 <strong id="couponCount">3</strong>장
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="page-wrap">
+
+    <!-- ═══════ STEPPER ═══════ -->
+    <div class="stepper">
+        <div class="step-dot active" id="dot1"><span>1</span></div>
+        <div class="step-line" id="line1"></div>
+        <div class="step-dot" id="dot2"><span>2</span></div>
+        <div class="step-line" id="line2"></div>
+        <div class="step-dot" id="dot3"><span>3</span></div>
+        <div class="step-line" id="line3"></div>
+        <div class="step-dot" id="dot4"><span>4</span></div>
+        <div class="step-line" id="line4"></div>
+        <div class="step-dot" id="dot5"><span>5</span></div>
+    </div>
+
+    <!-- ═══════ STEP 1: 유형 & 카테고리 ═══════ -->
+    <div class="form-step active" id="step1">
+        <div class="form-card">
+            <div class="form-card-title">의뢰 유형을 선택하세요</div>
+            <div class="form-card-desc">오프라인은 대면 레슨, 온라인은 화상/원격으로 진행됩니다.</div>
+
+            <div class="field">
+                <div class="choice-group cols-2">
+                    <label class="choice-card selected" id="typeOffline" onclick="selectType('OFFLINE')">
+                        <input type="radio" name="ticketType" value="OFFLINE" checked>
+                        <div class="check-dot"></div>
+                        <div class="choice-card-icon">&#128205;</div>
+                        <div class="choice-card-title">오프라인</div>
+                        <div class="choice-card-desc">직접 만나서 레슨을 받아요. 결제는 당사자 간 자유롭게 협의합니다.</div>
+                    </label>
+                    <label class="choice-card" id="typeOnline" onclick="selectType('ONLINE')">
+                        <input type="radio" name="ticketType" value="ONLINE">
+                        <div class="check-dot"></div>
+                        <div class="choice-card-icon">&#128187;</div>
+                        <div class="choice-card-title">온라인</div>
+                        <div class="choice-card-desc">화상/원격으로 진행해요. 에스크로 안전결제로 보호됩니다.</div>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <div class="form-card-title">카테고리를 선택하세요</div>
+            <div class="form-card-desc">어떤 분야의 레슨을 원하시나요?</div>
+
+            <div class="field">
+                <label class="field-label">대분류 <span class="required">*</span></label>
+                <div class="select-wrap">
+                    <select class="select" id="majorCategory" onchange="onMajorChange()">
+                        <option value="">선택하세요</option>
+                        <option value="1">취미/자기개발</option>
+                    </select>
+                    <span class="select-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+                </div>
+            </div>
+            <div class="field">
+                <label class="field-label">중분류 <span class="required">*</span></label>
+                <div class="select-wrap">
+                    <select class="select" id="subCategory" onchange="onSubChange()">
+                        <option value="">대분류를 먼저 선택하세요</option>
+                    </select>
+                    <span class="select-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
+                </div>
+                <p class="field-hint" id="categoryHint"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════ STEP 2: 기본 정보 ═══════ -->
+    <div class="form-step" id="step2">
+        <div class="form-card">
+            <div class="form-card-title">의뢰 내용을 작성하세요</div>
+            <div class="form-card-desc">전문가가 제안서를 보내려면 구체적인 정보가 필요합니다.</div>
+
+            <div class="field">
+                <label class="field-label">제목 <span class="required">*</span></label>
+                <input type="text" class="input" id="title" placeholder="예) 골프 스윙 교정 1회 레슨 받고 싶어요" maxlength="80" oninput="updateTitleCount()">
+                <div class="char-count" id="titleCount">0 / 80</div>
+            </div>
+
+            <div class="field">
+                <label class="field-label">상세 내용 <span class="required">*</span></label>
+                <textarea class="textarea" id="content" placeholder="어떤 것을 배우고 싶은지 자세히 적어주세요.&#10;&#10;예) 골프를 처음 시작하는 초보입니다. 기본 그립과 스윙 자세부터 배우고 싶습니다. 라운딩 전 기초를 잡고 싶어요."></textarea>
+            </div>
+
+            <div class="field">
+                <label class="field-label">현재 실력</label>
+                <div class="chip-group">
+                    <label class="chip selected" onclick="selectChip(this, 'level')">
+                        <input type="radio" name="level" value="BEGINNER" checked> 초급 (처음이에요)
+                    </label>
+                    <label class="chip" onclick="selectChip(this, 'level')">
+                        <input type="radio" name="level" value="INTERMEDIATE"> 중급 (기본은 알아요)
+                    </label>
+                    <label class="chip" onclick="selectChip(this, 'level')">
+                        <input type="radio" name="level" value="ADVANCED"> 고급 (실력 향상 목적)
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════ STEP 3: 시간 & 예산 ═══════ -->
+    <div class="form-step" id="step3">
+        <div class="form-card">
+            <div class="form-card-title">희망 시간과 예산</div>
+            <div class="form-card-desc">전문가가 제안서를 작성할 때 참고합니다.</div>
+
+            <div class="field">
+                <label class="field-label">희망 레슨 시간 <span class="required">*</span></label>
+                <div class="chip-group">
+                    <label class="chip" onclick="selectChip(this, 'duration')">
+                        <input type="radio" name="duration" value="THIRTY_MIN"> 30분
+                    </label>
+                    <label class="chip selected" onclick="selectChip(this, 'duration')">
+                        <input type="radio" name="duration" value="ONE_HOUR" checked> 1시간
+                    </label>
+                    <label class="chip" onclick="selectChip(this, 'duration')">
+                        <input type="radio" name="duration" value="ONE_HALF_HOUR"> 1시간 30분
+                    </label>
+                    <label class="chip" onclick="selectChip(this, 'duration')">
+                        <input type="radio" name="duration" value="TWO_HOUR"> 2시간
+                    </label>
+                    <label class="chip" onclick="selectChip(this, 'duration')">
+                        <input type="radio" name="duration" value="NEGOTIABLE"> 협의 가능
+                    </label>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="field-label">예산 <span class="required">*</span></label>
+                <div class="chip-group" style="margin-bottom: 14px;">
+                    <label class="chip selected" onclick="selectBudgetType('RANGE')">
+                        <input type="radio" name="budgetType" value="RANGE" checked> 범위 지정
+                    </label>
+                    <label class="chip" onclick="selectBudgetType('NEGOTIABLE')">
+                        <input type="radio" name="budgetType" value="NEGOTIABLE"> 협의 가능
+                    </label>
+                </div>
+                <div class="budget-range" id="budgetRangeFields">
+                    <input type="number" class="input" id="budgetMin" placeholder="최소 금액" min="0" step="5000">
+                    <span class="budget-sep">~</span>
+                    <input type="number" class="input" id="budgetMax" placeholder="최대 금액" min="0" step="5000">
+                </div>
+                <p class="field-hint">단위: 원 (예: 30000 ~ 50000)</p>
+            </div>
+        </div>
+
+        <!-- 오프라인 전용: 지역 -->
+        <div class="form-card" id="locationCard">
+            <div class="form-card-title">희망 장소</div>
+            <div class="form-card-desc">오프라인 의뢰 시 전문가가 참고할 위치 정보입니다.</div>
+
+            <div class="field">
+                <label class="field-label">지역</label>
+                <input type="text" class="input" id="region" placeholder="예) 서울 강남구">
+            </div>
+            <div class="field">
+                <label class="field-label">상세 위치</label>
+                <input type="text" class="input" id="locationDetail" placeholder="예) 테헤란로 근처, 삼성역 인근">
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════ STEP 4: 희망 일시 ═══════ -->
+    <div class="form-step" id="step4">
+        <div class="form-card">
+            <div class="form-card-title">희망 일시를 추가하세요</div>
+            <div class="form-card-desc">가능한 날짜와 시간대를 추가하면 전문가 매칭이 빨라져요. (선택사항)</div>
+
+            <div class="date-slots" id="dateSlots">
+                <div class="date-slot-row" data-idx="0">
+                    <input type="date" class="input" min="" data-field="date">
+                    <input type="text" class="input" placeholder="시간대 (예: 14:00~15:00)" data-field="timeSlot">
+                    <button class="btn-remove-date" onclick="removeDate(this)" title="삭제">&times;</button>
+                </div>
+            </div>
+            <button class="btn-add-date" onclick="addDate()">+ 날짜 추가</button>
+        </div>
+    </div>
+
+    <!-- ═══════ STEP 5: 최종 확인 ═══════ -->
+    <div class="form-step" id="step5">
+        <div class="form-card">
+            <div class="form-card-title">의뢰 내용을 확인하세요</div>
+            <div class="form-card-desc">등록하면 쿠폰 1장이 예약되며, 전문가에게 공개됩니다.</div>
+
+            <div class="review-section">
+                <div class="review-section-title">기본 정보</div>
+                <div class="review-row">
+                    <span class="review-row-label">의뢰 유형</span>
+                    <span class="review-row-value" id="rv-type"></span>
+                </div>
+                <div class="review-row">
+                    <span class="review-row-label">카테고리</span>
+                    <span class="review-row-value" id="rv-category"></span>
+                </div>
+                <div class="review-row">
+                    <span class="review-row-label">제목</span>
+                    <span class="review-row-value" id="rv-title"></span>
+                </div>
+                <div class="review-row">
+                    <span class="review-row-label">실력</span>
+                    <span class="review-row-value" id="rv-level"></span>
+                </div>
+            </div>
+
+            <div class="review-section">
+                <div class="review-section-title">시간 & 예산</div>
+                <div class="review-row">
+                    <span class="review-row-label">레슨 시간</span>
+                    <span class="review-row-value" id="rv-duration"></span>
+                </div>
+                <div class="review-row">
+                    <span class="review-row-label">예산</span>
+                    <span class="review-row-value" id="rv-budget"></span>
+                </div>
+                <div class="review-row" id="rv-location-row">
+                    <span class="review-row-label">희망 장소</span>
+                    <span class="review-row-value" id="rv-location"></span>
+                </div>
+            </div>
+
+            <div class="review-section" id="rv-dates-section">
+                <div class="review-section-title">희망 일시</div>
+                <div id="rv-dates"></div>
+            </div>
+
+            <div class="coupon-notice">
+                <span class="coupon-notice-icon">&#127915;</span>
+                <div class="coupon-notice-text">
+                    등록 시 <strong>쿠폰 1장이 예약</strong>됩니다.<br>
+                    매칭 전 취소하면 쿠폰이 반환되며, 매칭 확정 시 최종 소진됩니다.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ═══════ BOTTOM BAR ═══════ -->
+<div class="bottom-bar">
+    <div class="bottom-bar-inner">
+        <div class="bottom-info" id="bottomInfo">
+            <strong>STEP 1</strong> / 5 &mdash; 유형 & 카테고리
+        </div>
+        <div class="bottom-btns">
+            <button class="btn-prev hidden" id="btnPrev" onclick="prevStep()">이전</button>
+            <button class="btn-next" id="btnNext" onclick="nextStep()">다음</button>
+            <button class="btn-submit hidden" id="btnSubmit" onclick="submitTicket()">의뢰 등록하기</button>
+        </div>
+    </div>
+</div>
+    <script>
+    // ─── State ───
+    let currentStep = 1;
+    const totalSteps = 5;
+    let formData = {
+        ticketType: 'OFFLINE',
+        subCategoryId: null,
+        title: '',
+        content: '',
+        level: 'BEGINNER',
+        desiredDuration: 'ONE_HOUR',
+        budgetType: 'RANGE',
+        budgetMin: null,
+        budgetMax: null,
+        region: '',
+        locationDetail: '',
+        desiredDates: []
+    };
+
+    // ─── Category Data (mock from GET /v1/api/category) ───
+    const categories = {
+        1: {
+            name: '취미/자기개발',
+            subs: [
+                { id: 1, name: '골프', availableType: 'OFFLINE' },
+                { id: 2, name: '테니스', availableType: 'OFFLINE' },
+                { id: 3, name: '피트니스', availableType: 'BOTH' },
+                { id: 4, name: '기타', availableType: 'BOTH' },
+                { id: 5, name: '피아노', availableType: 'BOTH' },
+                { id: 6, name: '보컬', availableType: 'BOTH' },
+                { id: 7, name: '작곡', availableType: 'ONLINE' },
+                { id: 8, name: '타로/운세', availableType: 'ONLINE' },
+                { id: 9, name: '사진/영상', availableType: 'BOTH' },
+                { id: 10, name: '커리어/취업', availableType: 'BOTH' }
+            ]
+        }
+    };
+
+    // ─── Helpers ───
+    const $ = id => document.getElementById(id);
+    const val = id => $(id)?.value?.trim() || '';
+    const radioVal = name => document.querySelector(`input[name="${name}"]:checked`)?.value;
+
+    const stepLabels = {
+        1: '유형 & 카테고리',
+        2: '의뢰 내용',
+        3: '시간 & 예산',
+        4: '희망 일시',
+        5: '최종 확인'
+    };
+
+    const durationMap = {
+        'THIRTY_MIN': '30분',
+        'ONE_HOUR': '1시간',
+        'ONE_HALF_HOUR': '1시간 30분',
+        'TWO_HOUR': '2시간',
+        'NEGOTIABLE': '협의 가능'
+    };
+
+    const levelMap = {
+        'BEGINNER': '초급',
+        'INTERMEDIATE': '중급',
+        'ADVANCED': '고급'
+    };
+
+    // ─── Type Selection ───
+    function selectType(type) {
+        formData.ticketType = type;
+        document.querySelectorAll('[name="ticketType"]').forEach(el => {
+            el.closest('.choice-card').classList.toggle('selected', el.value === type);
+        });
+        onSubChange();
+        updateLocationVisibility();
+    }
+
+    function updateLocationVisibility() {
+        $('locationCard').classList.toggle('hidden', formData.ticketType === 'ONLINE');
+    }
+
+    // ─── Category ───
+    function onMajorChange() {
+        const majorId = val('majorCategory');
+        const subSelect = $('subCategory');
+        subSelect.innerHTML = '<option value="">선택하세요</option>';
+        $('categoryHint').textContent = '';
+
+        if (majorId && categories[majorId]) {
+            const subs = categories[majorId].subs;
+            subs.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.name;
+                opt.dataset.available = s.availableType;
+                subSelect.appendChild(opt);
+            });
+        }
+        formData.subCategoryId = null;
+    }
+
+    function onSubChange() {
+        const subId = val('subCategory');
+        formData.subCategoryId = subId ? parseInt(subId) : null;
+
+        const hint = $('categoryHint');
+        if (!subId) { hint.textContent = ''; return; }
+
+        const opt = $('subCategory').selectedOptions[0];
+        const available = opt?.dataset.available;
+        if (!available) return;
+
+        if (available === 'BOTH') {
+            hint.textContent = '오프라인/온라인 모두 가능';
+            hint.style.color = 'var(--green)';
+        } else if (available === 'OFFLINE') {
+            hint.textContent = '오프라인만 가능한 카테고리입니다';
+            hint.style.color = 'var(--text-tertiary)';
+            if (formData.ticketType === 'ONLINE') {
+                hint.textContent = '이 카테고리는 오프라인만 가능합니다. 의뢰 유형을 변경해주세요.';
+                hint.style.color = 'var(--red)';
+            }
+        } else if (available === 'ONLINE') {
+            hint.textContent = '온라인만 가능한 카테고리입니다';
+            hint.style.color = 'var(--text-tertiary)';
+            if (formData.ticketType === 'OFFLINE') {
+                hint.textContent = '이 카테고리는 온라인만 가능합니다. 의뢰 유형을 변경해주세요.';
+                hint.style.color = 'var(--red)';
+            }
+        }
+    }
+
+    // ─── Chip Select ───
+    function selectChip(el, groupName) {
+        el.closest('.chip-group').querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+
+    // ─── Budget Type ───
+    function selectBudgetType(type) {
+        formData.budgetType = type;
+        document.querySelectorAll('[name="budgetType"]').forEach(el => {
+            el.closest('.chip').classList.toggle('selected', el.value === type);
+        });
+        $('budgetRangeFields').classList.toggle('hidden', type === 'NEGOTIABLE');
+    }
+
+    // ─── Date Slots ───
+    function addDate() {
+        const container = $('dateSlots');
+        const idx = container.children.length;
+        const row = document.createElement('div');
+        row.className = 'date-slot-row';
+        row.dataset.idx = idx;
+        row.innerHTML = `
+            <input type="date" class="input" min="${todayStr()}" data-field="date">
+            <input type="text" class="input" placeholder="시간대 (예: 14:00~15:00)" data-field="timeSlot">
+            <button class="btn-remove-date" onclick="removeDate(this)" title="삭제">&times;</button>
+        `;
+        container.appendChild(row);
+    }
+
+    function removeDate(btn) {
+        const container = $('dateSlots');
+        if (container.children.length <= 1) return;
+        btn.closest('.date-slot-row').remove();
+    }
+
+    function todayStr() {
+        return new Date().toISOString().split('T')[0];
+    }
+
+    // ─── Title Char Count ───
+    function updateTitleCount() {
+        const len = $('title').value.length;
+        $('titleCount').textContent = `${len} / 80`;
+        $('titleCount').classList.toggle('warn', len > 70);
+    }
+
+    // ─── Collect Dates ───
+    function collectDates() {
+        const rows = document.querySelectorAll('#dateSlots .date-slot-row');
+        const dates = [];
+        rows.forEach(row => {
+            const date = row.querySelector('[data-field="date"]').value;
+            const timeSlot = row.querySelector('[data-field="timeSlot"]').value.trim();
+            if (date) {
+                dates.push({ date, timeSlot: timeSlot || null });
+            }
+        });
+        return dates;
+    }
+
+    // ─── Step Navigation ───
+    function validateStep(step) {
+        switch (step) {
+            case 1: {
+                if (!formData.subCategoryId) {
+                    alert('카테고리를 선택해주세요.');
+                    return false;
+                }
+                const opt = $('subCategory').selectedOptions[0];
+                const available = opt?.dataset.available;
+                if (available === 'OFFLINE' && formData.ticketType === 'ONLINE') {
+                    alert('이 카테고리는 오프라인만 가능합니다.');
+                    return false;
+                }
+                if (available === 'ONLINE' && formData.ticketType === 'OFFLINE') {
+                    alert('이 카테고리는 온라인만 가능합니다.');
+                    return false;
+                }
+                return true;
+            }
+            case 2: {
+                if (!val('title')) { alert('제목을 입력해주세요.'); return false; }
+                if (!val('content')) { alert('상세 내용을 입력해주세요.'); return false; }
+                return true;
+            }
+            case 3: {
+                if (formData.budgetType === 'RANGE') {
+                    const min = parseInt(val('budgetMin'));
+                    const max = parseInt(val('budgetMax'));
+                    if (!min && min !== 0) { alert('최소 금액을 입력해주세요.'); return false; }
+                    if (!max && max !== 0) { alert('최대 금액을 입력해주세요.'); return false; }
+                    if (min > max) { alert('최소 금액이 최대 금액보다 클 수 없습니다.'); return false; }
+                }
+                return true;
+            }
+            case 4:
+                return true;
+            default:
+                return true;
+        }
+    }
+
+    function goToStep(step) {
+        currentStep = step;
+
+        // Show/hide steps
+        document.querySelectorAll('.form-step').forEach((el, i) => {
+            el.classList.toggle('active', i + 1 === step);
+        });
+
+        // Update stepper dots
+        for (let i = 1; i <= totalSteps; i++) {
+            const dot = $(`dot${i}`);
+            dot.classList.remove('active', 'done');
+            if (i < step) dot.classList.add('done');
+            else if (i === step) dot.classList.add('active');
+        }
+
+        // Update step lines
+        for (let i = 1; i < totalSteps; i++) {
+            $(`line${i}`).classList.toggle('done', i < step);
+        }
+
+        // Update bottom bar
+        $('bottomInfo').innerHTML = `<strong>STEP ${step}</strong> / ${totalSteps} &mdash; ${stepLabels[step]}`;
+
+        // Show/hide buttons
+        $('btnPrev').classList.toggle('hidden', step === 1);
+        $('btnNext').classList.toggle('hidden', step === totalSteps);
+        $('btnSubmit').classList.toggle('hidden', step !== totalSteps);
+
+        // Prepare review step
+        if (step === totalSteps) {
+            populateReview();
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextStep() {
+        if (!validateStep(currentStep)) return;
+        if (currentStep < totalSteps) goToStep(currentStep + 1);
+    }
+
+    function prevStep() {
+        if (currentStep > 1) goToStep(currentStep - 1);
+    }
+
+    // ─── Populate Review ───
+    function populateReview() {
+        const typeLabel = formData.ticketType === 'OFFLINE' ? '&#128205; 오프라인' : '&#128187; 온라인';
+        const subOpt = $('subCategory').selectedOptions[0];
+        const catName = subOpt ? subOpt.textContent : '-';
+        const level = radioVal('level');
+        const duration = radioVal('duration');
+        const budgetType = radioVal('budgetType');
+
+        $('rv-type').innerHTML = typeLabel;
+        $('rv-category').textContent = catName;
+        $('rv-title').textContent = val('title');
+        $('rv-level').textContent = levelMap[level] || '-';
+        $('rv-duration').textContent = durationMap[duration] || '-';
+
+        if (budgetType === 'RANGE') {
+            const min = parseInt(val('budgetMin')) || 0;
+            const max = parseInt(val('budgetMax')) || 0;
+            $('rv-budget').textContent = `${min.toLocaleString()}원 ~ ${max.toLocaleString()}원`;
+        } else {
+            $('rv-budget').textContent = '협의 가능';
+        }
+
+        // Location
+        const locRow = $('rv-location-row');
+        if (formData.ticketType === 'OFFLINE') {
+            locRow.classList.remove('hidden');
+            const loc = [val('region'), val('locationDetail')].filter(Boolean).join(', ');
+            $('rv-location').textContent = loc || '미지정';
+        } else {
+            locRow.classList.add('hidden');
+        }
+
+        // Dates
+        const dates = collectDates();
+        const datesSection = $('rv-dates-section');
+        const datesContainer = $('rv-dates');
+        datesContainer.innerHTML = '';
+
+        if (dates.length > 0) {
+            datesSection.classList.remove('hidden');
+            dates.forEach(d => {
+                const row = document.createElement('div');
+                row.className = 'review-row';
+                row.innerHTML = `
+                    <span class="review-row-label">${d.date}</span>
+                    <span class="review-row-value">${d.timeSlot || '시간 미정'}</span>
+                `;
+                datesContainer.appendChild(row);
+            });
+        } else {
+            datesSection.classList.add('hidden');
+        }
+    }
+
+    // ─── Submit ───
+    function submitTicket() {
+        const level = radioVal('level');
+        const duration = radioVal('duration');
+        const budgetType = radioVal('budgetType');
+        const dates = collectDates();
+
+        const requestBody = {
+            ticketType: formData.ticketType,
+            subCategoryId: formData.subCategoryId,
+            title: val('title'),
+            content: val('content'),
+            level: level,
+            desiredDuration: duration,
+            budgetType: budgetType,
+            budgetMin: budgetType === 'RANGE' ? parseInt(val('budgetMin')) : null,
+            budgetMax: budgetType === 'RANGE' ? parseInt(val('budgetMax')) : null,
+            region: formData.ticketType === 'OFFLINE' ? val('region') || null : null,
+            locationDetail: formData.ticketType === 'OFFLINE' ? val('locationDetail') || null : null,
+            targetExpertId: null,
+            desiredDates: dates.length > 0 ? dates : null
+        };
+
+        console.log('POST /v1/api/ticket', JSON.stringify(requestBody, null, 2));
+
+        // Mock API call
+        const confirmed = confirm(
+            '의뢰를 등록하시겠습니까?\n\n' +
+            '쿠폰 1장이 예약됩니다.\n' +
+            '(매칭 전 취소 시 반환)'
+        );
+
+        if (confirmed) {
+            alert('의뢰가 등록되었습니다!\n전문가의 제안서를 기다려주세요.');
+            console.log('Request Body:', requestBody);
+            // location.href = 'index.html';
+        }
+    }
+
+    // ─── Init ───
+    document.querySelectorAll('#dateSlots input[type="date"]').forEach(el => {
+        el.min = todayStr();
+    });
+    updateLocationVisibility();
+    </script>
+</body>
+</html>

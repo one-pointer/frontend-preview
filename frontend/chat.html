@@ -1,0 +1,2078 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>채팅 - 원포인트</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg-sub: #f7f8fa;
+            --bg-warm: #faf9f7;
+            --bg-chat: #f0f1f5;
+            --border: #e8e8ec;
+            --border-light: #f0f0f4;
+            --text-primary: #191f28;
+            --text-secondary: #4e5968;
+            --text-tertiary: #8b95a1;
+            --text-muted: #b0b8c1;
+            --accent: #e8622a;
+            --accent-light: #fef0e8;
+            --accent-hover: #d4551f;
+            --expert-accent: #0f8a6a;
+            --expert-light: #e8f6f1;
+            --blue: #3182f6;
+            --blue-light: #ebf4ff;
+            --yellow: #f59e0b;
+            --yellow-light: #fef3c7;
+            --red: #ef4444;
+            --red-light: #fef2f2;
+            --purple: #8b5cf6;
+            --purple-light: #f3f0ff;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+            --transition: 0.2s ease;
+            --sidebar-w: 380px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; overflow: hidden; }
+
+        body {
+            font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ─── HEADER ─── */
+        .header {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px) saturate(1.6);
+            -webkit-backdrop-filter: blur(20px) saturate(1.6);
+            border-bottom: 1px solid var(--border-light);
+            flex-shrink: 0;
+            z-index: 50;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .logo-mark {
+            width: 32px; height: 32px;
+            background: var(--accent);
+            border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px; font-weight: 800; color: #fff;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .logo:hover .logo-mark { transform: rotate(-6deg) scale(1.05); }
+
+        .logo-text { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+
+        .nav-tabs {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-left: 4px;
+        }
+        .nav-tab {
+            position: relative;
+            padding: 8px 14px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: inherit;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .nav-tab:hover { color: var(--text-primary); background: rgba(0,0,0,0.03); }
+        .nav-tab.active { color: var(--accent); font-weight: 700; }
+        .nav-tab .nav-badge {
+            position: absolute; top: 4px; right: 6px;
+            width: 7px; height: 7px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        .header-spacer { flex: 1; }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+
+        .role-toggle {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border: 1.5px solid var(--border);
+            border-radius: 100px;
+            padding: 3px;
+        }
+
+        .role-btn {
+            padding: 5px 14px;
+            border-radius: 100px; border: none;
+            background: transparent;
+            font-size: 12px; font-weight: 700; font-family: inherit;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+
+        .role-btn.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 6px rgba(232,98,42,0.25);
+        }
+
+        /* ─── LAYOUT ─── */
+        .layout {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* ─── SIDEBAR (Chat List) ─── */
+        .sidebar {
+            width: var(--sidebar-w);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            background: var(--bg);
+            flex-shrink: 0;
+        }
+
+        .sidebar-search {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .sidebar-search input {
+            width: 100%;
+            height: 38px;
+            padding: 0 14px 0 36px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 13px; font-family: inherit;
+            background: var(--bg-sub);
+            color: var(--text-primary);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .sidebar-search input:focus {
+            border-color: var(--accent);
+            background: #fff;
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .sidebar-search input::placeholder { color: var(--text-muted); }
+
+        .sidebar-search-wrap {
+            position: relative;
+        }
+
+        .sidebar-search-icon {
+            position: absolute;
+            left: 11px; top: 50%;
+            transform: translateY(-50%);
+            width: 16px; height: 16px;
+            color: var(--text-muted);
+        }
+
+        .sidebar-tabs {
+            display: flex;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .sidebar-tab {
+            padding: 10px 4px;
+            margin-right: 16px;
+            font-size: 13px; font-weight: 600;
+            color: var(--text-tertiary);
+            border: none; background: none;
+            cursor: pointer; font-family: inherit;
+            border-bottom: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .sidebar-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .sidebar-tab .badge {
+            display: inline-flex;
+            align-items: center; justify-content: center;
+            min-width: 18px; height: 18px;
+            padding: 0 5px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 100px;
+            font-size: 10px; font-weight: 700;
+            margin-left: 4px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        .chat-list::-webkit-scrollbar { width: 4px; }
+        .chat-list::-webkit-scrollbar-track { background: transparent; }
+        .chat-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        .chat-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 1px solid var(--border-light);
+            position: relative;
+        }
+
+        .chat-item:hover { background: var(--bg-sub); }
+        .chat-item.active { background: var(--accent-light); }
+
+        .chat-item-avatar {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: var(--bg-sub);
+            border: 2px solid var(--border-light);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .avatar-online-dot {
+            position: absolute;
+            bottom: 1px; right: 1px;
+            width: 10px; height: 10px;
+            background: var(--expert-accent);
+            border: 2px solid var(--bg);
+            border-radius: 50%;
+        }
+
+        .chat-item-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-item-top {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 3px;
+        }
+
+        .chat-item-name {
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-item-type-badge {
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .type-offline { background: var(--yellow-light); color: #92400e; }
+        .type-online { background: var(--blue-light); color: #1e40af; }
+
+        .chat-item-ticket {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 4px;
+        }
+
+        .chat-item-last-msg {
+            font-size: 13px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-item-right {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
+        .chat-item-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .chat-item-unread {
+            display: flex; align-items: center; justify-content: center;
+            min-width: 20px; height: 20px;
+            padding: 0 6px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 100px;
+            font-size: 11px; font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .chat-item-status-tag {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .status-matched { background: var(--expert-light); color: var(--expert-accent); }
+        .status-payment { background: var(--yellow-light); color: #92400e; }
+        .status-progress { background: var(--blue-light); color: var(--blue); }
+        .status-delivered { background: var(--purple-light); color: var(--purple); }
+        .status-completed { background: var(--bg-sub); color: var(--text-tertiary); }
+        .status-review { background: var(--accent-light); color: var(--accent); }
+
+        /* ─── CHAT ROOM (Main Area) ─── */
+        .chat-room {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-chat);
+            min-width: 0;
+        }
+
+        /* Empty State */
+        .chat-empty {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: var(--text-muted);
+        }
+
+        .chat-empty-icon {
+            width: 80px; height: 80px;
+            background: var(--bg);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 36px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chat-empty-title { font-size: 16px; font-weight: 700; color: var(--text-tertiary); }
+        .chat-empty-desc { font-size: 13px; }
+
+        /* Room Header */
+        .room-header {
+            height: 60px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .room-header-avatar {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: var(--bg-sub);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .room-header-info { flex: 1; min-width: 0; }
+
+        .room-header-name {
+            font-size: 15px; font-weight: 700;
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        .room-header-sub {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .room-header-actions {
+            display: flex; gap: 6px;
+        }
+
+        /* ─── WORKFLOW TRACKER ─── */
+        .workflow-bar {
+            background: var(--bg);
+            border-bottom: 1px solid var(--border-light);
+            padding: 12px 20px;
+            flex-shrink: 0;
+        }
+
+        .workflow-steps {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .workflow-steps::-webkit-scrollbar { display: none; }
+
+        .wf-step {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 10px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+            color: var(--text-muted);
+            background: transparent;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .wf-step.done {
+            color: var(--expert-accent);
+        }
+
+        .wf-step.done .wf-dot {
+            background: var(--expert-accent);
+        }
+
+        .wf-step.current {
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .wf-step.current .wf-dot {
+            background: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { box-shadow: 0 0 0 3px var(--accent-light); }
+            50% { box-shadow: 0 0 0 6px rgba(255,107,53,0.1); }
+        }
+
+        .wf-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+            flex-shrink: 0;
+        }
+
+        .wf-arrow {
+            width: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--border);
+            flex-shrink: 0;
+            font-size: 10px;
+        }
+
+        .wf-arrow.done { color: var(--expert-accent); }
+
+        /* ─── MESSAGES ─── */
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0,0,0,0.12) transparent;
+        }
+
+        .messages::-webkit-scrollbar { width: 5px; }
+        .messages::-webkit-scrollbar-track { background: transparent; }
+        .messages::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 4px; }
+
+        .msg-date-divider {
+            text-align: center;
+            padding: 16px 0 12px;
+        }
+
+        .msg-date-divider span {
+            display: inline-block;
+            padding: 4px 14px;
+            background: rgba(0,0,0,0.06);
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+        }
+
+        .msg-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            max-width: 70%;
+        }
+
+        .msg-row.mine {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .msg-row.theirs {
+            align-self: flex-start;
+        }
+
+        .msg-bubble {
+            padding: 10px 14px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.55;
+            word-break: break-word;
+            position: relative;
+        }
+
+        .msg-row.mine .msg-bubble {
+            background: var(--accent);
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+
+        .msg-row.theirs .msg-bubble {
+            background: var(--bg);
+            color: var(--text-primary);
+            border-bottom-left-radius: 4px;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .msg-time {
+            font-size: 10px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            padding-bottom: 2px;
+        }
+
+        .msg-read {
+            font-size: 10px;
+            color: var(--blue);
+            flex-shrink: 0;
+            padding-bottom: 2px;
+        }
+
+        .msg-sender-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            margin-bottom: 4px;
+            padding-left: 2px;
+        }
+
+        /* ─── System Messages ─── */
+        .msg-system {
+            align-self: center;
+            max-width: 85%;
+            text-align: center;
+            padding: 16px 0 8px;
+        }
+
+        .msg-system-bubble {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 100px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        .msg-system-bubble.warn {
+            background: var(--yellow-light);
+            color: #92400e;
+        }
+
+        .msg-system-icon { font-size: 14px; }
+
+        /* ─── Agreement Card in Chat ─── */
+        .msg-card {
+            align-self: center;
+            width: 100%;
+            max-width: 420px;
+            padding: 4px 0;
+        }
+
+        .agreement-card, .delivery-card, .payment-card, .review-card-msg {
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-header {
+            padding: 14px 18px 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .card-header-icon {
+            width: 32px; height: 32px;
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .card-header-icon.agreement { background: var(--blue-light); }
+        .card-header-icon.payment { background: var(--expert-light); }
+        .card-header-icon.delivery { background: var(--purple-light); }
+        .card-header-icon.review { background: var(--yellow-light); }
+
+        .card-header-text h4 {
+            font-size: 13px; font-weight: 700;
+        }
+
+        .card-header-text p {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        .card-status {
+            margin-left: auto;
+            padding: 3px 8px;
+            border-radius: 100px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .card-status.proposed { background: var(--yellow-light); color: #92400e; }
+        .card-status.confirmed { background: var(--expert-light); color: var(--expert-accent); }
+        .card-status.rejected { background: var(--red-light); color: var(--red); }
+        .card-status.submitted { background: var(--blue-light); color: var(--blue); }
+        .card-status.approved { background: var(--expert-light); color: var(--expert-accent); }
+
+        .card-body {
+            padding: 14px 18px;
+        }
+
+        .card-field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+        }
+
+        .card-field + .card-field {
+            border-top: 1px solid var(--border-light);
+        }
+
+        .card-field-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        .card-field-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-field-value.price {
+            font-family: 'Outfit', sans-serif;
+            color: var(--accent);
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .card-actions {
+            padding: 0 18px 14px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .card-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .card-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        .card-btn.primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .card-btn.secondary {
+            background: var(--bg-sub);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .card-btn.success {
+            background: var(--expert-accent);
+            color: #fff;
+        }
+
+        .card-btn.danger {
+            background: var(--red-light);
+            color: var(--red);
+            border: 1px solid rgba(239,68,68,0.2);
+        }
+
+        .card-btn.blue {
+            background: var(--blue);
+            color: #fff;
+        }
+
+        .card-btn.purple {
+            background: var(--purple);
+            color: #fff;
+        }
+
+        /* Delivery Attachments */
+        .delivery-files {
+            display: flex;
+            gap: 8px;
+            padding: 8px 18px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .delivery-file {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            background: var(--bg-sub);
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .delivery-file-icon { font-size: 14px; }
+
+        /* ─── INPUT BAR ─── */
+        .input-bar {
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            padding: 12px 20px;
+            flex-shrink: 0;
+        }
+
+        .input-bar-top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-attach-btn {
+            width: 38px; height: 38px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            color: var(--text-tertiary);
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .input-attach-btn:hover { background: var(--bg-sub); color: var(--text-secondary); }
+        .input-attach-btn svg { width: 18px; height: 18px; }
+
+        .input-field {
+            flex: 1;
+            min-height: 38px;
+            max-height: 120px;
+            padding: 8px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-family: inherit;
+            background: var(--bg-sub);
+            color: var(--text-primary);
+            outline: none;
+            resize: none;
+            line-height: 1.5;
+            transition: var(--transition);
+            overflow-y: auto;
+        }
+
+        .input-field:focus {
+            border-color: var(--accent);
+            background: #fff;
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .input-field::placeholder { color: var(--text-muted); }
+
+        .input-send-btn {
+            width: 38px; height: 38px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: var(--accent);
+            color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .input-send-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .input-send-btn svg { width: 18px; height: 18px; }
+
+        /* ─── ACTION BAR (contextual) ─── */
+        .action-bar {
+            background: var(--bg);
+            border-top: 1px solid var(--border-light);
+            padding: 10px 20px;
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .action-bar::-webkit-scrollbar { display: none; }
+
+        .action-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 100px;
+            background: var(--bg);
+            font-size: 12px;
+            font-weight: 600;
+            font-family: inherit;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .action-chip:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .action-chip.highlight {
+            border-color: var(--accent);
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .action-chip-icon { font-size: 14px; }
+
+        /* ─── MODAL / SIDE PANEL ─── */
+        .panel-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 200;
+            backdrop-filter: blur(4px);
+        }
+
+        .panel-overlay.show { display: block; }
+
+        .side-panel {
+            position: fixed;
+            top: 0; right: -480px;
+            width: 480px;
+            height: 100%;
+            background: var(--bg);
+            box-shadow: -8px 0 32px rgba(0,0,0,0.12);
+            z-index: 201;
+            display: flex;
+            flex-direction: column;
+            transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .side-panel.open { right: 0; }
+
+        .panel-header {
+            height: 56px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .panel-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+            flex: 1;
+        }
+
+        .panel-close {
+            width: 32px; height: 32px;
+            border: none;
+            background: var(--bg-sub);
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .panel-close:hover { background: var(--border); }
+
+        .panel-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .panel-section { margin-bottom: 24px; }
+
+        .panel-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .panel-form-group { margin-bottom: 16px; }
+
+        .panel-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .panel-input {
+            width: 100%;
+            height: 42px;
+            padding: 0 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-family: inherit;
+            background: var(--bg-sub);
+            color: var(--text-primary);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .panel-input:focus {
+            border-color: var(--accent);
+            background: #fff;
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .panel-textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 10px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-family: inherit;
+            background: var(--bg-sub);
+            color: var(--text-primary);
+            outline: none;
+            resize: vertical;
+            transition: var(--transition);
+        }
+
+        .panel-textarea:focus {
+            border-color: var(--accent);
+            background: #fff;
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .panel-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+        }
+
+        .panel-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .panel-btn.primary { background: var(--accent); color: #fff; }
+        .panel-btn.secondary { background: var(--bg-sub); color: var(--text-secondary); border: 1px solid var(--border); }
+        .panel-btn:hover { opacity: 0.9; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 900px) {
+            .sidebar { width: 320px; }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar { width: 100%; }
+            .chat-room { display: none; }
+            .chat-room.mobile-show { display: flex; position: fixed; inset: 0; z-index: 100; }
+            .sidebar.mobile-hide { display: none; }
+            .side-panel { width: 100%; right: -100%; }
+        }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .msg-row, .msg-system, .msg-card {
+            animation: fadeInUp 0.25s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-8px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .chat-item {
+            animation: slideIn 0.2s ease;
+        }
+
+        /* ─── Image message ─── */
+        .msg-image {
+            border-radius: 12px;
+            max-width: 240px;
+            overflow: hidden;
+        }
+
+        .msg-image img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+        }
+
+        /* ─── Typing indicator ─── */
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+            align-self: flex-start;
+        }
+
+        .typing-indicator span {
+            width: 7px; height: 7px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-6px); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════ HEADER ═══════ -->
+<header class="header">
+    <div class="header-inner">
+        <a class="logo" href="index.html">
+            <div class="logo-mark">O</div>
+            <span class="logo-text">원포인트</span>
+        </a>
+        <nav class="nav-tabs">
+            <a class="nav-tab" href="index.html">홈</a>
+            <a class="nav-tab active" href="chat.html">채팅 <span class="nav-badge"></span></a>
+            <a class="nav-tab client-only" style="display:inline-flex" href="coupon.html">쿠폰충전</a>
+            <a class="nav-tab client-only" style="display:inline-flex" href="my-tickets.html">내 의뢰</a>
+            <a class="nav-tab expert-only" style="display:none" href="my-proposals.html">내 제안서</a>
+            <a class="nav-tab expert-only" style="display:none" href="expert-portfolio.html">포트폴리오</a>
+            <a class="nav-tab" href="mypage.html">마이페이지</a>
+        </nav>
+        <div class="header-spacer"></div>
+        <div class="header-right">
+            <div class="role-toggle">
+                <button class="role-btn active" id="btnClient" onclick="setRole('client')">의뢰인</button>
+                <button class="role-btn" id="btnExpert" onclick="setRole('expert')">전문가</button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ═══════ LAYOUT ═══════ -->
+<div class="layout">
+
+    <!-- ═══════ SIDEBAR (Chat List) ═══════ -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-search">
+            <div class="sidebar-search-wrap">
+                <svg class="sidebar-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" placeholder="채팅방 검색..." id="searchInput" oninput="filterChats()">
+            </div>
+        </div>
+        <div class="sidebar-tabs">
+            <button class="sidebar-tab active" onclick="filterTab(this,'all')">전체 <span class="badge">5</span></button>
+            <button class="sidebar-tab" onclick="filterTab(this,'progress')">진행중</button>
+            <button class="sidebar-tab" onclick="filterTab(this,'completed')">완료</button>
+        </div>
+        <div class="chat-list" id="chatList">
+            <!-- Chat items rendered by JS -->
+        </div>
+    </div>
+
+    <!-- ═══════ CHAT ROOM ═══════ -->
+    <div class="chat-room" id="chatRoom">
+        <!-- Empty State (default) -->
+        <div class="chat-empty" id="chatEmpty">
+            <div class="chat-empty-icon">💬</div>
+            <div class="chat-empty-title">채팅방을 선택하세요</div>
+            <div class="chat-empty-desc">왼쪽 목록에서 대화를 선택하면 여기에 표시됩니다</div>
+        </div>
+
+        <!-- Active Room (hidden by default) -->
+        <div id="activeRoom" style="display:none; flex:1; display:flex; flex-direction:column;">
+            <!-- Room Header -->
+            <div class="room-header" id="roomHeader">
+                <button class="header-icon-btn mobile-back" onclick="goBackToList()" style="display:none">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <div class="room-header-avatar" id="roomAvatar">🎾</div>
+                <div class="room-header-info">
+                    <div class="room-header-name">
+                        <span id="roomName">정소연 강사</span>
+                        <span class="chat-item-type-badge type-offline" id="roomTypeBadge">오프라인</span>
+                    </div>
+                    <div class="room-header-sub" id="roomSub">테니스 스윙 교정 1회 레슨</div>
+                </div>
+                <div class="room-header-actions">
+                    <button class="header-icon-btn" onclick="openTicketPanel()" title="의뢰 상세">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </button>
+                    <button class="header-icon-btn" title="더보기">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Workflow Tracker -->
+            <div class="workflow-bar" id="workflowBar">
+                <!-- Steps rendered by JS -->
+            </div>
+
+            <!-- Messages -->
+            <div class="messages" id="messages">
+                <!-- Messages rendered by JS -->
+            </div>
+
+            <!-- Action Bar (contextual) -->
+            <div class="action-bar" id="actionBar">
+                <!-- Action chips rendered by JS -->
+            </div>
+
+            <!-- Input -->
+            <div class="input-bar">
+                <div class="input-bar-top">
+                    <button class="input-attach-btn" title="파일 첨부">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+                    </button>
+                    <textarea class="input-field" id="msgInput" placeholder="메시지를 입력하세요..." rows="1" onkeydown="handleInputKey(event)" oninput="autoResize(this)"></textarea>
+                    <button class="input-send-btn" onclick="sendMessage()" title="전송">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════ OVERLAY ═══════ -->
+<div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
+
+<!-- ═══════ AGREEMENT PANEL ═══════ -->
+<div class="side-panel" id="agreementPanel">
+    <div class="panel-header">
+        <h3>합의서 제안</h3>
+        <button class="panel-close" onclick="closePanel()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+    </div>
+    <div class="panel-body">
+        <div class="panel-section">
+            <div class="panel-section-title">합의 조건</div>
+            <div class="panel-form-group">
+                <label class="panel-label">최종 금액</label>
+                <input class="panel-input" type="number" placeholder="50,000" id="agPrice">
+            </div>
+            <div class="panel-form-group">
+                <label class="panel-label">작업 마감일</label>
+                <input class="panel-input" type="date" id="agDeadline">
+            </div>
+            <div class="panel-form-group">
+                <label class="panel-label">작업 범위</label>
+                <textarea class="panel-textarea" placeholder="작업 범위와 조건을 구체적으로 작성해주세요" id="agScope"></textarea>
+            </div>
+            <div class="panel-form-group">
+                <label class="panel-label">최대 수정 횟수</label>
+                <input class="panel-input" type="number" placeholder="2" value="2" id="agRevisions">
+            </div>
+            <div class="panel-form-group">
+                <label class="panel-label">전달물 형식</label>
+                <input class="panel-input" type="text" placeholder="예: PDF, Zoom 녹화본, 파일 전달" id="agFormat">
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <button class="panel-btn secondary" onclick="closePanel()">취소</button>
+        <button class="panel-btn primary" onclick="submitAgreement()">합의서 제안하기</button>
+    </div>
+</div>
+
+<!-- ═══════ DELIVERY PANEL ═══════ -->
+<div class="side-panel" id="deliveryPanel">
+    <div class="panel-header">
+        <h3>작업물 전달</h3>
+        <button class="panel-close" onclick="closePanel()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+    </div>
+    <div class="panel-body">
+        <div class="panel-section">
+            <div class="panel-section-title">전달 유형</div>
+            <div style="display:flex;gap:8px;margin-bottom:16px;">
+                <button class="action-chip highlight" onclick="this.classList.add('highlight');this.nextElementSibling.classList.remove('highlight')">서비스 완료 보고</button>
+                <button class="action-chip" onclick="this.classList.add('highlight');this.previousElementSibling.classList.remove('highlight')">파일 전달</button>
+            </div>
+        </div>
+        <div class="panel-section">
+            <div class="panel-section-title">전달 내용</div>
+            <div class="panel-form-group">
+                <label class="panel-label">메모</label>
+                <textarea class="panel-textarea" placeholder="작업 완료 내용이나 참고사항을 작성해주세요" id="dlMemo"></textarea>
+            </div>
+            <div class="panel-form-group">
+                <label class="panel-label">첨부파일</label>
+                <div style="border:2px dashed var(--border);border-radius:var(--radius);padding:24px;text-align:center;color:var(--text-muted);font-size:13px;cursor:pointer;" onclick="alert('파일 업로드 (구현 예정)')">
+                    📎 파일을 드래그하거나 클릭하여 업로드
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+        <button class="panel-btn secondary" onclick="closePanel()">취소</button>
+        <button class="panel-btn primary" onclick="submitDelivery()">작업물 전달하기</button>
+    </div>
+</div>
+
+<!-- ═══════ TICKET DETAIL PANEL ═══════ -->
+<div class="side-panel" id="ticketPanel">
+    <div class="panel-header">
+        <h3>의뢰 상세</h3>
+        <button class="panel-close" onclick="closePanel()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+    </div>
+    <div class="panel-body" id="ticketPanelBody">
+        <!-- Rendered by JS -->
+    </div>
+</div>
+    <script>
+// ─── DATA ───
+const currentUserId = 1; // Simulating logged-in user
+let currentRole = 'client'; // 'client' or 'expert'
+let activeChatId = null;
+
+const chatRooms = [
+    {
+        id: 'room1',
+        ticketId: 101,
+        ticketTitle: '테니스 스윙 교정 1회 레슨',
+        ticketType: 'OFFLINE',
+        ticketStatus: 'IN_PROGRESS',
+        clientId: 1,
+        expertId: 2,
+        opponentName: '정소연 강사',
+        opponentEmoji: '🎾',
+        category: '테니스',
+        lastMessage: '오늘 레슨 정말 감사했습니다!',
+        lastMessageType: 'TEXT',
+        lastMessageAt: '오후 3:42',
+        unreadCount: 0,
+        reviewPending: true,
+    },
+    {
+        id: 'room2',
+        ticketId: 102,
+        ticketTitle: '포트폴리오 피드백 (IT/개발)',
+        ticketType: 'ONLINE',
+        ticketStatus: 'MATCHED',
+        clientId: 1,
+        expertId: 3,
+        opponentName: '이준혁 멘토',
+        opponentEmoji: '💼',
+        category: '커리어/취업',
+        lastMessage: '안녕하세요! 매칭되었네요. 작업 범위를 이야기해볼까요?',
+        lastMessageType: 'TEXT',
+        lastMessageAt: '오후 1:15',
+        unreadCount: 3,
+        reviewPending: false,
+    },
+    {
+        id: 'room3',
+        ticketId: 103,
+        ticketTitle: '보컬 트레이닝 1회 (팝송 위주)',
+        ticketType: 'ONLINE',
+        ticketStatus: 'PAYMENT_PENDING',
+        clientId: 1,
+        expertId: 4,
+        opponentName: '최유나 보컬코치',
+        opponentEmoji: '🎤',
+        category: '보컬',
+        lastMessage: '합의가 완료되었어요! 다음 단계로 진행합니다.',
+        lastMessageType: 'SYSTEM',
+        lastMessageAt: '오전 11:30',
+        unreadCount: 1,
+        reviewPending: false,
+    },
+    {
+        id: 'room4',
+        ticketId: 104,
+        ticketTitle: '기타 기초 1회 레슨 (어쿠스틱)',
+        ticketType: 'ONLINE',
+        ticketStatus: 'DELIVERED',
+        clientId: 1,
+        expertId: 5,
+        opponentName: '한민재 기타리스트',
+        opponentEmoji: '🎸',
+        category: '기타',
+        lastMessage: '결과물을 확인해주세요!',
+        lastMessageType: 'SYSTEM',
+        lastMessageAt: '어제',
+        unreadCount: 0,
+        reviewPending: false,
+    },
+    {
+        id: 'room5',
+        ticketId: 105,
+        ticketTitle: '골프 스윙 교정 1회 (강남)',
+        ticketType: 'OFFLINE',
+        ticketStatus: 'COMPLETED',
+        clientId: 1,
+        expertId: 6,
+        opponentName: '김민수 코치',
+        opponentEmoji: '⛳',
+        category: '골프',
+        lastMessage: '서비스가 완료되었어요! 리뷰를 남겨주세요',
+        lastMessageType: 'SYSTEM',
+        lastMessageAt: '2일 전',
+        unreadCount: 0,
+        reviewPending: false,
+    },
+];
+
+const messagesByRoom = {
+    room1: [
+        { type: 'date', content: '2026년 2월 28일 토요일' },
+        { type: 'system', content: '매칭이 완료되었어요! 일정과 세부사항을 이야기해보세요', icon: '🎉' },
+        { type: 'system', content: '이 대화는 거래 완료 후 리뷰로 공개될 수 있어요. 개인정보는 자동으로 보호됩니다.', icon: '🔒', warn: true },
+        { sender: 2, text: '안녕하세요! 매칭 감사합니다. 레슨 일정을 잡아볼까요?' },
+        { sender: 1, text: '네! 이번 주 토요일 오전 10시에 강남 OO 테니스장에서 가능하실까요?' },
+        { sender: 2, text: '네, 가능합니다! 편한 복장으로 오시고, 라켓은 제가 준비할게요.' },
+        { sender: 1, text: '좋습니다! 감사합니다 😊' },
+        { type: 'date', content: '2026년 3월 1일 오늘' },
+        { sender: 2, text: '오늘 레슨 수고하셨어요! 포핸드 스윙이 많이 좋아지셨어요. 집에서 연습하실 때 팔꿈치 각도 유지하는 게 포인트예요.' },
+        { sender: 1, text: '오늘 레슨 정말 감사했습니다! 확실히 자세가 달라진 느낌이에요.' },
+    ],
+    room2: [
+        { type: 'date', content: '2026년 3월 1일 오늘' },
+        { type: 'system', content: '매칭이 완료되었어요! 일정과 세부사항을 이야기해보세요', icon: '🎉' },
+        { type: 'system', content: '이 대화는 거래 완료 후 리뷰로 공개될 수 있어요. 개인정보는 자동으로 보호됩니다.', icon: '🔒', warn: true },
+        { sender: 3, text: '안녕하세요! 이준혁입니다. 포트폴리오 피드백 요청 감사합니다.' },
+        { sender: 3, text: '우선 현재 포트폴리오를 공유해주시면 방향을 잡아볼게요. 어떤 직무로 이직을 고려하고 계세요?' },
+        { sender: 1, text: '프론트엔드 개발자로 이직 준비 중입니다. 포트폴리오를 한번 봐주시면 좋겠어요!' },
+        { sender: 3, text: '안녕하세요! 매칭되었네요. 작업 범위를 이야기해볼까요?' },
+    ],
+    room3: [
+        { type: 'date', content: '2026년 2월 28일' },
+        { type: 'system', content: '매칭이 완료되었어요! 일정과 세부사항을 이야기해보세요', icon: '🎉' },
+        { sender: 4, text: '안녕하세요! 보컬 트레이닝 매칭 감사합니다.' },
+        { sender: 1, text: '안녕하세요! Zoom으로 진행하려고 하는데, 금액은 45,000원에 마감일은 3일 뒤 어떠세요?' },
+        { sender: 4, text: '좋습니다! 수정 횟수 2회에 녹화본도 전달해드릴게요.' },
+        { type: 'date', content: '2026년 3월 1일 오늘' },
+        { type: 'agreement', status: 'CONFIRMED', data: { finalPrice: 45000, workDeadline: '2026-03-04', scope: '팝송 보컬 트레이닝 1회 (1시간), 호흡/발성/음정 교정', maxRevisions: 2, deliveryFormat: 'Zoom 녹화본' } },
+        { type: 'system', content: '합의가 완료되었어요! 다음 단계로 진행합니다.', icon: '✅' },
+    ],
+    room4: [
+        { type: 'date', content: '2026년 2월 27일' },
+        { type: 'system', content: '매칭이 완료되었어요! 일정과 세부사항을 이야기해보세요', icon: '🎉' },
+        { sender: 5, text: '안녕하세요! 기타 레슨 매칭 감사합니다.' },
+        { sender: 1, text: '네! 완전 초보라 기초부터 부탁드려요.' },
+        { type: 'agreement', status: 'CONFIRMED', data: { finalPrice: 35000, workDeadline: '2026-03-01', scope: '어쿠스틱 기타 기초 레슨 (코드, 스트러밍), 연습 가이드 PDF', maxRevisions: 2, deliveryFormat: 'PDF + 녹화본' } },
+        { type: 'system', content: '합의가 완료되었어요! 다음 단계로 진행합니다.', icon: '✅' },
+        { type: 'system', content: '안전결제가 완료되었어요! 서비스를 시작해주세요.', icon: '💰' },
+        { type: 'date', content: '2026년 2월 28일' },
+        { type: 'delivery', status: 'SUBMITTED', data: { deliveryType: 'FILE_DELIVERY', memo: '레슨 영상과 연습 가이드 PDF를 전달드립니다. 즐겁게 연습하세요!', files: ['기타_기초_레슨_녹화.mp4', '연습_가이드_코드표.pdf'] } },
+        { type: 'system', content: '전문가가 결과물을 전달했어요. 확인해주세요!', icon: '📦' },
+    ],
+    room5: [
+        { type: 'date', content: '2026년 2월 25일' },
+        { type: 'system', content: '매칭이 완료되었어요! 일정과 세부사항을 이야기해보세요', icon: '🎉' },
+        { sender: 6, text: '안녕하세요! 골프 스윙 교정 레슨 매칭 감사합니다.' },
+        { sender: 1, text: '안녕하세요! 이번 주 토요일 오전 가능하세요?' },
+        { sender: 6, text: '네, 가능합니다! 골프장은 강남 XX 골프연습장으로 하면 어떨까요?' },
+        { sender: 1, text: '좋아요! 그럼 토요일 오전 10시에 뵙겠습니다.' },
+        { type: 'date', content: '2026년 2월 27일' },
+        { sender: 6, text: '오늘 레슨 수고하셨습니다! 그립 교정이 핵심이에요. 다음에도 언제든 연락주세요.' },
+        { sender: 1, text: '감사합니다! 많이 배웠어요.' },
+        { type: 'system', content: '서비스가 완료되었어요! 리뷰를 남겨주세요', icon: '⭐' },
+    ],
+};
+
+const statusLabels = {
+    MATCHED: '매칭완료', PAYMENT_PENDING: '결제대기', PAID: '결제완료',
+    IN_PROGRESS: '진행중', DELIVERED: '전달완료', COMPLETED: '완료',
+};
+
+const statusClasses = {
+    MATCHED: 'status-matched', PAYMENT_PENDING: 'status-payment', PAID: 'status-progress',
+    IN_PROGRESS: 'status-progress', DELIVERED: 'status-delivered', COMPLETED: 'status-completed',
+};
+
+// ─── RENDER CHAT LIST ───
+function renderChatList(filter = 'all') {
+    const list = document.getElementById('chatList');
+    const search = document.getElementById('searchInput').value.trim().toLowerCase();
+    let rooms = chatRooms;
+
+    if (filter === 'progress') {
+        rooms = rooms.filter(r => !['COMPLETED','CANCELLED','EXPIRED'].includes(r.ticketStatus));
+    } else if (filter === 'completed') {
+        rooms = rooms.filter(r => r.ticketStatus === 'COMPLETED');
+    }
+
+    if (search) {
+        rooms = rooms.filter(r =>
+            r.opponentName.toLowerCase().includes(search) ||
+            r.ticketTitle.toLowerCase().includes(search) ||
+            r.category.toLowerCase().includes(search)
+        );
+    }
+
+    list.innerHTML = rooms.map(room => `
+        <div class="chat-item ${activeChatId === room.id ? 'active' : ''}" onclick="openChat('${room.id}')">
+            <div class="chat-item-avatar">
+                ${room.opponentEmoji}
+                ${room.unreadCount > 0 ? '<div class="avatar-online-dot"></div>' : ''}
+            </div>
+            <div class="chat-item-body">
+                <div class="chat-item-top">
+                    <span class="chat-item-name">${room.opponentName}</span>
+                    <span class="chat-item-type-badge ${room.ticketType === 'OFFLINE' ? 'type-offline' : 'type-online'}">
+                        ${room.ticketType === 'OFFLINE' ? '오프라인' : '온라인'}
+                    </span>
+                </div>
+                <div class="chat-item-ticket">${room.category} · ${room.ticketTitle}</div>
+                <div class="chat-item-last-msg">${room.lastMessageType === 'SYSTEM' ? '📌 ' : ''}${room.lastMessage}</div>
+            </div>
+            <div class="chat-item-right">
+                <span class="chat-item-time">${room.lastMessageAt}</span>
+                ${room.unreadCount > 0 ? `<span class="chat-item-unread">${room.unreadCount}</span>` : ''}
+                ${room.reviewPending ? `<span class="chat-item-status-tag status-review">리뷰 대기</span>` :
+                  `<span class="chat-item-status-tag ${statusClasses[room.ticketStatus] || ''}">${statusLabels[room.ticketStatus] || room.ticketStatus}</span>`}
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterTab(btn, filter) {
+    document.querySelectorAll('.sidebar-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderChatList(filter);
+}
+
+function filterChats() { renderChatList(document.querySelector('.sidebar-tab.active')?.textContent?.includes('진행') ? 'progress' : document.querySelector('.sidebar-tab.active')?.textContent?.includes('완료') ? 'completed' : 'all'); }
+
+// ─── OPEN CHAT ───
+function openChat(roomId) {
+    activeChatId = roomId;
+    const room = chatRooms.find(r => r.id === roomId);
+    if (!room) return;
+
+    // Mark as read
+    room.unreadCount = 0;
+
+    document.getElementById('chatEmpty').style.display = 'none';
+    const activeRoom = document.getElementById('activeRoom');
+    activeRoom.style.display = 'flex';
+
+    // Update header
+    document.getElementById('roomAvatar').textContent = room.opponentEmoji;
+    document.getElementById('roomName').textContent = room.opponentName;
+    document.getElementById('roomSub').textContent = `${room.category} · ${room.ticketTitle}`;
+    const badge = document.getElementById('roomTypeBadge');
+    badge.textContent = room.ticketType === 'OFFLINE' ? '오프라인' : '온라인';
+    badge.className = `chat-item-type-badge ${room.ticketType === 'OFFLINE' ? 'type-offline' : 'type-online'}`;
+
+    // Render workflow
+    renderWorkflow(room);
+
+    // Render messages
+    renderMessages(room);
+
+    // Render action bar
+    renderActionBar(room);
+
+    // Refresh list
+    renderChatList();
+}
+
+// ─── WORKFLOW TRACKER ───
+function renderWorkflow(room) {
+    const bar = document.getElementById('workflowBar');
+    const isOnline = room.ticketType === 'ONLINE';
+    const status = room.ticketStatus;
+
+    const offlineSteps = ['MATCHED', 'IN_PROGRESS', 'COMPLETED'];
+    const offlineLabels = ['매칭 완료', '서비스 진행', '완료'];
+
+    const onlineSteps = ['MATCHED', 'PAYMENT_PENDING', 'PAID', 'IN_PROGRESS', 'DELIVERED', 'COMPLETED'];
+    const onlineLabels = ['매칭 완료', '합의서 확정', '결제', '서비스 진행', '작업물 전달', '완료'];
+
+    const steps = isOnline ? onlineSteps : offlineSteps;
+    const labels = isOnline ? onlineLabels : offlineLabels;
+    const currentIdx = steps.indexOf(status);
+
+    let html = '';
+    steps.forEach((s, i) => {
+        const isDone = i < currentIdx;
+        const isCurrent = i === currentIdx;
+        html += `<div class="wf-step ${isDone ? 'done' : ''} ${isCurrent ? 'current' : ''}">
+            <span class="wf-dot"></span>
+            ${labels[i]}
+        </div>`;
+        if (i < steps.length - 1) {
+            html += `<div class="wf-arrow ${isDone ? 'done' : ''}">›</div>`;
+        }
+    });
+
+    bar.innerHTML = `<div class="workflow-steps">${html}</div>`;
+}
+
+// ─── MESSAGES ───
+function renderMessages(room) {
+    const container = document.getElementById('messages');
+    const msgs = messagesByRoom[room.id] || [];
+    const myId = currentUserId;
+
+    let html = '';
+    msgs.forEach(msg => {
+        if (msg.type === 'date') {
+            html += `<div class="msg-date-divider"><span>${msg.content}</span></div>`;
+        } else if (msg.type === 'system') {
+            html += `<div class="msg-system"><div class="msg-system-bubble ${msg.warn ? 'warn' : ''}"><span class="msg-system-icon">${msg.icon || '📌'}</span> ${msg.content}</div></div>`;
+        } else if (msg.type === 'agreement') {
+            html += renderAgreementCard(msg, room);
+        } else if (msg.type === 'delivery') {
+            html += renderDeliveryCard(msg, room);
+        } else {
+            const isMine = msg.sender === myId;
+            html += `<div class="msg-row ${isMine ? 'mine' : 'theirs'}">
+                ${isMine ? `<span class="msg-read">읽음</span>` : ''}
+                <div class="msg-bubble">${msg.text}</div>
+                <span class="msg-time">${msg.time || ''}</span>
+            </div>`;
+        }
+    });
+
+    container.innerHTML = html;
+    container.scrollTop = container.scrollHeight;
+}
+
+function renderAgreementCard(msg, room) {
+    const d = msg.data;
+    const isClient = currentRole === 'client';
+    const statusLabel = { PROPOSED: '제안됨', CONFIRMED: '확정됨', REJECTED: '거부됨' }[msg.status];
+    const statusClass = msg.status.toLowerCase();
+
+    let actions = '';
+    if (msg.status === 'PROPOSED' && !isClient) {
+        actions = `<div class="card-actions">
+            <button class="card-btn danger" onclick="rejectAgreement()">거절</button>
+            <button class="card-btn success" onclick="confirmAgreement()">수락</button>
+        </div>`;
+    } else if (msg.status === 'REJECTED' && isClient) {
+        actions = `<div class="card-actions">
+            <button class="card-btn primary" onclick="openAgreementPanel()">재제안하기</button>
+        </div>`;
+    }
+
+    return `<div class="msg-card"><div class="agreement-card">
+        <div class="card-header">
+            <div class="card-header-icon agreement">📋</div>
+            <div class="card-header-text"><h4>합의서</h4><p>${isClient ? '내가 제안' : '상대방이 제안'}</p></div>
+            <span class="card-status ${statusClass}">${statusLabel}</span>
+        </div>
+        <div class="card-body">
+            <div class="card-field"><span class="card-field-label">최종 금액</span><span class="card-field-value price">${d.finalPrice?.toLocaleString()}원</span></div>
+            <div class="card-field"><span class="card-field-label">작업 마감일</span><span class="card-field-value">${d.workDeadline}</span></div>
+            <div class="card-field"><span class="card-field-label">작업 범위</span><span class="card-field-value" style="max-width:60%;text-align:right">${d.scope}</span></div>
+            <div class="card-field"><span class="card-field-label">수정 횟수</span><span class="card-field-value">최대 ${d.maxRevisions}회</span></div>
+            <div class="card-field"><span class="card-field-label">전달물 형식</span><span class="card-field-value">${d.deliveryFormat}</span></div>
+        </div>
+        ${actions}
+    </div></div>`;
+}
+
+function renderDeliveryCard(msg, room) {
+    const d = msg.data;
+    const isClient = currentRole === 'client';
+    const statusLabel = { SUBMITTED: '제출됨', APPROVED: '승인됨', REVISION_REQUESTED: '수정 요청됨' }[msg.status];
+    const statusClass = msg.status === 'SUBMITTED' ? 'submitted' : msg.status === 'APPROVED' ? 'approved' : 'rejected';
+    const typeLabel = d.deliveryType === 'SERVICE_COMPLETE' ? '서비스 완료 보고' : '파일 전달';
+
+    let filesHtml = '';
+    if (d.files && d.files.length > 0) {
+        filesHtml = `<div class="delivery-files">${d.files.map(f => `<div class="delivery-file"><span class="delivery-file-icon">${f.endsWith('.pdf') ? '📄' : f.endsWith('.mp4') ? '🎬' : '📎'}</span>${f}</div>`).join('')}</div>`;
+    }
+
+    let actions = '';
+    if (msg.status === 'SUBMITTED' && isClient) {
+        actions = `<div class="card-actions">
+            <button class="card-btn danger" onclick="requestRevision()">수정 요청</button>
+            <button class="card-btn success" onclick="approveDelivery()">완료 승인</button>
+        </div>`;
+    }
+
+    return `<div class="msg-card"><div class="delivery-card">
+        <div class="card-header">
+            <div class="card-header-icon delivery">📦</div>
+            <div class="card-header-text"><h4>작업물 전달</h4><p>${typeLabel}</p></div>
+            <span class="card-status ${statusClass}">${statusLabel}</span>
+        </div>
+        <div class="card-body">
+            <div class="card-field"><span class="card-field-label">메모</span></div>
+            <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;padding:4px 0 8px">${d.memo}</p>
+        </div>
+        ${filesHtml}
+        ${actions}
+    </div></div>`;
+}
+
+// ─── ACTION BAR ───
+function renderActionBar(room) {
+    const bar = document.getElementById('actionBar');
+    const isClient = currentRole === 'client';
+    const isOnline = room.ticketType === 'ONLINE';
+    const status = room.ticketStatus;
+    let chips = [];
+
+    if (isClient) {
+        if (isOnline && status === 'MATCHED') {
+            chips.push({ icon: '📋', label: '합의서 제안', action: 'openAgreementPanel()', highlight: true });
+        }
+        if (isOnline && status === 'PAYMENT_PENDING') {
+            chips.push({ icon: '💳', label: '에스크로 결제하기', action: 'doPayment()', highlight: true });
+        }
+        if (isOnline && status === 'DELIVERED') {
+            chips.push({ icon: '✅', label: '완료 승인', action: 'approveDelivery()' });
+            chips.push({ icon: '🔄', label: '수정 요청', action: 'requestRevision()' });
+        }
+        if (!isOnline && status === 'IN_PROGRESS') {
+            chips.push({ icon: '✅', label: '완료 확인', action: 'completeOffline()', highlight: true });
+        }
+        if (status === 'COMPLETED' || room.reviewPending) {
+            chips.push({ icon: '⭐', label: '리뷰 남기기', action: 'openReview()' });
+        }
+    } else {
+        // Expert view
+        if (isOnline && status === 'IN_PROGRESS') {
+            chips.push({ icon: '📦', label: '작업물 전달', action: 'openDeliveryPanel()', highlight: true });
+        }
+        if (!isOnline && status === 'MATCHED') {
+            chips.push({ icon: '🚀', label: '서비스 시작', action: 'startOfflineService()' });
+        }
+    }
+
+    // Common chips
+    chips.push({ icon: '📎', label: '파일 첨부', action: 'attachFile()' });
+    chips.push({ icon: '📷', label: '이미지', action: 'attachImage()' });
+
+    bar.innerHTML = chips.map(c =>
+        `<button class="action-chip ${c.highlight ? 'highlight' : ''}" onclick="${c.action}"><span class="action-chip-icon">${c.icon}</span>${c.label}</button>`
+    ).join('');
+}
+
+// ─── SEND MESSAGE ───
+function sendMessage() {
+    const input = document.getElementById('msgInput');
+    const text = input.value.trim();
+    if (!text || !activeChatId) return;
+
+    const room = chatRooms.find(r => r.id === activeChatId);
+    if (!room) return;
+
+    const msgs = messagesByRoom[activeChatId];
+    msgs.push({ sender: currentUserId, text: text });
+
+    room.lastMessage = text;
+    room.lastMessageType = 'TEXT';
+    room.lastMessageAt = new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+
+    input.value = '';
+    input.style.height = 'auto';
+    renderMessages(room);
+    renderChatList();
+}
+
+function handleInputKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+}
+
+function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+// ─── ROLE SWITCH ───
+function setRole(role) {
+    currentRole = role;
+    document.getElementById('btnClient').classList.toggle('active', role === 'client');
+    document.getElementById('btnExpert').classList.toggle('active', role === 'expert');
+
+    document.querySelectorAll('.client-only').forEach(el => el.style.display = role === 'client' ? 'inline-flex' : 'none');
+    document.querySelectorAll('.expert-only').forEach(el => el.style.display = role === 'expert' ? 'inline-flex' : 'none');
+
+    if (activeChatId) {
+        const room = chatRooms.find(r => r.id === activeChatId);
+        if (room) {
+            renderMessages(room);
+            renderActionBar(room);
+        }
+    }
+}
+
+// ─── PANELS ───
+function openPanel(panelId) {
+    document.getElementById('panelOverlay').classList.add('show');
+    document.getElementById(panelId).classList.add('open');
+}
+
+function closePanel() {
+    document.getElementById('panelOverlay').classList.remove('show');
+    document.querySelectorAll('.side-panel').forEach(p => p.classList.remove('open'));
+}
+
+function openAgreementPanel() { openPanel('agreementPanel'); }
+function openDeliveryPanel() { openPanel('deliveryPanel'); }
+
+function openTicketPanel() {
+    const room = chatRooms.find(r => r.id === activeChatId);
+    if (!room) return;
+
+    const isOnline = room.ticketType === 'ONLINE';
+    const body = document.getElementById('ticketPanelBody');
+    body.innerHTML = `
+        <div class="panel-section">
+            <div class="panel-section-title">의뢰 정보</div>
+            <div style="background:var(--bg-sub);border-radius:var(--radius);padding:16px;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                    <span class="chat-item-type-badge ${isOnline ? 'type-online' : 'type-offline'}">${isOnline ? '온라인' : '오프라인'}</span>
+                    <span class="chat-item-status-tag ${statusClasses[room.ticketStatus]}">${statusLabels[room.ticketStatus]}</span>
+                </div>
+                <h4 style="font-size:15px;font-weight:700;margin-bottom:4px;">${room.ticketTitle}</h4>
+                <p style="font-size:13px;color:var(--text-tertiary);">${room.category}</p>
+            </div>
+        </div>
+        <div class="panel-section">
+            <div class="panel-section-title">참여자</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg-sub);border-radius:var(--radius-sm);">
+                    <div style="width:36px;height:36px;border-radius:50%;background:var(--accent-light);display:flex;align-items:center;justify-content:center;font-size:16px;">👤</div>
+                    <div><div style="font-size:13px;font-weight:600;">의뢰인 (나)</div><div style="font-size:11px;color:var(--text-tertiary);">user#${room.clientId}</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg-sub);border-radius:var(--radius-sm);">
+                    <div style="width:36px;height:36px;border-radius:50%;background:var(--expert-light);display:flex;align-items:center;justify-content:center;font-size:16px;">${room.opponentEmoji}</div>
+                    <div><div style="font-size:13px;font-weight:600;">${room.opponentName}</div><div style="font-size:11px;color:var(--text-tertiary);">전문가</div></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-section">
+            <div class="panel-section-title">진행 상태</div>
+            <div style="font-size:13px;color:var(--text-secondary);line-height:1.8;">
+                ${isOnline ? `
+                    매칭 완료 → 채팅 협의 → 합의서 확정 → 에스크로 결제 → 서비스 진행 → 작업물 전달 → 완료 확인 → 리뷰
+                ` : `
+                    매칭 완료 → 채팅 협의 → 대면 서비스 진행 → 완료 확인 → 리뷰
+                `}
+            </div>
+        </div>
+    `;
+    openPanel('ticketPanel');
+}
+
+// ─── ACTIONS ───
+function submitAgreement() {
+    const room = chatRooms.find(r => r.id === activeChatId);
+    if (!room) return;
+
+    const data = {
+        finalPrice: parseInt(document.getElementById('agPrice').value) || 50000,
+        workDeadline: document.getElementById('agDeadline').value || '2026-03-05',
+        scope: document.getElementById('agScope').value || '작업 범위 미입력',
+        maxRevisions: parseInt(document.getElementById('agRevisions').value) || 2,
+        deliveryFormat: document.getElementById('agFormat').value || '파일 전달',
+    };
+
+    const msgs = messagesByRoom[activeChatId];
+    msgs.push({ type: 'agreement', status: 'PROPOSED', data });
+    msgs.push({ type: 'system', content: '합의서가 제안되었어요. 내용을 확인해주세요!', icon: '📋' });
+
+    closePanel();
+    renderMessages(room);
+    renderChatList();
+}
+
+function confirmAgreement() {
+    const room = chatRooms.find(r => r.id === activeChatId);
+    if (!room) return;
+
+    // Find the agreement message and update it
+    const msgs = messagesByRoom[activeChatId];
+    const agMsg = msgs.filter(m => m.type === 'agreement').pop();
+    if (agMsg) agMsg.status = 'CONFIRMED';
+
+    msgs.push({ type: 'system', content: '합의가 완료되었어요! 다음 단계로 진행합니다.', icon: '✅' });
+    room.ticketStatus = 'PAYMENT_PENDING';
+    room.lastMessage = '합의가 완료되었어요! 다음 단계로 진행합니다.';
+    room.lastMessageType = 'SYSTEM';
+
+    renderMessages(room);
+    renderWorkflow(room);
+    renderActionBar(room);
+    renderChatList();
+}
+
+function rejectAgreement() {
+    const room = chatRooms.find(r => r.id === activeChatId);
+    if (!room) return;
+
+    const msgs = messagesByRoom[activeChatId];
+    const agMsg = msgs.filter(m => m.type === 'agreement').pop();
+    if (agMsg) agMsg.status = 'REJECTED';
+
+    msgs.push({ type: 'system', content: '합의서가 거절되었어요. 조건을 다시 이야기해보세요.', icon: '❌' });
+
+    renderMessages(room);
+    renderActionBar(room);
+    renderChatList();
+}
+
+function doPayment() {
+    const room = chatRooms.find(r => r.id === activeChatId);
+    if (!room) return;
+
+    if (!confirm('에스크로 결제를 진행하시겠습니까?\n(PortOne V2 SDK 연동 - 시뮬레이션)')) return;
+
+    const msgs = messagesByRoom[activeChatId];
+    msgs.push({ type: 'system', content: '안전결제가 완료되었어요! 서비스를 시작해주세요.', icon: '💰' });
+    room.ticketStatus = 'IN_PROGRESS';
+    room.lastMessage = '안전결제가 완료되었어요! 서비스를 시작해주세요.';
+    room.lastMessageType = 'SYSTEM';
+
+    renderMessages(room);
+    renderWorkflow(room);
+    renderActionBar(room);
+    renderChatList();
+}
+
+function submitDelivery() {
+    const room = chatRooms.find(r => r.id === activeChatId);
+    if (!room) return;
+
+    const memo = document.getElementById('dlMemo').value || '작업을 완료했습니다.';
+    const msgs = messagesByRoom[activeChatId];
+    msgs.push({ type: 'delivery', status: 'SUBMITTED', data: { deliveryType: 'SERVICE_COMPLETE', memo, files: [] } });
+    msgs.push({ type: 'system', content: '전문가가 서비스 완료를 보고했어요. 확인해주세요!', icon: '📦' });
+
+    room.ticketStatus = 'DELIVERED';
+    room.lastMessage = '전문가가 결과물을 전달했어요.';
+    room.lastMessageType = 'SYSTEM';
+
+    closePanel();
+    renderMessages(room);
+    renderWorkflow(room);
+    renderActionBar(room);
+    renderChatList();
+}
+
+function approveDelivery() {
+    const room = chatRooms.find(r => r.id === activeChatId);
+    if (!room) return;
+
+    if (!confirm('작업물을 승인하시겠습니까?\n승인 후 에스크로 정산이 진행됩니다.')) return;
+
+    const msgs = messagesByRoom[activeChatId];
+    const dlMsg = msgs.filter(m => m.type === 'delivery').pop();
+    if (dlMsg) dlMsg.status = 'APPROVED';
+
+    msgs.push({ type: 'system', content: '서비스가 완료되었어요! 리뷰를 남겨주세요', icon: '⭐' });
+    room.ticketStatus = 'COMPLETED';
+    room.lastMessage = '서비스가 완료되었어요! 리뷰를 남겨주세요';
+    room.lastMessageType = 'SYSTEM';
+
+    renderMessages(room);
+    renderWorkflow(room);
+    renderActionBar(room);
+    renderChatList();
+}
+
+function requestRevision() {
+    const reason = prompt('수정 요청 사유를 입력하세요:');
+    if (!reason) return;
+
+    const room = chatRooms.find(r => r.id === activeChatId);
+    if (!room) return;
+
+    const msgs = messagesByRoom[activeChatId];
+    const dlMsg = msgs.filter(m => m.type === 'delivery').pop();
+    if (dlMsg) dlMsg.status = 'REVISION_REQUESTED';
+
+    msgs.push({ type: 'system', content: '의뢰인이 수정을 요청했어요. 마감일이 +3일 연장됩니다.', icon: '🔄' });
+    room.lastMessage = '수정 요청이 접수되었어요.';
+    room.lastMessageType = 'SYSTEM';
+
+    renderMessages(room);
+    renderActionBar(room);
+    renderChatList();
+}
+
+function completeOffline() {
+    const room = chatRooms.find(r => r.id === activeChatId);
+    if (!room) return;
+
+    if (!confirm('서비스 완료를 확인하시겠습니까?')) return;
+
+    const msgs = messagesByRoom[activeChatId];
+    msgs.push({ type: 'system', content: '서비스가 완료되었어요! 리뷰를 남겨주세요', icon: '⭐' });
+    room.ticketStatus = 'COMPLETED';
+    room.reviewPending = true;
+    room.lastMessage = '서비스가 완료되었어요! 리뷰를 남겨주세요';
+    room.lastMessageType = 'SYSTEM';
+
+    renderMessages(room);
+    renderWorkflow(room);
+    renderActionBar(room);
+    renderChatList();
+}
+
+function startOfflineService() {
+    alert('서비스 시작이 확인되었습니다. (IN_PROGRESS 전이)');
+}
+
+function openReview() {
+    alert('리뷰 작성 화면으로 이동합니다.\n\n- 채팅 스냅샷이 자동 생성됩니다\n- 48시간 동안 비공개 처리할 메시지를 선택할 수 있습니다\n- 별점을 입력할 수 있습니다 (선택)');
+}
+
+function attachFile() { alert('파일 첨부 (구현 예정)\nAPI: POST /v1/api/chat/rooms/{roomId}/messages (messageType=FILE)'); }
+function attachImage() { alert('이미지 첨부 (구현 예정)\nAPI: POST /v1/api/chat/rooms/{roomId}/messages (messageType=IMAGE)'); }
+
+function goBackToList() {
+    document.getElementById('sidebar').classList.remove('mobile-hide');
+    document.getElementById('chatRoom').classList.remove('mobile-show');
+    activeChatId = null;
+}
+
+// ─── INIT ───
+renderChatList();
+    </script>
+</body>
+</html>
