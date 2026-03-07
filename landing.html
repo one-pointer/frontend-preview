@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>쪽집게 - 실제 대화로 전문가를 고르세요</title>
+<meta name="description" content="별점이 아니라 실제 대화로 전문가를 판단합니다. 전문가 수수료 0%. 커피 한잔 가격의 쿠폰으로 전문가를 만나보세요.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0c0c14;
+  --bg-elevated: #111118;
+  --card: #1a1a24;
+  --card-border: #2a2a38;
+  --purple: #6C5CE7;
+  --purple-hover: #5B4BD6;
+  --purple-glow: rgba(108, 92, 231, 0.25);
+  --purple-subtle: rgba(108, 92, 231, 0.08);
+  --green: #22C55E;
+  --green-glow: rgba(34, 197, 94, 0.25);
+  --green-subtle: rgba(34, 197, 94, 0.08);
+  --red: #DC2626;
+  --text: #e2e8f0;
+  --text-muted: rgba(255,255,255,0.45);
+  --text-dim: rgba(255,255,255,0.25);
+  --border: rgba(255,255,255,0.06);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Utility ─── */
+.container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+.container--wide { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+.label {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 22px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.label--purple { background: var(--purple-subtle); color: var(--purple); border: 1px solid rgba(108,92,231,0.15); }
+.label--green { background: var(--green-subtle); color: var(--green); border: 1px solid rgba(34,197,94,0.15); }
+.label--dim { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5); }
+
+/* ─── Animations ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 40px var(--purple-glow); }
+  50% { box-shadow: 0 0 80px var(--purple-glow), 0 0 120px rgba(108,92,231,0.1); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ─── Navigation ─── */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s, backdrop-filter 0.3s;
+}
+.nav.scrolled {
+  background: rgba(12,12,20,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav__logo {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--purple);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+.nav__cta {
+  padding: 8px 20px;
+  background: var(--purple);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.nav__cta:hover { background: var(--purple-hover); transform: translateY(-1px); }
+
+/* ─── Hero ─── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(108,92,231,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero__eyebrow {
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+.hero__title {
+  font-size: clamp(32px, 7vw, 56px);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+  margin-top: 28px;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+.hero__title span {
+  background: linear-gradient(135deg, var(--purple), #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero__sub {
+  font-size: clamp(15px, 2.5vw, 17px);
+  color: var(--text-muted);
+  margin-top: 20px;
+  line-height: 1.8;
+  max-width: 480px;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+}
+.hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 40px;
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
+}
+.hero__chip {
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 22px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+}
+.hero__scroll {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: float 2.5s ease-in-out infinite, fadeIn 1s 1.2s both;
+}
+.hero__scroll svg { width: 24px; height: 24px; stroke: rgba(255,255,255,0.2); }
+
+/* ─── Philosophy ─── */
+.philosophy {
+  padding: 100px 0;
+  background: #14141e;
+}
+.philosophy__intro {
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: 700;
+  color: rgba(255,255,255,0.3);
+  line-height: 1.7;
+  margin-bottom: 56px;
+}
+.philosophy__block {
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.philosophy__block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.philosophy__num {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--purple);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.philosophy__title {
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: 700;
+  line-height: 1.45;
+  margin-top: 12px;
+}
+.philosophy__body {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.75;
+  margin-top: 12px;
+}
+.philosophy__highlight {
+  margin-top: 18px;
+  padding: 16px 18px;
+  background: rgba(108,92,231,0.05);
+  border-left: 3px solid var(--purple);
+  border-radius: 0 8px 8px 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.7;
+}
+
+/* ─── Chat Review ─── */
+.chat-review { padding: 100px 0; }
+.chat-review__title {
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+.chat-review__sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  line-height: 1.7;
+}
+
+/* Phone mock */
+.phone-mock {
+  margin-top: 40px;
+  padding: 24px;
+  background: var(--card);
+  border-radius: 24px;
+  border: 1px solid var(--card-border);
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+.phone-mock__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.phone-mock__avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--purple), var(--purple-hover));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.phone-mock__name { font-size: 15px; font-weight: 700; }
+.phone-mock__meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.phone-mock__messages { padding-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+
+.bubble {
+  max-width: 80%;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+.bubble--left {
+  align-self: flex-start;
+  background: rgba(108,92,231,0.12);
+  border-radius: 16px 16px 16px 4px;
+  color: rgba(255,255,255,0.88);
+}
+.bubble--right {
+  align-self: flex-end;
+  background: rgba(255,255,255,0.07);
+  border-radius: 16px 16px 4px 16px;
+  color: rgba(255,255,255,0.75);
+}
+.phone-mock__badge {
+  margin-top: 16px;
+  padding: 8px 14px;
+  background: rgba(34,197,94,0.12);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #6EE7B7;
+}
+
+/* Points */
+.points { margin-top: 48px; display: flex; flex-direction: column; gap: 28px; }
+.point {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.point__icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.point__icon svg { width: 20px; height: 20px; stroke: rgba(255,255,255,0.6); fill: none; stroke-width: 1.8; }
+.point__title { font-size: 15px; font-weight: 700; }
+.point__desc { font-size: 13px; color: var(--text-muted); margin-top: 3px; line-height: 1.5; }
+
+/* ─── Pricing ─── */
+.pricing {
+  padding: 100px 0;
+  background: #fff;
+  color: #111827;
+}
+.pricing__title {
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+.pricing__sub {
+  font-size: 15px;
+  color: #64748b;
+  margin-top: 8px;
+  line-height: 1.7;
+}
+.pricing__box {
+  margin-top: 36px;
+  padding: 24px;
+  background: #fafaf8;
+  border-radius: 20px;
+  border: 1px solid #eae8e4;
+}
+.pricing__scenario {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 20px;
+}
+.compare-card {
+  padding: 20px;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #eae8e4;
+}
+.compare-card + .compare-card { margin-top: 14px; }
+.compare-card__title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.compare-card__title--other { color: #111827; }
+.compare-card__title--ours { color: var(--purple); }
+.compare-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+}
+.compare-row__label { font-size: 13px; color: #64748b; font-weight: 500; }
+.compare-row__value { font-size: 14px; font-weight: 700; color: #111827; }
+.compare-row__value--red { color: var(--red); }
+.compare-row__value--purple { color: var(--purple); }
+.compare-row__value--green { color: var(--green); }
+.compare-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14px;
+  margin-top: 10px;
+  border-top: 2px solid #eae8e4;
+}
+.compare-total__label { font-size: 15px; font-weight: 700; }
+.compare-total__value { font-size: 20px; font-weight: 800; }
+.compare-total__value--dark { color: #111827; }
+.compare-total__value--purple { color: var(--purple); }
+.pricing__footer {
+  text-align: center;
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 500;
+  margin-top: 24px;
+}
+
+/* ─── How It Works ─── */
+.how { padding: 100px 0; }
+.how__tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 32px;
+}
+.how__tab {
+  flex: 1;
+  padding: 12px;
+  text-align: center;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  color: var(--text-muted);
+}
+.how__tab.active--client {
+  background: var(--purple);
+  color: #fff;
+  border-color: var(--purple);
+}
+.how__tab.active--expert {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}
+.how__content { margin-top: 28px; }
+.how__panel { display: none; }
+.how__panel.active { display: block; }
+
+.step-card {
+  padding: 22px;
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+.step-card + .step-card { margin-top: 12px; }
+.step-card__icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.step-card__icon--purple { background: var(--purple-subtle); }
+.step-card__icon--green { background: var(--green-subtle); }
+.step-card__num {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.step-card__num--purple { color: var(--purple); }
+.step-card__num--green { color: var(--green); }
+.step-card__title { font-size: 15px; font-weight: 700; }
+.step-card__desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-top: 4px; }
+
+/* ─── Expert Banner ─── */
+.expert-banner {
+  padding: 80px 0;
+  background: linear-gradient(180deg, var(--bg) 0%, #0a1a0f 100%);
+  text-align: center;
+}
+.expert-banner__title {
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 800;
+  line-height: 1.3;
+}
+.expert-banner__title span { color: var(--green); }
+.expert-banner__sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-top: 14px;
+  line-height: 1.75;
+}
+.stat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 32px;
+}
+.stat-chip {
+  padding: 8px 18px;
+  border-radius: 22px;
+  font-size: 14px;
+  font-weight: 700;
+  background: var(--green-subtle);
+  border: 1px solid rgba(34,197,94,0.15);
+  color: rgba(34,197,94,0.8);
+}
+
+/* ─── FAQ ─── */
+.faq { padding: 100px 0; }
+.faq__title {
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 800;
+  line-height: 1.35;
+}
+.faq__list { margin-top: 32px; }
+.faq__item {
+  background: var(--card);
+  border-radius: 14px;
+  border: 1px solid var(--card-border);
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+.faq__item + .faq__item { margin-top: 10px; }
+.faq__item:hover { border-color: rgba(255,255,255,0.1); }
+.faq__q {
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  gap: 16px;
+}
+.faq__q-text { font-size: 15px; font-weight: 700; flex: 1; }
+.faq__arrow {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  transition: transform 0.3s;
+  stroke: rgba(255,255,255,0.3);
+  fill: none;
+}
+.faq__item.open .faq__arrow { transform: rotate(180deg); }
+.faq__a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), padding 0.3s;
+}
+.faq__item.open .faq__a { max-height: 300px; }
+.faq__a-inner {
+  padding: 0 20px 20px;
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.75;
+}
+
+/* ─── CTA ─── */
+.cta {
+  padding: 100px 0 60px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(108,92,231,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta__title {
+  font-size: clamp(24px, 5vw, 36px);
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+.cta__sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-top: 14px;
+  line-height: 1.7;
+}
+.cta__btn {
+  display: inline-block;
+  margin-top: 36px;
+  padding: 16px 40px;
+  background: var(--purple);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s;
+  box-shadow: 0 4px 40px var(--purple-glow);
+}
+.cta__btn:hover {
+  background: var(--purple-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 50px var(--purple-glow);
+}
+
+/* ─── Footer ─── */
+.footer {
+  padding: 40px 0 48px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+.footer__logo {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--purple);
+}
+.footer__text {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 640px) {
+  .container, .container--wide { padding: 0 20px; }
+  .hero { padding: 100px 20px 60px; min-height: auto; min-height: 90vh; }
+  .philosophy, .chat-review, .how, .faq, .cta { padding: 72px 0; }
+  .pricing { padding: 72px 0; }
+  .expert-banner { padding: 60px 0; }
+  .phone-mock { padding: 18px; }
+  .bubble { max-width: 88%; font-size: 13px; }
+  .how__tabs { flex-direction: row; }
+  .stat-chips { gap: 8px; }
+  .stat-chip { padding: 6px 14px; font-size: 13px; }
+}
+
+@media (min-width: 768px) {
+  .points { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .how__tabs { max-width: 360px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav__logo">쪽집게</a>
+  <a href="#cta" class="nav__cta">시작하기</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero__eyebrow">
+    <span class="label label--purple">전문 서비스 매칭 플랫폼</span>
+  </div>
+  <h1 class="hero__title">
+    실제 대화를 먼저 보고,<br>
+    <span>전문가를 고르세요.</span>
+  </h1>
+  <p class="hero__sub">
+    별점이 아니라 실제 대화로 전문가를 판단합니다.<br>
+    전문가 수수료 0%. 더 솔직하고, 더 합리적인 전문가 매칭.
+  </p>
+  <div class="hero__chips">
+    <span class="hero__chip">스포츠</span>
+    <span class="hero__chip">IT</span>
+    <span class="hero__chip">디자인</span>
+    <span class="hero__chip">과외</span>
+  </div>
+  <div class="hero__scroll">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+  </div>
+</section>
+
+<!-- Philosophy -->
+<section class="philosophy">
+  <div class="container">
+    <p class="philosophy__intro reveal">
+      "전문 서비스를 찾을 때,<br>
+      정말 중요한 건 뭘까?"<br>
+      그 질문에서 시작됐습니다.
+    </p>
+
+    <div class="philosophy__block reveal reveal-delay-1">
+      <span class="philosophy__num">생각 01</span>
+      <h3 class="philosophy__title">전문가 부담 없어야,<br>서비스 비용도 합리적입니다.</h3>
+      <p class="philosophy__body">과한 수수료를 전문가가 부담하면, 그 비용은 서비스 비용에 반영될 수 있습니다.</p>
+      <div class="philosophy__highlight">전문가 등록·제안서·수수료 모두 0원으로 설계했습니다.</div>
+    </div>
+
+    <div class="philosophy__block reveal reveal-delay-2">
+      <span class="philosophy__num">생각 02</span>
+      <h3 class="philosophy__title">별점만으로는<br>어떤 전문가인지 알 수 없었습니다.</h3>
+      <p class="philosophy__body">별점 4.8, "좋았어요" 한 줄.<br>실제 대화만큼 솔직한 리뷰는 없다고 생각했습니다.</p>
+      <div class="philosophy__highlight">매칭 후 나눈 대화내용이 자동으로 리뷰가 됩니다.</div>
+    </div>
+
+    <div class="philosophy__block reveal reveal-delay-3">
+      <span class="philosophy__num">생각 03</span>
+      <h3 class="philosophy__title">대신, 의뢰인이<br>소액 쿠폰을 부담합니다.</h3>
+      <p class="philosophy__body">아메리카노 한 잔 가격의 쿠폰. 이 구조 덕분에 전문가에게 수수료를 부과하지 않습니다.</p>
+      <div class="philosophy__highlight">커피 한잔 가격의 쿠폰 vs 보이지 않는 수수료.<br>어떤 쪽이 더 합리적일까요?</div>
+    </div>
+  </div>
+</section>
+
+<!-- Chat = Review -->
+<section class="chat-review">
+  <div class="container">
+    <span class="label label--purple reveal">대화가 곧 리뷰</span>
+    <h2 class="chat-review__title reveal reveal-delay-1" style="margin-top:18px;">100개의 별점보다,<br>1개의 실제 대화.</h2>
+    <p class="chat-review__sub reveal reveal-delay-2">매칭 후 나눈 대화가 자동으로 리뷰에 공개됩니다.</p>
+
+    <div class="phone-mock reveal reveal-delay-2">
+      <div class="phone-mock__header">
+        <div class="phone-mock__avatar">⛳</div>
+        <div>
+          <div class="phone-mock__name">김프로 전문가</div>
+          <div class="phone-mock__meta">골프 · 평균 응답 12분</div>
+        </div>
+      </div>
+      <div class="phone-mock__messages">
+        <div class="bubble bubble--left">안녕하세요! 슬라이스 교정 요청 잘 봤어요<br>그립부터 체크하면 빠르게 잡힐 거예요.</div>
+        <div class="bubble bubble--right">넵! 드라이버만 심하게 슬라이스예요 😭</div>
+        <div class="bubble bubble--left">다운스윙 궤도 문제일 가능성이 높아요.<br>1회 서비스면 충분합니다!</div>
+      </div>
+      <div class="phone-mock__badge">🔓 이 대화는 다음 의뢰인도 볼 수 있어요</div>
+    </div>
+
+    <div class="points reveal">
+      <div class="point">
+        <div class="point__icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <div>
+          <div class="point__title">결정 전에 대화를 먼저 읽어보세요</div>
+          <div class="point__desc">이전 의뢰인과 나눈 실제 대화를 읽고 판단할 수 있어요.</div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="point__icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div>
+          <div class="point__title">응답 시간이 자동 기록됩니다</div>
+          <div class="point__desc">성실한 전문가가 자연스럽게 드러나는 구조예요.</div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="point__icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <div class="point__title">개인정보는 자동 보호</div>
+          <div class="point__desc">전화번호, 계좌번호 등은 시스템이 자동 마스킹합니다.</div>
+        </div>
+      </div>
+      <div class="point">
+        <div class="point__icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 12h3v8h6v-6h2v6h6v-8h3z"/></svg>
+        </div>
+        <div>
+          <div class="point__title">문제 시 기록이 증거가 됩니다</div>
+          <div class="point__desc">채팅 기록 기반 CS 중재 + 에스크로 안전결제.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing Compare -->
+<section class="pricing">
+  <div class="container">
+    <span class="label label--purple reveal">구조의 차이</span>
+    <h2 class="pricing__title reveal reveal-delay-1" style="margin-top:18px;">같은 서비스인데,<br>왜 가격이 다를까요?</h2>
+    <p class="pricing__sub reveal reveal-delay-2">수수료 구조가 다르면, 같은 전문가도 다른 비용을 제안합니다.</p>
+
+    <div class="pricing__box reveal reveal-delay-2">
+      <div class="pricing__scenario">김프로님의 희망 서비스 비용: ₩70,000</div>
+
+      <div class="compare-card">
+        <div class="compare-card__title compare-card__title--other">🔸 수수료가 있는 플랫폼</div>
+        <div class="compare-row">
+          <span class="compare-row__label">의뢰 비용</span>
+          <span class="compare-row__value">₩0 (무료)</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-row__label">전문가 부담 수수료</span>
+          <span class="compare-row__value compare-row__value--red">₩8,000~18,000</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-row__label">수수료 반영 비용</span>
+          <span class="compare-row__value">₩80,000~88,000</span>
+        </div>
+        <div class="compare-total">
+          <span class="compare-total__label">의뢰인 총 부담</span>
+          <span class="compare-total__value compare-total__value--dark">₩80,000~88,000</span>
+        </div>
+      </div>
+
+      <div class="compare-card">
+        <div class="compare-card__title compare-card__title--ours">🔶 쪽집게에서 의뢰할 때</div>
+        <div class="compare-row">
+          <span class="compare-row__label">쿠폰 비용</span>
+          <span class="compare-row__value compare-row__value--purple">₩2,000</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-row__label">전문가 부담 수수료</span>
+          <span class="compare-row__value compare-row__value--green">₩0</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-row__label">희망 비용 그대로</span>
+          <span class="compare-row__value">₩70,000</span>
+        </div>
+        <div class="compare-total">
+          <span class="compare-total__label">의뢰인 총 부담</span>
+          <span class="compare-total__value compare-total__value--purple">₩72,000</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="pricing__footer reveal">같은 전문가, 같은 서비스. 구조가 다를 뿐입니다.</p>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="how">
+  <div class="container">
+    <span class="label label--purple reveal">이용 흐름</span>
+    <h2 class="chat-review__title reveal reveal-delay-1" style="margin-top:18px;">4단계로 완성하는<br>전문가 매칭</h2>
+
+    <div class="how__tabs reveal reveal-delay-2">
+      <div class="how__tab active--client" data-tab="client" onclick="switchTab('client')">의뢰인</div>
+      <div class="how__tab" data-tab="expert" onclick="switchTab('expert')">전문가</div>
+    </div>
+
+    <div class="how__content reveal reveal-delay-3">
+      <!-- Client panel -->
+      <div class="how__panel active" id="panel-client">
+        <div class="step-card">
+          <div class="step-card__icon step-card__icon--purple">📝</div>
+          <div>
+            <div class="step-card__num step-card__num--purple">STEP 01</div>
+            <div class="step-card__title">의뢰 등록</div>
+            <div class="step-card__desc">카테고리를 선택하고 온/오프라인 유형을 정해 쿠폰 1장으로 의뢰를 등록하세요. 7일간 모집됩니다.</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-card__icon step-card__icon--purple">📮</div>
+          <div>
+            <div class="step-card__num step-card__num--purple">STEP 02</div>
+            <div class="step-card__title">제안서 확인</div>
+            <div class="step-card__desc">전문가들이 금액과 일시를 담은 제안서를 보냅니다. 여러 제안서를 비교해보세요.</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-card__icon step-card__icon--purple">🔍</div>
+          <div>
+            <div class="step-card__num step-card__num--purple">STEP 03</div>
+            <div class="step-card__title">전문가 선택</div>
+            <div class="step-card__desc">실제 대화(리뷰)를 확인하고 프로필·포트폴리오와 자격증을 비교해 직접 판단하세요.</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-card__icon step-card__icon--purple">✅</div>
+          <div>
+            <div class="step-card__num step-card__num--purple">STEP 04</div>
+            <div class="step-card__title">서비스 진행</div>
+            <div class="step-card__desc">온라인은 에스크로 결제 후 납품·완료, 오프라인은 직접 만남 후 완료. 대화가 자동 리뷰가 됩니다.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Expert panel -->
+      <div class="how__panel" id="panel-expert">
+        <div class="step-card">
+          <div class="step-card__icon step-card__icon--green">👤</div>
+          <div>
+            <div class="step-card__num step-card__num--green">STEP 01</div>
+            <div class="step-card__title">프로필 등록</div>
+            <div class="step-card__desc">전문 분야와 경력을 입력하고 전문가 프로필을 완성하세요. 완전 무료입니다.</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-card__icon step-card__icon--green">📨</div>
+          <div>
+            <div class="step-card__num step-card__num--green">STEP 02</div>
+            <div class="step-card__title">의뢰 확인 & 제안서 전송</div>
+            <div class="step-card__desc">의뢰인의 요청을 확인하고 금액과 일시를 담은 맞춤 제안서를 보내세요. 무제한 무료입니다.</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-card__icon step-card__icon--green">💬</div>
+          <div>
+            <div class="step-card__num step-card__num--green">STEP 03</div>
+            <div class="step-card__title">채팅으로 상담</div>
+            <div class="step-card__desc">의뢰인과 직접 채팅하며 상세 내용을 조율하세요. 매칭이 확정되면 1:1 채팅방이 생성됩니다.</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-card__icon step-card__icon--green">💰</div>
+          <div>
+            <div class="step-card__num step-card__num--green">STEP 04</div>
+            <div class="step-card__title">서비스 완료 & 수익</div>
+            <div class="step-card__desc">서비스를 완료하면 수익이 정산됩니다. 수수료 없이 전액 수령하세요. (온라인 PG 3.5% 별도)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Expert Banner -->
+<section class="expert-banner">
+  <div class="container">
+    <span class="label label--green reveal">전문가 전용</span>
+    <h2 class="expert-banner__title reveal reveal-delay-1" style="margin-top:18px;">
+      실력만 보여주세요.<br><span>수수료는 0%입니다.</span>
+    </h2>
+    <p class="expert-banner__sub reveal reveal-delay-2">
+      등록비 무료, 제안서 무료, 중개 수수료 0%.<br>일한만큼 전부 가져가세요.
+    </p>
+    <div class="stat-chips reveal reveal-delay-3">
+      <span class="stat-chip">등록비 ₩0</span>
+      <span class="stat-chip">제안서 ₩0</span>
+      <span class="stat-chip">수수료 0%</span>
+      <span class="stat-chip">무제한 제안</span>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="container">
+    <span class="label label--dim reveal">FAQ</span>
+    <h2 class="faq__title reveal reveal-delay-1" style="margin-top:18px;">자주 묻는 질문</h2>
+
+    <div class="faq__list reveal reveal-delay-2">
+      <div class="faq__item">
+        <div class="faq__q" onclick="toggleFaq(this)">
+          <span class="faq__q-text">쿠폰은 왜 필요한가요?</span>
+          <svg class="faq__arrow" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq__a"><div class="faq__a-inner">쪽집게는 전문가에게 수수료를 부과하지 않습니다. 대신 의뢰인이 소액의 쿠폰으로 의뢰를 등록합니다. 다른 플랫폼의 숨겨진 수수료(10~30%)가 서비스 가격에 포함되는 것과 달리, 쪽집게는 투명한 비용 구조를 제공합니다.</div></div>
+      </div>
+      <div class="faq__item">
+        <div class="faq__q" onclick="toggleFaq(this)">
+          <span class="faq__q-text">매칭에 실패하면 쿠폰은 어떻게 되나요?</span>
+          <svg class="faq__arrow" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq__a"><div class="faq__a-inner">모집 기간(7일) 내에 전문가를 선택하지 않으면 사용된 쿠폰은 자동으로 반환됩니다. 매칭이 성사되지 않으면 비용이 발생하지 않으니 부담 없이 의뢰를 등록하세요.</div></div>
+      </div>
+      <div class="faq__item">
+        <div class="faq__q" onclick="toggleFaq(this)">
+          <span class="faq__q-text">전문가 등록은 정말 무료인가요?</span>
+          <svg class="faq__arrow" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq__a"><div class="faq__a-inner">네, 완전 무료입니다. 등록비, 제안서 비용, 중개 수수료 모두 0원입니다. 오프라인 서비스는 비용이 전혀 없으며, 온라인 서비스는 PG사 수수료 3.5%만 별도로 발생합니다.</div></div>
+      </div>
+      <div class="faq__item">
+        <div class="faq__q" onclick="toggleFaq(this)">
+          <span class="faq__q-text">채팅이 공개된다는데, 어떤 내용이 보이나요?</span>
+          <svg class="faq__arrow" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq__a"><div class="faq__a-inner">서비스 완료 후 대화 내용이 리뷰로 공개됩니다. 단, 전화번호·계좌번호 등 민감 정보는 자동으로 마스킹 처리되며, 원하는 메시지를 직접 비공개 처리할 수도 있습니다.</div></div>
+      </div>
+      <div class="faq__item">
+        <div class="faq__q" onclick="toggleFaq(this)">
+          <span class="faq__q-text">개인정보는 안전한가요?</span>
+          <svg class="faq__arrow" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq__a"><div class="faq__a-inner">서비스 완료 후 대화 내용이 리뷰로 공개되지만, 전화번호·계좌번호 등 민감 정보는 자동으로 마스킹 처리됩니다. 또한 원하는 메시지를 직접 비공개로 설정할 수도 있습니다.</div></div>
+      </div>
+      <div class="faq__item">
+        <div class="faq__q" onclick="toggleFaq(this)">
+          <span class="faq__q-text">수익은 어떻게 정산되나요?</span>
+          <svg class="faq__arrow" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq__a"><div class="faq__a-inner">서비스 완료 후 영업일 기준 3~4일 내로 등록하신 정산 계좌에 송금됩니다. 온라인 결제 건은 PG사 수수료 3.5%를 제외한 금액이 정산되며, 쪽집게는 중개 수수료로 수익을 창출하지 않습니다.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="cta">
+  <div class="container">
+    <h2 class="cta__title reveal">투명한 구조에서<br>더 좋은 서비스가 시작됩니다.</h2>
+    <p class="cta__sub reveal reveal-delay-1">실제 대화로 확인하고,<br>합리적인 비용으로 시작하세요.</p>
+    <a href="#" class="cta__btn reveal reveal-delay-2">지금 시작하기</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__logo">쪽집게</div>
+    <div class="footer__text">전문 서비스 매칭 · 채팅이 곧 리뷰 · 전문가 수수료 0%</div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// Tab switching
+function switchTab(tab) {
+  document.querySelectorAll('.how__tab').forEach(t => {
+    t.classList.remove('active--client', 'active--expert');
+  });
+  document.querySelectorAll('.how__panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`[data-tab="${tab}"]`).classList.add(tab === 'client' ? 'active--client' : 'active--expert');
+  document.getElementById(`panel-${tab}`).classList.add('active');
+}
+
+// FAQ toggle
+function toggleFaq(el) {
+  const item = el.closest('.faq__item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq__item').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+</script>
+
+</body>
+</html>
