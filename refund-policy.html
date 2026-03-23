@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>에스크로 환불 정책 - 쪽집게</title>
+  <meta name="description" content="쪽집게 온라인 에스크로 환불 정책 안내">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+  <style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --purple: #6C5CE7;
+  --purple-deep: #5A4BD1;
+  --purple-light: #a78bfa;
+  --purple-bg: rgba(108,92,231,0.06);
+  --green: #10b981;
+  --green-bg: rgba(16,185,129,0.08);
+  --red: #ef4444;
+  --red-bg: rgba(239,68,68,0.06);
+  --amber: #f59e0b;
+  --amber-bg: rgba(245,158,11,0.06);
+  --cream: #FAFAF7;
+  --cream-dark: #F2F0EB;
+  --text-primary: #1a1a2e;
+  --text-secondary: #555568;
+  --text-muted: #8e8ea0;
+  --border: rgba(0,0,0,0.06);
+  --white: #ffffff;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif;
+  background: var(--cream);
+  color: var(--text-primary);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ── */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Header ── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(250,250,247,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+}
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.header__back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.header__back:hover { color: var(--purple); }
+.header__back svg { width: 18px; height: 18px; }
+.header__logo {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+/* ── Hero ── */
+.hero {
+  padding: 64px 0 48px;
+  text-align: center;
+}
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--purple-bg);
+  color: var(--purple);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.hero__title {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.3;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+.hero__desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ── TOC ── */
+.toc {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 48px;
+}
+.toc__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 16px;
+}
+.toc__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.toc__list a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+.toc__list a:hover {
+  background: var(--purple-bg);
+  color: var(--purple);
+}
+.toc__num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--purple-bg);
+  color: var(--purple);
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* ── Section ── */
+.section {
+  margin-bottom: 48px;
+}
+.section__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--purple);
+}
+.section__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--purple);
+  color: white;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.section__title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/* ── Stage Cards ── */
+.stage {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 20px;
+  transition: box-shadow 0.3s;
+}
+.stage:hover {
+  box-shadow: 0 8px 32px rgba(26,26,46,0.06);
+}
+.stage__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.stage__label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.stage__name {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+.stage__badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.stage__badge--yes {
+  background: var(--green-bg);
+  color: var(--green);
+}
+.stage__badge--no {
+  background: var(--red-bg);
+  color: var(--red);
+}
+.stage__desc {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+.stage__detail {
+  background: var(--cream);
+  border-radius: 12px;
+  padding: 20px;
+}
+.stage__detail-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+/* ── Table ── */
+.policy-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.policy-table th {
+  text-align: left;
+  padding: 10px 14px;
+  background: var(--cream-dark);
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+}
+.policy-table th:first-child { border-radius: 8px 0 0 0; }
+.policy-table th:last-child { border-radius: 0 8px 0 0; }
+.policy-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+.policy-table tr:last-child td { border-bottom: none; }
+
+/* ── Info Box ── */
+.info-box {
+  display: flex;
+  gap: 12px;
+  padding: 20px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.info-box--purple {
+  background: var(--purple-bg);
+  border: 1px solid rgba(108,92,231,0.12);
+}
+.info-box--green {
+  background: var(--green-bg);
+  border: 1px solid rgba(16,185,129,0.12);
+}
+.info-box--amber {
+  background: var(--amber-bg);
+  border: 1px solid rgba(245,158,11,0.12);
+}
+.info-box--red {
+  background: var(--red-bg);
+  border: 1px solid rgba(239,68,68,0.12);
+}
+.info-box__icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  line-height: 1.7;
+}
+.info-box__text { color: var(--text-primary); }
+.info-box__text strong { font-weight: 700; }
+
+/* ── Summary Table ── */
+.summary {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 48px;
+  overflow-x: auto;
+}
+.summary__title {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+/* ── Dispute Section ── */
+.dispute-step {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.dispute-step__num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--purple);
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.dispute-step__content {
+  flex: 1;
+}
+.dispute-step__title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.dispute-step__desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ── Footer ── */
+.footer {
+  padding: 48px 0 32px;
+  background: var(--text-primary);
+  color: rgba(255,255,255,0.4);
+  margin-top: 48px;
+}
+.footer__inner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+  text-align: center;
+}
+.footer__copy {
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.footer__link {
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.2s;
+}
+.footer__link:hover { color: var(--purple-light); }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .hero { padding: 48px 0 32px; }
+  .hero__title { font-size: 24px; }
+  .toc { padding: 20px 24px; }
+  .stage { padding: 20px; }
+  .stage__top { flex-direction: column; gap: 10px; }
+  .section__title { font-size: 18px; }
+  .summary { padding: 20px; }
+  .policy-table { font-size: 13px; }
+  .policy-table th, .policy-table td { padding: 8px 10px; }
+}
+  </style>
+</head>
+<body>
+
+<!-- ═══ Header ═══ -->
+<header class="header">
+  <div class="header__inner">
+    <a href="index.html" class="header__back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      홈으로
+    </a>
+    <span class="header__logo">쪽집게</span>
+  </div>
+</header>
+
+<!-- ═══ Hero ═══ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      에스크로 안전결제
+    </div>
+    <h1 class="hero__title">온라인 에스크로 환불 정책</h1>
+    <p class="hero__desc">
+      온라인 의뢰는 에스크로 안전결제로 서비스 대금을 처리합니다.<br>
+      거래 단계에 따라 환불 가능 여부가 달라지며, 아래에서 상세히 안내합니다.
+    </p>
+  </div>
+</section>
+
+<div class="container">
+
+  <!-- ═══ TOC ═══ -->
+  <nav class="toc">
+    <div class="toc__title">목차</div>
+    <ul class="toc__list">
+      <li><a href="#stages"><span class="toc__num">1</span>거래 단계별 환불 정책</a></li>
+      <li><a href="#dispute"><span class="toc__num">2</span>분쟁(Dispute) 처리</a></li>
+      <li><a href="#processing"><span class="toc__num">3</span>환불 소요 시간 및 수수료</a></li>
+      <li><a href="#summary"><span class="toc__num">4</span>전체 요약</a></li>
+    </ul>
+  </nav>
+
+  <!-- ═══ 1. 거래 단계별 환불 정책 ═══ -->
+  <section class="section" id="stages">
+    <div class="section__header">
+      <div class="section__icon">1</div>
+      <h2 class="section__title">거래 단계별 환불 정책</h2>
+    </div>
+
+    <!-- Stage A -->
+    <div class="stage">
+      <div class="stage__top">
+        <div>
+          <div class="stage__label">STAGE A</div>
+          <div class="stage__name">쿨링오프 (결제 후 2시간 이내)</div>
+        </div>
+        <span class="stage__badge stage__badge--yes">&#10003; 전액 환불</span>
+      </div>
+      <p class="stage__desc">
+        결제 후 2시간 이내라면 사유에 관계없이 즉시 전액 환불됩니다.
+        전문가 동의가 필요하지 않으며, 수수료도 없습니다.
+      </p>
+      <div class="stage__detail">
+        <table class="policy-table">
+          <tr><th>환불 가능</th><td>전액 환불</td></tr>
+          <tr><th>전문가 동의</th><td>불필요</td></tr>
+          <tr><th>처리 방식</th><td>즉시 자동 처리</td></tr>
+          <tr><th>수수료</th><td>없음</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Stage B -->
+    <div class="stage">
+      <div class="stage__top">
+        <div>
+          <div class="stage__label">STAGE B</div>
+          <div class="stage__name">작업 진행 중 (2시간 이후 ~ 마감일 이전)</div>
+        </div>
+        <span class="stage__badge stage__badge--yes">&#10003; 전액 환불</span>
+      </div>
+      <p class="stage__desc">
+        쿨링오프 기간 이후, 마감일 이전까지는 전문가 동의 하에 전액 환불이 가능합니다.
+        환불 요청 시 전문가에게 알림이 전달되며, 48시간 내에 수락 또는 거절해야 합니다.
+      </p>
+      <div class="stage__detail">
+        <div class="stage__detail-title">전문가 응답에 따른 처리</div>
+        <table class="policy-table">
+          <tr><th>전문가 응답</th><th>결과</th></tr>
+          <tr><td>수락</td><td>즉시 전액 환불</td></tr>
+          <tr><td>거절</td><td>자동으로 분쟁(Dispute) 전환</td></tr>
+          <tr><td>48시간 무응답</td><td>자동 전액 환불</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Stage C -->
+    <div class="stage">
+      <div class="stage__top">
+        <div>
+          <div class="stage__label">STAGE C</div>
+          <div class="stage__name">마감일 초과</div>
+        </div>
+        <span class="stage__badge stage__badge--yes">&#10003; 전액 환불</span>
+      </div>
+      <p class="stage__desc">
+        합의서에 명시된 마감일이 지나면 양쪽에 알림이 발송됩니다.
+        의뢰인은 마감일을 연장하거나 환불을 요청할 수 있습니다.
+        환불 절차는 STAGE B와 동일합니다.
+      </p>
+      <div class="stage__detail">
+        <div class="stage__detail-title">의뢰인 선택지</div>
+        <table class="policy-table">
+          <tr><th>선택</th><th>설명</th></tr>
+          <tr><td>마감일 연장</td><td>전문가와 채팅에서 협의 후 설정 (횟수 제한 없음)</td></tr>
+          <tr><td>환불 요청</td><td>STAGE B와 동일 (전문가 48시간 응답)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Stage D -->
+    <div class="stage">
+      <div class="stage__top">
+        <div>
+          <div class="stage__label">STAGE D</div>
+          <div class="stage__name">작업물 전달 이후</div>
+        </div>
+        <span class="stage__badge stage__badge--no">&#10005; 환불 불가</span>
+      </div>
+      <p class="stage__desc">
+        전문가가 작업물을 전달한 이후에는 환불이 불가합니다.
+        대신 수정 요청, 작업물 거부 등의 방법으로 대응할 수 있습니다.
+      </p>
+      <div class="stage__detail">
+        <div class="stage__detail-title">가능한 조치</div>
+        <table class="policy-table">
+          <tr><th>조치</th><th>설명</th></tr>
+          <tr><td>수정 요청</td><td>합의서에 명시된 수정 횟수 이내 (기본 2회)</td></tr>
+          <tr><td>작업물 거부</td><td>합의 내용과 현저히 다를 경우, 자동 분쟁 전환</td></tr>
+          <tr><td>자동 승인</td><td>작업물 전달 후 72시간 미응답 시 자동 승인 처리</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Stage E -->
+    <div class="stage">
+      <div class="stage__top">
+        <div>
+          <div class="stage__label">STAGE E</div>
+          <div class="stage__name">거래 완료 이후</div>
+        </div>
+        <span class="stage__badge stage__badge--no">&#10005; 환불 불가</span>
+      </div>
+      <p class="stage__desc">
+        의뢰인 승인 또는 자동 승인(72시간) 이후 전문가에게 정산이 진행됩니다.
+        거래가 완료된 이후에는 환불이 불가합니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══ 2. 분쟁 처리 ═══ -->
+  <section class="section" id="dispute">
+    <div class="section__header">
+      <div class="section__icon">2</div>
+      <h2 class="section__title">분쟁(Dispute) 처리</h2>
+    </div>
+
+    <div class="info-box info-box--amber">
+      <div class="info-box__icon">&#9888;&#65039;</div>
+      <div class="info-box__text">
+        분쟁 조정은 <strong>전문가가 환불 요청을 거절</strong>하거나 <strong>의뢰인이 작업물을 거부</strong>할 때 자동으로 시작됩니다. 별도 신청이 필요하지 않으며, 분쟁 시작 시 에스크로 예치금은 동결됩니다.
+      </div>
+    </div>
+
+    <h3 style="font-size:16px; font-weight:700; margin-bottom:20px;">분쟁 조정 절차</h3>
+
+    <div class="dispute-step">
+      <div class="dispute-step__num">1</div>
+      <div class="dispute-step__content">
+        <div class="dispute-step__title">분쟁 접수</div>
+        <div class="dispute-step__desc">자동 접수 후 양쪽에 알림이 발송됩니다.</div>
+      </div>
+    </div>
+    <div class="dispute-step">
+      <div class="dispute-step__num">2</div>
+      <div class="dispute-step__content">
+        <div class="dispute-step__title">관리자 검토</div>
+        <div class="dispute-step__desc">분쟁 사유를 확인하고, 부적절한 경우 반려할 수 있습니다.</div>
+      </div>
+    </div>
+    <div class="dispute-step">
+      <div class="dispute-step__num">3</div>
+      <div class="dispute-step__content">
+        <div class="dispute-step__title">상대방 소명 (3일 이내)</div>
+        <div class="dispute-step__desc">상대방은 텍스트로 소명서를 1회 제출할 수 있습니다.</div>
+      </div>
+    </div>
+    <div class="dispute-step">
+      <div class="dispute-step__num">4</div>
+      <div class="dispute-step__content">
+        <div class="dispute-step__title">관리자 판단</div>
+        <div class="dispute-step__desc">채팅 내역, 합의서, 소명 내용을 종합하여 판단합니다.</div>
+      </div>
+    </div>
+    <div class="dispute-step">
+      <div class="dispute-step__num">5</div>
+      <div class="dispute-step__content">
+        <div class="dispute-step__title">결과 통보</div>
+        <div class="dispute-step__desc">판단 결과가 양쪽에 알림으로 전달됩니다.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;">
+      <h3 style="font-size:16px; font-weight:700; margin-bottom:16px;">분쟁 조정 결과</h3>
+      <div class="stage" style="margin-bottom:20px;">
+        <table class="policy-table">
+          <tr><th>결정</th><th>설명</th></tr>
+          <tr><td><strong>전액 환불</strong></td><td>결제 금액 전액이 의뢰인에게 환불됩니다.</td></tr>
+          <tr><td><strong>부분 환불</strong></td><td>작업 진행률을 고려하여 일부 환불, 나머지는 전문가에게 정산됩니다.</td></tr>
+          <tr><td><strong>전문가 정산</strong></td><td>전문가의 작업이 합의에 부합하는 경우, 전액 전문가에게 정산됩니다.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="info-box info-box--purple">
+      <div class="info-box__icon">&#128203;</div>
+      <div class="info-box__text">
+        <strong>합의서가 판단의 기준입니다.</strong> 합의서에 명시되지 않은 추가 요구는 인정되지 않으며, 모든 채팅 기록이 분쟁 심사의 핵심 근거로 활용됩니다.
+      </div>
+    </div>
+
+    <div class="info-box info-box--red">
+      <div class="info-box__icon">&#128683;</div>
+      <div class="info-box__text">
+        <strong>악용 방지 정책:</strong> 분쟁 패소 2회 이상 시 계정 경고가 부여되며, 반복적인 악용이 적발되면 계정 정지 조치됩니다. 분쟁 접수 후에는 취소할 수 없습니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 3. 환불 소요 시간 ═══ -->
+  <section class="section" id="processing">
+    <div class="section__header">
+      <div class="section__icon">3</div>
+      <h2 class="section__title">환불 소요 시간 및 수수료</h2>
+    </div>
+
+    <div class="stage">
+      <h3 style="font-size:16px; font-weight:700; margin-bottom:16px;">환불 소요 시간</h3>
+      <table class="policy-table">
+        <tr><th>결제 수단</th><th>소요 시간</th></tr>
+        <tr><td>신용/체크카드</td><td>영업일 기준 3~5일</td></tr>
+        <tr><td>간편결제 (카카오페이, 토스 등)</td><td>영업일 기준 1~3일</td></tr>
+      </table>
+    </div>
+
+    <div class="info-box info-box--green">
+      <div class="info-box__icon">&#128176;</div>
+      <div class="info-box__text">
+        <strong>쪽집게는 환불 수수료를 받지 않습니다.</strong> 결제 수단에 따라 PG(결제 대행) 수수료가 발생할 수 있으며, 이는 결제사 약관에 따릅니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 4. 전체 요약 ═══ -->
+  <section class="section" id="summary">
+    <div class="section__header">
+      <div class="section__icon">4</div>
+      <h2 class="section__title">전체 요약</h2>
+    </div>
+
+    <div class="summary">
+      <table class="policy-table">
+        <tr>
+          <th>거래 단계</th>
+          <th>환불 여부</th>
+          <th>전문가 동의</th>
+          <th>처리 방식</th>
+        </tr>
+        <tr>
+          <td><strong>결제 후 2시간 이내</strong></td>
+          <td style="color:var(--green); font-weight:700;">전액 환불</td>
+          <td>불필요</td>
+          <td>즉시 자동 처리</td>
+        </tr>
+        <tr>
+          <td><strong>작업 진행 중</strong></td>
+          <td style="color:var(--green); font-weight:700;">전액 환불</td>
+          <td>필요</td>
+          <td>전문가 48시간 응답</td>
+        </tr>
+        <tr>
+          <td><strong>마감일 초과</strong></td>
+          <td style="color:var(--green); font-weight:700;">전액 환불</td>
+          <td>필요</td>
+          <td>전문가 48시간 응답</td>
+        </tr>
+        <tr>
+          <td><strong>작업물 전달 이후</strong></td>
+          <td style="color:var(--red); font-weight:700;">환불 불가</td>
+          <td>-</td>
+          <td>수정 요청/거부만 가능</td>
+        </tr>
+        <tr>
+          <td><strong>거래 완료 이후</strong></td>
+          <td style="color:var(--red); font-weight:700;">환불 불가</td>
+          <td>-</td>
+          <td>정산 완료</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="info-box info-box--purple">
+      <div class="info-box__icon">&#128161;</div>
+      <div class="info-box__text">
+        본 환불 정책은 <strong>온라인 의뢰(에스크로 결제)</strong>에만 적용됩니다.
+        오프라인 의뢰는 당사자 간 직접 결제이므로 플랫폼이 중재하지 않습니다.
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══ Footer ═══ -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__copy">&copy; 2026 쪽집게. All rights reserved.</div>
+    <a href="index.html" class="footer__link">홈으로 돌아가기</a>
+  </div>
+</footer>
+
+</body>
+</html>
