@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>리뷰 시스템 — 쪽집게 고객센터</title>
+<meta name="description" content="쪽집게의 채팅 기반 리뷰 시스템, 비공개 처리, 자동 마스킹, 별점 안내입니다.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="gnb">
+  <div class="gnb-in">
+    <a href="index.html" class="gnb-logo">
+      <img src="../assets/service_icon.png" alt="쪽집게" class="gnb-icon">
+      쪽집게 고객센터
+    </a>
+    <nav class="gnb-nav" id="gnbNav">
+      <a href="guide.html">이용 가이드</a>
+      <a href="coupon.html">쿠폰·결제</a>
+      <a href="refund-policy.html">환불·분쟁</a>
+      <a href="review.html" class="active">리뷰 시스템</a>
+    </nav>
+    <div class="gnb-right"></div>
+    <button class="mob-menu" id="mobMenu" aria-label="메뉴">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="page-hero">
+  <div class="inner-narrow">
+    <div class="breadcrumb">
+      <a href="index.html">도움 센터</a>
+      <span>&rsaquo;</span>
+      <span>리뷰 시스템</span>
+    </div>
+    <h1>리뷰 시스템</h1>
+    <p>별점이 아닌 실제 대화로 전문가를 판단합니다</p>
+  </div>
+</section>
+
+<!-- ═══ CONTENT ═══ -->
+<div class="content-wrap">
+  <div class="inner-narrow content">
+
+    <!-- 1. 채팅 = 리뷰 -->
+    <h2><span class="sec-num">1</span> 채팅 = 리뷰</h2>
+    <div class="callout purple">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>쪽집게의 리뷰는 다릅니다.</strong><br>텍스트 리뷰를 직접 작성하는 것이 아니라, 실제 채팅 대화가 그대로 리뷰로 공개됩니다. 전문가의 소통 방식, 전문성, 태도를 있는 그대로 확인할 수 있습니다.</div>
+    </div>
+    <p><strong>왜 채팅 기반 리뷰인가요?</strong></p>
+    <p>기존 별점/텍스트 리뷰의 한계:</p>
+    <ul>
+      <li>허위 리뷰, 과장된 리뷰의 가능성</li>
+      <li>별점만으로는 알 수 없는 소통 능력</li>
+    </ul>
+    <p>채팅 리뷰의 장점:</p>
+    <ul>
+      <li>전문가의 실제 소통 방식 확인</li>
+      <li>조작 불가능</li>
+      <li>다른 의뢰인과의 실제 대화 패턴 파악 가능</li>
+    </ul>
+
+    <!-- 2. 리뷰 생성 과정 -->
+    <h2><span class="sec-num">2</span> 리뷰 생성 과정</h2>
+    <div class="step-list">
+      <div class="step-item"><div class="step-dot"></div><div><h4>서비스 완료</h4><p>의뢰인이 서비스 완료를 확인하거나 자동 완료 처리</p></div></div>
+      <div class="step-item"><div class="step-dot"></div><div><h4>채팅 스냅샷 생성</h4><p>시스템이 채팅 내역을 자동으로 스냅샷으로 저장</p></div></div>
+      <div class="step-item"><div class="step-dot"></div><div><h4>비공개 처리 기간</h4><p>의뢰인에게 비공개 처리할 메시지를 선택할 기회 제공 (48시간)</p></div></div>
+      <div class="step-item"><div class="step-dot"></div><div><h4>자동 마스킹</h4><p>전화번호, 계좌번호 등 민감 정보가 자동으로 마스킹 처리</p></div></div>
+      <div class="step-item"><div class="step-dot"></div><div><h4>리뷰 공개</h4><p>전문가 프로필에 리뷰가 공개됨</p></div></div>
+    </div>
+    <div class="callout green">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <div>리뷰는 자동으로 생성됩니다. 별도로 작성할 필요가 없어 간편합니다.</div>
+    </div>
+
+    <!-- 3. 비공개 처리 -->
+    <h2><span class="sec-num">3</span> 비공개 처리</h2>
+    <p>채팅 내용 중 공개를 원하지 않는 메시지가 있다면 비공개 처리할 수 있습니다.</p>
+    <div class="tbl-wrap">
+      <table>
+        <tr><th style="width:40%">항목</th><th>내용</th></tr>
+        <tr><td>비공개 처리 가능 시점</td><td>서비스 완료 후 48시간 이내</td></tr>
+        <tr><td>처리 방법</td><td>채팅방에서 원하는 메시지를 선택하여 비공개 처리</td></tr>
+        <tr><td>비공개 처리 후</td><td>해당 메시지는 리뷰에서 숨겨짐</td></tr>
+        <tr><td>취소 가능 여부</td><td>비공개 처리 기간 내에는 취소 가능</td></tr>
+      </table>
+    </div>
+    <div class="callout amber">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div>비공개 처리 기간(48시간)이 지나면 변경할 수 없습니다. 신중하게 선택해 주세요.</div>
+    </div>
+
+    <!-- 4. 자동 마스킹 -->
+    <h2><span class="sec-num">4</span> 자동 마스킹</h2>
+    <p>리뷰에 공개되는 채팅 내역에서 민감한 개인정보는 자동으로 마스킹 처리됩니다.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>마스킹 대상</th><th>예시</th><th>마스킹 결과</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>전화번호</td><td>010-1234-5678</td><td>010-****-5678</td></tr>
+          <tr><td>계좌번호</td><td>110-123-456789</td><td>110-***-******</td></tr>
+          <tr><td>이메일</td><td>user@email.com</td><td>u***@email.com</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout purple">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div>자동 마스킹은 시스템이 자동으로 처리합니다. 추가로 비공개 처리를 원하는 메시지는 직접 선택해 주세요.</div>
+    </div>
+
+    <!-- 5. 별점 -->
+    <h2><span class="sec-num">5</span> 별점</h2>
+    <p>채팅 리뷰와 별도로 별점을 입력할 수 있습니다. 별점은 선택사항이며, 서비스 완료 후 1회만 입력 가능합니다.</p>
+    <div class="tbl-wrap">
+      <table>
+        <tr><th style="width:40%">항목</th><th>내용</th></tr>
+        <tr><td>별점 범위</td><td>1~5점 (0.5점 단위)</td></tr>
+        <tr><td>필수 여부</td><td>선택사항</td></tr>
+        <tr><td>입력 시점</td><td>서비스 완료 후</td></tr>
+        <tr><td>수정 가능</td><td>입력 후 수정 불가</td></tr>
+      </table>
+    </div>
+
+    <!-- 6. 리뷰 확인하기 -->
+    <h2><span class="sec-num">6</span> 리뷰 확인하기</h2>
+    <p>다른 의뢰인의 리뷰를 확인하여 전문가를 판단할 수 있습니다.</p>
+    <div class="step-list">
+      <div class="step-item"><div class="step-dot"></div><div><h4>전문가 프로필 방문</h4><p>전문가 프로필 페이지에서 리뷰 탭 확인</p></div></div>
+      <div class="step-item"><div class="step-dot"></div><div><h4>채팅 리뷰 확인</h4><p>실제 대화 내역을 통해 전문가의 소통 방식 파악</p></div></div>
+      <div class="step-item"><div class="step-dot"></div><div><h4>별점 확인</h4><p>평균 별점과 별점 분포 확인</p></div></div>
+      <div class="step-item"><div class="step-dot"></div><div><h4>의뢰 판단</h4><p>리뷰를 참고하여 제안서 수락 여부 결정</p></div></div>
+    </div>
+
+    <!-- 7. 자주 묻는 질문 -->
+    <h2><span class="sec-num">7</span> 자주 묻는 질문</h2>
+    <div class="pfaq">
+      <div class="pfaq-item"><button class="pfaq-q">채팅이 전부 공개되나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="pfaq-a"><div class="pfaq-ai">아닙니다. 비공개 처리한 메시지는 리뷰에서 숨겨지고, 민감 정보는 자동 마스킹됩니다.</div></div></div>
+      <div class="pfaq-item"><button class="pfaq-q">리뷰를 삭제할 수 있나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="pfaq-a"><div class="pfaq-ai">리뷰 자체를 삭제할 수는 없지만, 개별 메시지를 비공개 처리할 수 있습니다.</div></div></div>
+      <div class="pfaq-item"><button class="pfaq-q">전문가도 리뷰에 대해 의견을 남길 수 있나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="pfaq-a"><div class="pfaq-ai">현재는 의뢰인의 채팅 리뷰만 공개되며, 전문가의 별도 답변 기능은 추후 제공 예정입니다.</div></div></div>
+      <div class="pfaq-item"><button class="pfaq-q">별점을 입력하지 않으면 어떻게 되나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="pfaq-a"><div class="pfaq-ai">별점은 선택사항이므로 입력하지 않아도 채팅 리뷰는 정상적으로 공개됩니다.</div></div></div>
+      <div class="pfaq-item"><button class="pfaq-q">오프라인 의뢰도 리뷰가 생기나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="pfaq-a"><div class="pfaq-ai">네, 오프라인 의뢰도 채팅 내역이 리뷰로 공개됩니다. 매칭 후 채팅 협의 내역이 대상입니다.</div></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="foot">
+  <div class="foot-in">
+    <span>&copy; 2026 쪽집게 &middot; 사업자등록번호 287-31-01764</span>
+    <div class="foot-links"><a href="index.html">도움 센터</a><a href="#">이용약관</a><a href="#">개인정보처리방침</a></div>
+  </div>
+</footer>
+
+<button class="btt" id="btt" aria-label="맨 위로">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script>
+// Mobile menu
+document.getElementById('mobMenu').addEventListener('click',()=>{
+  document.getElementById('gnbNav').classList.toggle('mob-open');
+});
+
+// FAQ accordion
+document.querySelectorAll('.pfaq-q').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const it=b.parentElement,a=it.querySelector('.pfaq-a'),o=it.classList.contains('open');
+    it.closest('.pfaq').querySelectorAll('.pfaq-item.open').forEach(i=>{i.classList.remove('open');i.querySelector('.pfaq-a').style.maxHeight='0'});
+    if(!o){it.classList.add('open');a.style.maxHeight=a.scrollHeight+'px'}
+  });
+});
+
+// Back to top
+const btt=document.getElementById('btt');
+window.addEventListener('scroll',()=>btt.classList.toggle('vis',scrollY>300));
+btt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+</script>
+</body>
+</html>

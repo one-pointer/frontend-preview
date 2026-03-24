@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>쿠폰 · 결제 안내 — 쪽집게 고객센터</title>
+<meta name="description" content="쪽집게 쿠폰 구매부터 에스크로 결제, 정산까지 안내합니다.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="gnb">
+  <div class="gnb-in">
+    <a href="index.html" class="gnb-logo">
+      <img src="../assets/service_icon.png" alt="쪽집게" class="gnb-icon">
+      쪽집게 고객센터
+    </a>
+    <nav class="gnb-nav" id="gnbNav">
+      <a href="guide.html">이용 가이드</a>
+      <a href="coupon.html" class="active">쿠폰·결제</a>
+      <a href="refund-policy.html">환불·분쟁</a>
+      <a href="review.html">리뷰 시스템</a>
+    </nav>
+    <div class="gnb-right"></div>
+    <button class="mob-menu" id="mobMenu" aria-label="메뉴">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="page-hero">
+  <div class="inner-narrow">
+    <div class="breadcrumb">
+      <a href="index.html">도움 센터</a>
+      <span>&rsaquo;</span>
+      <span>쿠폰 &middot; 결제</span>
+    </div>
+    <h1>쿠폰 &middot; 결제 안내</h1>
+    <p>쿠폰 구매부터 에스크로 결제, 정산까지 안내합니다.</p>
+  </div>
+</section>
+
+<!-- ═══ CONTENT ═══ -->
+<div class="content-wrap">
+  <div class="inner-narrow content">
+
+    <!-- ── 1. 쿠폰이란? ── -->
+    <h2><span class="sec-num">1</span> 쿠폰이란?</h2>
+    <div class="callout purple">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>쪽집게는 전문가 수수료 0%.</strong><br>다른 플랫폼의 숨은 수수료(10~30%) 대신, 의뢰인이 커피 한잔 가격의 쿠폰으로 의뢰를 등록합니다.</div>
+    </div>
+    <p>쿠폰은 의뢰 등록에 사용되는 이용권입니다. 전문가에게 수수료를 부과하는 대신, 의뢰 등록 시 쿠폰 1장이 소모되는 구조입니다.</p>
+
+    <!-- ── 2. 쿠폰 구매 ── -->
+    <h2><span class="sec-num">2</span> 쿠폰 구매</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>패키지</th><th>쿠폰 수</th><th>가격</th><th>장당 가격</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>체험</td><td>1장</td><td>3,500원</td><td>3,500원</td></tr>
+          <tr><td>기본</td><td>3장</td><td>9,900원</td><td>3,300원</td></tr>
+          <tr><td><strong>인기</strong></td><td>5장</td><td>14,900원</td><td>2,980원</td></tr>
+          <tr><td>알뜰</td><td>10장</td><td>24,900원</td><td>2,490원</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout green">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <div><strong>첫 가입 혜택!</strong><br>첫 가입 시 체험 쿠폰 1장이 무료로 제공됩니다.</div>
+    </div>
+    <p>앱 내 "쿠폰 구매" 메뉴에서 카드결제 또는 간편결제로 구매할 수 있습니다.</p>
+
+    <!-- ── 3. 쿠폰 사용 흐름 ── -->
+    <h2><span class="sec-num">3</span> 쿠폰 사용 흐름</h2>
+    <div class="flow-banner">
+      <span>쿠폰 구매</span>
+      <span class="arr">&rarr;</span>
+      <span>의뢰 등록 (예약)</span>
+      <span class="arr">&rarr;</span>
+      <span>매칭 확정 (소진)</span>
+      <span class="arr">or</span>
+      <span>매칭 실패 (반환)</span>
+    </div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-dot"></div><div><h4>1. 쿠폰 구매</h4><p>패키지를 선택해 쿠폰을 충전합니다.</p></div></div>
+      <div class="step-item"><div class="step-dot"></div><div><h4>2. 의뢰 등록 (예약)</h4><p>의뢰를 등록하면 쿠폰 1장이 "예약" 상태가 됩니다. 아직 사용된 것이 아닙니다.</p></div></div>
+      <div class="step-item"><div class="step-dot"></div><div><h4>3. 매칭 확정 (소진)</h4><p>전문가를 선택하면 쿠폰이 최종 소진됩니다. 이후 환불 불가.</p></div></div>
+      <div class="step-item"><div class="step-dot"></div><div><h4>4. 매칭 실패 (반환)</h4><p>모집 기간(7일) 내 매칭이 안 되거나 직접 취소하면 쿠폰이 자동 반환됩니다.</p></div></div>
+    </div>
+    <div class="summary-tbl">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr><th>상태</th><th>설명</th><th>전환 시점</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="badge green">사용 가능 (AVAILABLE)</span></td><td>의뢰에 사용할 수 있는 상태</td><td>구매 직후</td></tr>
+            <tr><td><span class="badge purple">예약됨 (RESERVED)</span></td><td>의뢰 등록으로 묶인 상태</td><td>의뢰 등록 시</td></tr>
+            <tr><td><span class="badge red">소진됨 (CONSUMED)</span></td><td>매칭 완료로 사용된 상태</td><td>매칭 확정 시</td></tr>
+            <tr><td><span class="badge blue">반환됨 (RETURNED)</span></td><td>매칭 실패로 돌아온 상태</td><td>취소/만료 시</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── 4. 쿠폰 환불 ── -->
+    <h2><span class="sec-num">4</span> 쿠폰 환불</h2>
+    <p>구매 후 7일 이내, 모든 쿠폰이 미사용 상태인 경우에만 전액 환불이 가능합니다. 한 장이라도 의뢰에 사용된 이력이 있으면 환불할 수 없으며, 인앱결제(Apple/Google)는 각 스토어에서 별도로 환불을 신청해야 합니다.</p>
+    <div style="margin:16px 0">
+      <a href="refund-policy.html#coupon-refund" style="display:inline-flex;align-items:center;gap:8px;padding:12px 20px;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none;font-size:14px;font-weight:600;transition:background .15s">
+        쿠폰 환불 정책 자세히 보기
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+    </div>
+
+    <!-- ── 5. 에스크로 결제 (온라인 의뢰) ── -->
+    <h2><span class="sec-num">5</span> 에스크로 결제 (온라인 의뢰)</h2>
+    <div class="callout purple">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      <div><strong>에스크로 안전결제</strong><br>온라인 의뢰 시 결제 금액은 토스페이먼츠가 안전하게 보관합니다. 전문가에게 바로 전달되지 않으며, 작업물 승인이 완료된 후에 정산됩니다.</div>
+    </div>
+    <div class="flow-banner">
+      <span>합의서 확정</span>
+      <span class="arr">&rarr;</span>
+      <span>에스크로 결제</span>
+      <span class="arr">&rarr;</span>
+      <span>작업 진행</span>
+      <span class="arr">&rarr;</span>
+      <span>작업물 승인</span>
+      <span class="arr">&rarr;</span>
+      <span>전문가 정산</span>
+    </div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-dot"></div><div><h4>1. 합의서 확정</h4><p>의뢰인과 전문가가 금액, 마감일, 작업 범위를 합의합니다.</p></div></div>
+      <div class="step-item"><div class="step-dot"></div><div><h4>2. 에스크로 결제</h4><p>합의 금액을 카드 또는 간편결제로 결제합니다. 전문가에게 바로 전달되지 않습니다.</p></div></div>
+      <div class="step-item"><div class="step-dot"></div><div><h4>3. 작업 진행</h4><p>전문가가 합의된 범위 내에서 작업을 진행합니다.</p></div></div>
+      <div class="step-item"><div class="step-dot"></div><div><h4>4. 작업물 승인</h4><p>의뢰인이 결과물을 확인하고 승인합니다.</p></div></div>
+      <div class="step-item"><div class="step-dot"></div><div><h4>5. 전문가 정산</h4><p>승인 완료 후 영업일 3~4일 내 전문가에게 정산됩니다.</p></div></div>
+    </div>
+
+    <!-- ── 6. 정산 안내 ── -->
+    <h2><span class="sec-num">6</span> 정산 안내</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th style="width:40%">항목</th><th>내용</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>중개 수수료</td><td><strong>0% (무료)</strong></td></tr>
+          <tr><td>PG 수수료</td><td>3.5% (결제 대행사 수수료)</td></tr>
+          <tr><td>정산 주기</td><td>서비스 완료 후 영업일 기준 3~4일</td></tr>
+          <tr><td>정산 방식</td><td>등록 계좌로 자동 입금</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout green">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <div><strong>쪽집게 중개 수수료는 0%입니다.</strong><br>PG사 수수료 3.5%를 제외한 전액이 전문가에게 지급됩니다.</div>
+    </div>
+    <p>예시) 합의 금액 100,000원 &rarr; PG 수수료 3,500원 &rarr; 전문가 정산 96,500원</p>
+
+    <!-- ── 7. 자주 묻는 질문 (FAQ) ── -->
+    <h2><span class="sec-num">7</span> 자주 묻는 질문</h2>
+    <div class="pfaq">
+      <div class="pfaq-item">
+        <button class="pfaq-q">쿠폰은 왜 필요한가요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="pfaq-a"><div class="pfaq-ai">쪽집게는 전문가에게 수수료를 부과하지 않는 대신, 의뢰인이 커피 한잔 가격의 쿠폰으로 의뢰를 등록하는 구조입니다. 다른 플랫폼의 숨은 수수료(10~30%)를 없애고, 전문가가 정당한 대가를 온전히 받을 수 있도록 하기 위함입니다.</div></div>
+      </div>
+      <div class="pfaq-item">
+        <button class="pfaq-q">매칭에 실패하면 쿠폰은 어떻게 되나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="pfaq-a"><div class="pfaq-ai">모집 기간(7일) 내에 전문가를 선택하지 않으면 쿠폰이 <strong>자동으로 반환</strong>됩니다. 의뢰인이 직접 의뢰를 취소하는 경우에도 마찬가지입니다. 반환된 쿠폰은 다시 사용할 수 있습니다.</div></div>
+      </div>
+      <div class="pfaq-item">
+        <button class="pfaq-q">미사용 쿠폰은 환불할 수 있나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="pfaq-a"><div class="pfaq-ai"><strong>구매 후 7일 이내</strong>이고, 패키지 내 <strong>모든 쿠폰이 미사용(AVAILABLE) 상태</strong>일 때만 전액 환불이 가능합니다. 쿠폰을 하나라도 의뢰에 사용했다면 해당 패키지는 환불할 수 없습니다. 환불은 패키지 단위(전액)로만 처리됩니다.</div></div>
+      </div>
+      <div class="pfaq-item">
+        <button class="pfaq-q">인앱결제(Apple/Google)로 구매한 쿠폰은 어떻게 환불하나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="pfaq-a"><div class="pfaq-ai">인앱결제 건은 앱 내에서 환불할 수 없습니다. <strong>Apple App Store 또는 Google Play Store에서 직접 환불 요청</strong>해주세요. 스토어에서 환불이 승인되면 해당 쿠폰은 자동으로 회수됩니다.</div></div>
+      </div>
+      <div class="pfaq-item">
+        <button class="pfaq-q">반환된 쿠폰은 왜 환불이 안 되나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="pfaq-a"><div class="pfaq-ai">의뢰를 등록하면 전문가들이 시간과 노력을 들여 제안서를 작성합니다. 매칭이 안 됐더라도 <strong>서비스가 이미 작동한 것</strong>이므로, 해당 쿠폰은 <strong>다른 의뢰에 재사용만 가능</strong>하고 현금 환불은 제한됩니다.</div></div>
+      </div>
+      <div class="pfaq-item">
+        <button class="pfaq-q">에스크로 결제는 언제 하나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="pfaq-a"><div class="pfaq-ai"><strong>온라인 의뢰에서 합의서가 확정된 후</strong> 에스크로 결제를 진행합니다. 합의서에는 최종 금액, 마감일, 작업 범위 등이 포함되며, 전문가가 수락하면 결제 단계로 넘어갑니다.</div></div>
+      </div>
+      <div class="pfaq-item">
+        <button class="pfaq-q">오프라인 의뢰도 에스크로 결제를 하나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="pfaq-a"><div class="pfaq-ai"><strong>아니요, 오프라인 의뢰는 에스크로 결제를 하지 않습니다.</strong> 오프라인 의뢰(대면 레슨)의 경우, 결제는 의뢰인과 전문가가 직접 협의하여 현금, 계좌이체 등 자유롭게 진행합니다.</div></div>
+      </div>
+      <div class="pfaq-item">
+        <button class="pfaq-q">정산은 언제 되나요?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="pfaq-a"><div class="pfaq-ai">의뢰인이 작업물을 <strong>승인한 후 영업일 기준 3~4일 이내</strong>에 전문가에게 정산됩니다. 정산 금액은 합의 금액에서 PG 수수료(3.5%)를 제외한 금액이며, 전문가가 등록한 계좌로 자동 입금됩니다.</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="foot">
+  <div class="foot-in">
+    <span>&copy; 2026 쪽집게 &middot; 사업자등록번호 287-31-01764</span>
+    <div class="foot-links"><a href="index.html">도움 센터</a><a href="#">이용약관</a><a href="#">개인정보처리방침</a></div>
+  </div>
+</footer>
+
+<button class="btt" id="btt" aria-label="맨 위로">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script>
+// Mobile menu
+document.getElementById('mobMenu').addEventListener('click',()=>{
+  document.getElementById('gnbNav').classList.toggle('mob-open');
+});
+
+// FAQ accordion
+document.querySelectorAll('.pfaq-q').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const it=b.parentElement,a=it.querySelector('.pfaq-a'),o=it.classList.contains('open');
+    it.closest('.pfaq').querySelectorAll('.pfaq-item.open').forEach(i=>{i.classList.remove('open');i.querySelector('.pfaq-a').style.maxHeight='0'});
+    if(!o){it.classList.add('open');a.style.maxHeight=a.scrollHeight+'px'}
+  });
+});
+
+// Back to top
+const btt=document.getElementById('btt');
+window.addEventListener('scroll',()=>btt.classList.toggle('vis',scrollY>300));
+btt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+</script>
+</body>
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>쪽집게 고객센터</title>
+<meta name="description" content="쪽집게 이용 방법, 쿠폰, 결제, 환불 등 자주 묻는 질문을 확인하세요.">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<link rel="stylesheet" href="common.css">
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="gnb">
+  <div class="gnb-in">
+    <a href="index.html" class="gnb-logo">
+      <img src="../assets/service_icon.png" alt="쪽집게" class="gnb-icon">
+      쪽집게 고객센터
+    </a>
+    <nav class="gnb-nav" id="gnbNav">
+      <a href="guide.html">이용 가이드</a>
+      <a href="coupon.html">쿠폰·결제</a>
+      <a href="refund-policy.html">환불·분쟁</a>
+      <a href="review.html">리뷰 시스템</a>
+    </nav>
+    <div class="gnb-right"></div>
+    <button class="mob-menu" id="mobMenu" aria-label="메뉴">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="inner">
+    <div class="hero-top">
+      <div class="hero-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        중개 수수료 0% 전문가 매칭 플랫폼
+      </div>
+      <h1>별점이 아닌 실제 대화로<br>전문가를 고르세요</h1>
+      <p class="hero-tagline">다른 플랫폼의 숨은 수수료(10~30%)를 없앴습니다.<br><strong>전문가 수수료 0%</strong>, 커피 한잔 가격의 쿠폰으로 시작하세요.</p>
+    </div>
+
+    <div class="value-strip">
+      <div class="value-item">
+        <div class="value-dot v1"></div>
+        <div>
+          <div class="value-label">전문가 수수료 0%</div>
+          <div class="value-desc">합의 금액 전체가 전문가에게</div>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-dot v2"></div>
+        <div>
+          <div class="value-label">채팅 = 리뷰</div>
+          <div class="value-desc">실제 대화로 전문가를 판단</div>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-dot v3"></div>
+        <div>
+          <div class="value-label">에스크로 안전결제</div>
+          <div class="value-desc">완료 확인 후 정산</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="search-area">
+      <span class="s-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <input type="text" id="searchInput" placeholder="궁금한 점을 검색해보세요" autocomplete="off">
+      <div class="s-results" id="searchResults"></div>
+    </div>
+    <div class="popular-tags">
+      <a href="coupon.html">쿠폰 사용법</a>
+      <a href="refund-policy.html">환불 정책</a>
+      <a href="expert.html">전문가 등록</a>
+      <a href="coupon.html#s5">에스크로</a>
+      <a href="coupon.html#s6">수수료</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ROLE GUIDE ═══ -->
+<section class="role-section">
+  <div class="inner">
+    <div class="role-tabs">
+      <button class="role-tab active" data-tab="client">의뢰인 가이드</button>
+      <button class="role-tab" data-tab="expert">전문가 가이드</button>
+    </div>
+
+    <!-- ─── 의뢰인 가이드 ─── -->
+    <div class="role-panel active" id="panel-client">
+
+      <div class="rp-block">
+        <div class="rp-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          다른 플랫폼의 "숨은 수수료"를 아시나요?
+        </div>
+        <p class="rp-desc">대부분의 플랫폼은 전문가에게 10~30% 수수료를 부과합니다. 전문가는 이 비용을 서비스 가격에 포함시키기 때문에, 의뢰인이 실제로 더 비싼 가격을 지불하게 됩니다.</p>
+        <div class="compare-card">
+          <div class="compare-head">수수료 구조 비교</div>
+          <div class="compare-body">
+            <div class="compare-col other">
+              <h4>타 플랫폼</h4>
+              <div class="compare-row"><span>전문가 수수료</span><span class="val bad">10~30%</span></div>
+              <div class="compare-row"><span>5만원 레슨 실비용</span><span class="val bad">₩55,000~65,000</span></div>
+              <div class="compare-row"><span>전문가 실수령</span><span class="val">₩35,000~45,000</span></div>
+              <div class="compare-row"><span>비용 투명성</span><span class="val bad">숨은 수수료</span></div>
+            </div>
+            <div class="compare-vs">VS</div>
+            <div class="compare-col ours">
+              <h4>쪽집게</h4>
+              <div class="compare-row"><span>전문가 수수료</span><span class="val good">0%</span></div>
+              <div class="compare-row"><span>5만원 레슨 실비용</span><span class="val good">₩50,000 + 쿠폰</span></div>
+              <div class="compare-row"><span>전문가 실수령</span><span class="val good">₩50,000</span></div>
+              <div class="compare-row"><span>비용 투명성</span><span class="val good">완전 투명</span></div>
+            </div>
+          </div>
+          <div class="compare-footer">쿠폰 한 장(₩2,000)으로 숨은 수수료를 없앨 수 있습니다</div>
+        </div>
+      </div>
+
+      <div class="rp-block">
+        <div class="rp-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          이용 흐름
+        </div>
+        <div class="guide-flow">
+          <div class="flow-card">
+            <div class="flow-num">1</div>
+            <h4>쿠폰 받기</h4>
+            <p>웰컴 쿠폰 또는<br>카카오톡 공유로 무료 수령</p>
+          </div>
+          <div class="flow-card">
+            <div class="flow-num">2</div>
+            <h4>의뢰 등록</h4>
+            <p>배우고 싶은 것을<br>티켓으로 등록</p>
+          </div>
+          <div class="flow-card">
+            <div class="flow-num">3</div>
+            <h4>제안 비교</h4>
+            <p>전문가들의 제안서를<br>비교하고 선택</p>
+          </div>
+          <div class="flow-card">
+            <div class="flow-num">4</div>
+            <h4>매칭 · 서비스</h4>
+            <p>채팅으로 협의 후<br>레슨/코칭 진행</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rp-block">
+        <div class="rp-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/><path d="M7 5v14"/><path d="M17 5v14"/></svg>
+          쿠폰 패키지
+        </div>
+        <p class="rp-desc">의뢰 1건당 쿠폰 1장이 필요합니다. 한번에 많이 구매할수록 장당 가격이 저렴해집니다.</p>
+        <div class="coupon-grid">
+          <div class="coupon-item">
+            <div class="ci-name">TRIAL</div>
+            <div class="ci-count">1<span>장</span></div>
+            <div class="ci-price">₩3,000</div>
+            <div class="ci-unit">장당 ₩3,000</div>
+          </div>
+          <div class="coupon-item">
+            <div class="ci-name">BASIC</div>
+            <div class="ci-count">3<span>장</span></div>
+            <div class="ci-price">₩7,500</div>
+            <div class="ci-unit">장당 ₩2,500</div>
+          </div>
+          <div class="coupon-item">
+            <div class="ci-name">STANDARD</div>
+            <div class="ci-count">5<span>장</span></div>
+            <div class="ci-price">₩10,000</div>
+            <div class="ci-unit">장당 ₩2,000</div>
+          </div>
+          <div class="coupon-item">
+            <div class="ci-name">PREMIUM</div>
+            <div class="ci-count">10<span>장</span></div>
+            <div class="ci-price">₩15,000</div>
+            <div class="ci-unit">장당 ₩1,500</div>
+          </div>
+        </div>
+        <p class="coupon-note">웰컴 쿠폰과 카카오톡 공유로 무료 쿠폰을 받을 수 있습니다.<br>마음에 드는 전문가를 선택하기 전까지 쿠폰은 계속 반환되므로, 부담 없이 의뢰를 등록하세요.</p>
+      </div>
+
+      <div class="guide-cta">
+        <a href="coupon.html" class="cta-link primary">쿠폰·결제 자세히 보기</a>
+        <a href="guide.html" class="cta-link outline">이용 가이드 전체 보기</a>
+      </div>
+    </div>
+
+    <!-- ─── 전문가 가이드 ─── -->
+    <div class="role-panel" id="panel-expert">
+
+      <div class="rp-block">
+        <div class="rp-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          쪽집게에서 전문가는 무료입니다
+        </div>
+        <p class="rp-desc">등록비, 제안서 발송비, 중개 수수료 — 모두 0원. 합의한 금액 전체가 전문가에게 돌아갑니다.</p>
+        <div class="expert-value">
+          <div class="ev-card">
+            <div class="ev-num">₩0</div>
+            <h4>등록비</h4>
+            <p>전문가 프로필 등록 완전 무료</p>
+          </div>
+          <div class="ev-card">
+            <div class="ev-num">₩0</div>
+            <h4>제안서 발송비</h4>
+            <p>제안서를 보내는 비용도 0원</p>
+          </div>
+          <div class="ev-card">
+            <div class="ev-num">0%</div>
+            <h4>중개 수수료</h4>
+            <p>합의 금액이 그대로 수익</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rp-block">
+        <div class="rp-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          활동 흐름
+        </div>
+        <div class="guide-flow">
+          <div class="flow-card">
+            <div class="flow-num">1</div>
+            <h4>프로필 등록</h4>
+            <p>전문 분야·자격증·<br>포트폴리오 등록</p>
+          </div>
+          <div class="flow-card">
+            <div class="flow-num">2</div>
+            <h4>의뢰 탐색</h4>
+            <p>내 분야 의뢰를<br>피드에서 발견</p>
+          </div>
+          <div class="flow-card">
+            <div class="flow-num">3</div>
+            <h4>제안서 발송</h4>
+            <p>금액·일시·어필을<br>담아 제안</p>
+          </div>
+          <div class="flow-card">
+            <div class="flow-num">4</div>
+            <h4>매칭 · 정산</h4>
+            <p>채택 후 서비스 진행<br>완료 시 정산</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rp-block">
+        <div class="rp-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          수익 예시
+        </div>
+        <p class="rp-desc">5만원 레슨 기준, 다른 플랫폼과 쪽집게의 실수령액 차이를 확인하세요.</p>
+        <div class="earnings-card">
+          <div class="earn-head">오프라인 레슨 (5만원 기준)</div>
+          <div class="earn-body">
+            <div class="earn-row"><span class="earn-label">합의 금액</span><span class="earn-val">₩50,000</span></div>
+            <div class="earn-row"><span class="earn-label">쪽집게 수수료</span><span class="earn-val" style="color:var(--primary)">₩0 (0%)</span></div>
+            <div class="earn-row"><span class="earn-label">PG 수수료 (오프라인)</span><span class="earn-val">₩0</span></div>
+            <div class="earn-row total"><span class="earn-label">전문가 실수령</span><span class="earn-val">₩50,000</span></div>
+          </div>
+        </div>
+        <div class="earnings-card">
+          <div class="earn-head">온라인 의뢰 (5만원 기준)</div>
+          <div class="earn-body">
+            <div class="earn-row"><span class="earn-label">합의 금액</span><span class="earn-val">₩50,000</span></div>
+            <div class="earn-row"><span class="earn-label">쪽집게 수수료</span><span class="earn-val" style="color:var(--primary)">₩0 (0%)</span></div>
+            <div class="earn-row"><span class="earn-label">PG 수수료 (3.5%)</span><span class="earn-val">-₩1,750</span></div>
+            <div class="earn-row total"><span class="earn-label">전문가 실수령</span><span class="earn-val">₩48,250</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="guide-cta">
+        <a href="expert.html" class="cta-link primary">전문가 활동 자세히 보기</a>
+        <a href="guide.html" class="cta-link outline">이용 가이드 전체 보기</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="faq-section" id="faq">
+  <div class="inner">
+    <div class="faq-header">
+      <h2 class="faq-main-title">자주 묻는 질문</h2>
+      <p class="faq-main-desc">궁금한 점을 카테고리별로 빠르게 찾아보세요.</p>
+    </div>
+
+    <div class="faq-category-tabs">
+      <button class="faq-cat-btn active" data-faq-cat="all">전체</button>
+      <button class="faq-cat-btn" data-faq-cat="general">서비스</button>
+      <button class="faq-cat-btn" data-faq-cat="coupon">쿠폰 / 결제</button>
+      <button class="faq-cat-btn" data-faq-cat="expert">전문가</button>
+      <button class="faq-cat-btn" data-faq-cat="review">리뷰</button>
+      <button class="faq-cat-btn" data-faq-cat="refund">환불 / 분쟁</button>
+    </div>
+
+    <div class="faq-list">
+      <!-- 서비스 일반 -->
+      <div class="faq-card" data-cat="general">
+        <button class="faq-q2">
+          <span class="faq-q2-cat">서비스</span>
+          <span class="faq-q2-text">쪽집게는 어떤 서비스인가요?</span>
+          <svg class="faq-q2-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a2"><div class="faq-a2-inner">쪽집게는 <strong>전문가 수수료 0%의 전문 서비스 매칭 플랫폼</strong>입니다. 별점이 아닌 실제 채팅 대화로 전문가를 판단하고, 커피 한잔 가격의 쿠폰으로 의뢰를 등록합니다.</div></div>
+      </div>
+
+      <div class="faq-card" data-cat="general">
+        <button class="faq-q2">
+          <span class="faq-q2-cat">서비스</span>
+          <span class="faq-q2-text">"숨은 수수료"가 뭔가요?</span>
+          <svg class="faq-q2-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a2"><div class="faq-a2-inner">많은 플랫폼이 전문가에게 10~30% 수수료를 부과합니다. 전문가는 이 비용을 서비스 금액에 포함시키므로, 의뢰인이 보는 가격에 이미 수수료가 숨어 있습니다. 쪽집게는 전문가 수수료를 0%로 설계해 이 구조를 없앴습니다.</div></div>
+      </div>
+
+      <!-- 쿠폰 · 결제 -->
+      <div class="faq-card" data-cat="coupon">
+        <button class="faq-q2">
+          <span class="faq-q2-cat">쿠폰</span>
+          <span class="faq-q2-text">쿠폰은 왜 필요한가요?</span>
+          <svg class="faq-q2-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a2"><div class="faq-a2-inner">전문가에게 수수료를 부과하지 않는 대신, 의뢰인이 <strong>커피 한잔 가격의 쿠폰</strong>으로 의뢰를 등록합니다. 숨은 수수료(10~30%)가 서비스 가격에 포함되는 것보다 훨씬 합리적입니다. 가입 시 웰컴 쿠폰이 지급되고 카카오톡 공유로도 쿠폰을 받을 수 있어, 결제 없이 바로 시작할 수 있습니다.</div></div>
+      </div>
+
+      <div class="faq-card" data-cat="coupon">
+        <button class="faq-q2">
+          <span class="faq-q2-cat">쿠폰</span>
+          <span class="faq-q2-text">매칭에 실패하면 쿠폰은 어떻게 되나요?</span>
+          <svg class="faq-q2-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a2"><div class="faq-a2-inner">마음에 드는 전문가를 선택하기 전까지 쿠폰은 소진되지 않습니다. 모집 기간(7일) 내에 선택하지 않거나 직접 취소하면 쿠폰이 <strong>자동으로 반환</strong>되므로, 원하는 전문가를 찾을 때까지 부담 없이 반복해서 등록할 수 있습니다.</div></div>
+      </div>
+
+      <div class="faq-card" data-cat="coupon">
+        <button class="faq-q2">
+          <span class="faq-q2-cat">쿠폰</span>
+          <span class="faq-q2-text">미사용 쿠폰은 환불할 수 있나요?</span>
+          <svg class="faq-q2-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a2"><div class="faq-a2-inner"><strong>구매 후 7일 이내</strong>이고, 패키지 내 <strong>모든 쿠폰이 미사용 상태</strong>일 때만 전액 환불이 가능합니다.<ul><li><strong>하나라도 사용된 패키지</strong>: 환불 불가</li><li><strong>매칭 실패로 반환된 쿠폰</strong>: 현금 환불 불가, 재사용만 가능</li><li><strong>인앱결제(Apple/Google)</strong>: 앱 내 환불 불가, 각 스토어에서 환불</li></ul><a href="refund-policy.html#coupon-refund">쿠폰 환불 정책 자세히 보기 →</a></div></div>
+      </div>
+
+      <div class="faq-card" data-cat="coupon">
+        <button class="faq-q2">
+          <span class="faq-q2-cat">결제</span>
+          <span class="faq-q2-text">에스크로 결제는 어떻게 되나요?</span>
+          <svg class="faq-q2-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a2"><div class="faq-a2-inner">온라인 의뢰에만 적용됩니다. 합의서 확정 → 에스크로 결제 → 작업 완료 확인 → 전문가 정산 순서로 진행됩니다. 수수료 0%, 합의 금액 전체가 지급됩니다. (PG 수수료 3.5% 별도) <a href="refund-policy.html">환불/분쟁 정책 자세히 보기 →</a></div></div>
+      </div>
+
+      <!-- 전문가 -->
+      <div class="faq-card" data-cat="expert">
+        <button class="faq-q2">
+          <span class="faq-q2-cat">전문가</span>
+          <span class="faq-q2-text">전문가 등록은 정말 무료인가요?</span>
+          <svg class="faq-q2-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a2"><div class="faq-a2-inner">네, <strong>완전 무료</strong>입니다. 등록비, 제안서 비용, 중개 수수료 모두 0원. 온라인 서비스는 PG사 수수료 3.5%만 별도 발생합니다.</div></div>
+      </div>
+
+      <div class="faq-card" data-cat="expert">
+        <button class="faq-q2">
+          <span class="faq-q2-cat">전문가</span>
+          <span class="faq-q2-text">수익은 어떻게 정산되나요?</span>
+          <svg class="faq-q2-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a2"><div class="faq-a2-inner">서비스 완료 후 영업일 기준 3~4일 내로 정산 계좌에 송금됩니다. 쪽집게 중개 수수료는 0%이며, 온라인 결제는 PG 3.5%를 제외한 금액이 정산됩니다.</div></div>
+      </div>
+
+      <!-- 리뷰 -->
+      <div class="faq-card" data-cat="review">
+        <button class="faq-q2">
+          <span class="faq-q2-cat">리뷰</span>
+          <span class="faq-q2-text">채팅이 공개된다는데, 어떤 내용이 보이나요?</span>
+          <svg class="faq-q2-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a2"><div class="faq-a2-inner">서비스 완료 후 대화 내용이 리뷰로 공개됩니다. 전화번호/계좌번호 등 민감 정보는 <strong>자동 마스킹</strong> 처리되며, 원하는 메시지를 직접 비공개 처리할 수도 있습니다.</div></div>
+      </div>
+
+      <!-- 환불 · 분쟁 -->
+      <div class="faq-card" data-cat="refund">
+        <button class="faq-q2">
+          <span class="faq-q2-cat">환불</span>
+          <span class="faq-q2-text">온라인 거래 환불은 어떻게 되나요?</span>
+          <svg class="faq-q2-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a2"><div class="faq-a2-inner">거래 단계에 따라 다릅니다. 결제 후 2시간 이내 즉시 환불, 작업 진행 중 조건부 환불, 작업물 전달 후 환불 불가 등 상세 기준이 있습니다. <a href="refund-policy.html">환불/분쟁 정책 자세히 보기 →</a></div></div>
+      </div>
+
+      <div class="faq-card" data-cat="refund">
+        <button class="faq-q2">
+          <span class="faq-q2-cat">환불</span>
+          <span class="faq-q2-text">오프라인 의뢰도 환불이 되나요?</span>
+          <svg class="faq-q2-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-a2"><div class="faq-a2-inner">오프라인 의뢰는 당사자 간 직접 결제이므로 <strong>플랫폼 환불 대상이 아닙니다</strong>. 전문가 모집 중에 의뢰를 취소하면 예약 쿠폰은 반환됩니다.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section class="contact-section" id="contact">
+  <div class="inner">
+    <div class="topics-title">문의하기</div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h4>이메일 문의</h4>
+        <p>평일 10:00 ~ 18:00<br>영업일 기준 24시간 내 답변</p>
+        <a href="mailto:sin1768@naver.com">sin1768@naver.com</a>
+      </div>
+      <div class="contact-card">
+        <h4>전화 상담</h4>
+        <p>평일 10:00 ~ 17:00<br>(점심 12:00~13:00 제외)</p>
+        <a href="tel:010-8313-1764">010-8313-1764</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="foot">
+  <div class="foot-in">
+    <span>&copy; 2026 쪽집게 &middot; 사업자등록번호 287-31-01764</span>
+    <div class="foot-links"><a href="#">이용약관</a><a href="#">개인정보처리방침</a></div>
+  </div>
+</footer>
+
+<script>
+// Mobile menu
+document.getElementById('mobMenu').addEventListener('click',()=>{
+  document.getElementById('gnbNav').classList.toggle('mob-open');
+});
+
+// Role tabs
+document.querySelectorAll('.role-tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const tab=btn.dataset.tab;
+    document.querySelectorAll('.role-tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.role-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+tab).classList.add('active');
+  });
+});
+
+// FAQ accordion
+document.querySelectorAll('.faq-q2').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const card=btn.parentElement;
+    const ans=card.querySelector('.faq-a2');
+    const open=card.classList.contains('open');
+    // close all
+    document.querySelectorAll('.faq-card.open').forEach(c=>{
+      c.classList.remove('open');
+      c.querySelector('.faq-a2').style.maxHeight='0';
+    });
+    if(!open){card.classList.add('open');ans.style.maxHeight=ans.scrollHeight+'px'}
+  });
+});
+
+// FAQ category filter
+document.querySelectorAll('.faq-cat-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const cat=btn.dataset.faqCat;
+    document.querySelectorAll('.faq-cat-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    // close all open
+    document.querySelectorAll('.faq-card.open').forEach(c=>{
+      c.classList.remove('open');
+      c.querySelector('.faq-a2').style.maxHeight='0';
+    });
+    document.querySelectorAll('.faq-card').forEach(card=>{
+      if(cat==='all'||card.dataset.cat===cat){
+        card.style.display='';
+      } else {
+        card.style.display='none';
+      }
+    });
+  });
+});
+
+// Search
+const si=document.getElementById('searchInput'),sr=document.getElementById('searchResults');
+const data=[
+  {t:'쪽집게는 어떤 서비스인가요?',c:'서비스 안내',h:'#faq-general',k:'서비스 소개 뭐 무엇 쪽집게 매칭'},
+  {t:'숨은 수수료란?',c:'서비스 안내',h:'#faq-general',k:'수수료 0 무료 숨은'},
+  {t:'의뢰인 이용 가이드',c:'이용 가이드',h:'guide.html',k:'의뢰인 이용 방법 시작'},
+  {t:'전문가 이용 가이드',c:'이용 가이드',h:'guide.html',k:'전문가 이용 등록'},
+  {t:'쿠폰 구매 및 사용 방법',c:'쿠폰 · 결제',h:'coupon.html',k:'쿠폰 구매 충전 사용 커피'},
+  {t:'쿠폰 환불 정책',c:'환불 · 분쟁',h:'refund-policy.html#coupon-refund',k:'쿠폰 환불 반환 취소 7일 인앱 스토어 애플 구글 미사용 패키지'},
+  {t:'에스크로 결제',c:'쿠폰 · 결제',h:'coupon.html',k:'에스크로 결제 안전 온라인'},
+  {t:'온라인 거래 환불 정책',c:'환불 · 분쟁',h:'refund-policy.html#refund',k:'환불 에스크로 취소 온라인 쿨링오프'},
+  {t:'분쟁 조정 절차',c:'환불 · 분쟁',h:'refund-policy.html#dispute',k:'분쟁 신고 문제 조정'},
+  {t:'채팅 기반 투명 리뷰',c:'리뷰',h:'review.html',k:'리뷰 채팅 투명 공개 대화'},
+  {t:'전문가 등록 방법',c:'전문가',h:'expert.html',k:'전문가 등록 가입 무료'},
+  {t:'정산 방법',c:'전문가',h:'expert.html',k:'정산 수수료 전문가 수익'},
+  {t:'합의서 작성',c:'이용 가이드',h:'guide.html',k:'합의서 금액 마감일'},
+  {t:'작업물 수정 요청',c:'이용 가이드',h:'refund-policy.html',k:'수정 요청 리비전 횟수'},
+];
+si.addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase();
+  if(!q){sr.classList.remove('active');return}
+  const r=data.filter(i=>i.t.toLowerCase().includes(q)||i.k.includes(q));
+  sr.innerHTML=r.length?r.slice(0,6).map(i=>`<a href="${i.h}"><em>${i.c}</em>${i.t}</a>`).join(''):'<div class="no-r">검색 결과가 없습니다</div>';
+  sr.classList.add('active');
+});
+document.addEventListener('click',e=>{if(!e.target.closest('.search-area'))sr.classList.remove('active')});
+</script>
+</body>
+</html>
