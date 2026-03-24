@@ -440,6 +440,37 @@ tr:last-child td{border-bottom:none}
 .foot-links a{color:var(--text-caption);text-decoration:none;transition:color .15s}
 .foot-links a:hover{color:var(--text-sub)}
 
+/* Footer with contact */
+.foot--contact{padding:0;border-top:none}
+.foot-in--expanded{
+  display:flex;flex-direction:column;
+  max-width:var(--max-w);margin:0 auto;padding:0;
+}
+.foot-contact{
+  padding:40px 24px;background:var(--bg);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.foot-contact-title{
+  font-size:16px;font-weight:700;color:var(--text);
+  margin-bottom:20px;letter-spacing:-.02em;
+}
+.foot-contact-grid{display:flex;gap:24px;flex-wrap:wrap}
+.foot-contact-item{
+  flex:1;min-width:260px;display:flex;gap:14px;align-items:flex-start;
+  background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px;transition:border-color .2s;
+}
+.foot-contact-item:hover{border-color:var(--primary-light)}
+.foot-contact-item svg{width:20px;height:20px;flex-shrink:0;color:var(--primary);margin-top:2px}
+.foot-contact-item strong{display:block;font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.foot-contact-item span{display:block;font-size:12px;color:var(--text-caption);line-height:1.5;margin-bottom:8px}
+.foot-contact-item a{font-size:14px;color:var(--primary);font-weight:500;text-decoration:none}
+.foot-contact-item a:hover{text-decoration:underline}
+.foot-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:24px;font-size:13px;color:var(--text-caption);
+}
+
 /* ═══ BACK TO TOP ═══ */
 .btt{
   position:fixed;bottom:28px;right:28px;
@@ -723,6 +754,9 @@ tr:last-child td{border-bottom:none}
   .how-strip{flex-direction:column}
   .how-step:not(:last-child)::after{width:60%;height:1px;right:auto;left:20%;top:auto;bottom:0}
   .foot-in{flex-direction:column;gap:10px;text-align:center}
+  .foot-contact-grid{flex-direction:column}
+  .foot-contact-item{min-width:auto}
+  .foot-bottom{flex-direction:column;gap:10px;text-align:center}
   .callout{font-size:13px}
   .content h2{font-size:17px}
   .content>p{font-size:14px}
