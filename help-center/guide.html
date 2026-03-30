@@ -337,7 +337,7 @@
             <thead><tr><th>선택</th><th>설명</th></tr></thead>
             <tbody>
               <tr><td><span class="badge green">승인</span></td><td>작업물에 만족하면 승인합니다. 거래가 완료되고 전문가에게 정산됩니다.</td></tr>
-              <tr><td><span class="badge amber">수정 요청</span></td><td>수정이 필요하면 사유를 입력하여 요청합니다. 수정 요청 시 마감일을 새로 지정할 수 있습니다. 합의서에 정한 횟수(기본 2회)까지 가능합니다.</td></tr>
+              <tr><td><span class="badge amber">수정 요청</span></td><td>수정이 필요하면 사유를 입력하여 요청합니다. 수정 요청 시 의뢰인이 새 마감일을 직접 지정하며, 합의서의 마감일이 해당 날짜로 변경됩니다. 합의서에 정한 횟수(기본 2회)까지 가능합니다.</td></tr>
               <tr><td><span class="badge red">거부</span></td><td>합의 내용과 현저히 다를 경우 거부할 수 있으며, 자동으로 분쟁 조정이 시작됩니다.</td></tr>
             </tbody>
           </table>
@@ -517,6 +517,10 @@
           <li>의뢰인이 <strong>거부</strong>하면 자동으로 분쟁 조정이 시작됩니다.</li>
           <li>의뢰인이 <strong>72시간 동안 응답하지 않으면</strong> 자동 승인 처리됩니다.</li>
         </ul>
+        <div class="callout amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div><strong>이미지·PDF 외 작업물인 경우</strong><br>앱 내에서 이미지 또는 PDF만 첨부할 수 있습니다. 그 외 형식의 작업물은 의뢰인과 합의 후 이메일, 카카오톡 등 외부 플랫폼으로 전달하세요. <strong>단, 외부로 전달하더라도 반드시 앱에서 "작업물 전달" 버튼을 눌러야 합니다.</strong> 의뢰인이 승인해야만 정산이 진행됩니다.</div>
+        </div>
         <div class="callout purple">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
           <div>마감일이 지나면 의뢰인이 <strong>마감일 연장</strong> 또는 <strong>환불 요청</strong>을 선택할 수 있습니다. 마감일을 지키는 것이 중요합니다.</div>
