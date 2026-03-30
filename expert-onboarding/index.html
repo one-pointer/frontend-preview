@@ -160,7 +160,7 @@
       font-size: 15px; color: var(--text-light); line-height: 1.9; max-width: 580px; margin: 0 auto;
     }
     .profile-why__grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
     }
     .profile-why__card {
       background: var(--bg); border-radius: 16px; padding: 28px 24px;
@@ -387,6 +387,11 @@
           </div>
           <div class="profile-why__card">
             <div class="profile-why__card-num">3</div>
+            <h4>프로필 공유로 고객 유치</h4>
+            <p>타 플랫폼에서 높은 수수료를 내고 있나요? <strong>내 프로필 링크를 기존 고객에게 공유</strong>하면, 쪽집게에서 수수료 0%로 거래할 수 있어요. 신규 가입 고객은 <strong>웰컴 쿠폰으로 무료 이용</strong> 가능해서 전환이 쉽습니다!</p>
+          </div>
+          <div class="profile-why__card">
+            <div class="profile-why__card-num">4</div>
             <h4>매칭률 = 프로필 완성도</h4>
             <p>같은 제안이라도 프로필이 잘 갖춰진 전문가가 선택됩니다. <strong>프로필을 꼼꼼히 채울수록 더 많은 의뢰인과 연결</strong>될 수 있어요.</p>
           </div>
@@ -493,6 +498,35 @@
                   <li>활동 시간, 지역, 본인인증 배지 등 노출</li>
                   <li>프로필이 매력적일수록 의뢰인의 선택 확률이 높아져요</li>
                 </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 1-5: 프로필 공유 -->
+        <div class="flow-step">
+          <div class="step-number accent">5</div>
+          <div class="step-content">
+            <h3>내 프로필 공유하기</h3>
+            <p>완성된 프로필을 기존 고객이나 SNS에 공유하세요. 수수료가 비싼 타 플랫폼에서 받은 의뢰인에게 링크를 보내면, <strong>쪽집게에서 수수료 0%로 거래</strong>할 수 있습니다.</p>
+            <div class="step-screenshot">
+              <img src="images/share-profile.png" alt="프로필 공유 화면">
+              <div class="caption">
+                <h4>프로필 공유 방법</h4>
+                <ul>
+                  <li><strong>마이페이지</strong> > <strong>전문가 탭</strong> > <strong>내 전문가 프로필</strong> 진입</li>
+                  <li>화면 우측 상단의 <strong>공유 버튼</strong>을 탭</li>
+                  <li><strong>카카오톡으로 공유</strong> — 카카오톡 채팅으로 바로 전송</li>
+                  <li><strong>링크 복사하기</strong> — 링크를 복사하여 어디든 붙여넣기</li>
+                  <li><strong>다른 앱으로 공유</strong> — 인스타 DM, 문자, 이메일 등으로 공유</li>
+                </ul>
+                <div class="alert tip" style="margin-top:12px;">
+                  <div class="alert-icon">🎁</div>
+                  <div class="alert-content">
+                    <h4>신규 가입 고객은 웰컴 쿠폰을 받아요!</h4>
+                    <p>내 프로필 링크를 통해 쪽집게에 가입한 의뢰인은 <strong>웰컴 쿠폰</strong>을 받아 <strong>무료로 의뢰를 등록</strong>할 수 있어요. 수수료 부담 없이 바로 거래를 시작할 수 있으니, 타 플랫폼 고객에게 적극적으로 공유해보세요!</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -647,7 +681,7 @@
         <div class="comp-row">
           <div class="item-label">정산</div>
           <div>직접 수령</div>
-          <div>승인 후 자동 정산 (3~4 영업일)</div>
+          <div>승인 후 자동 정산 (영업일 6~8일)</div>
         </div>
         <div class="comp-row">
           <div class="item-label">완료 처리</div>
@@ -824,7 +858,7 @@
           <div class="step-number accent">6</div>
           <div class="step-content">
             <h3>승인 완료 → 자동 정산</h3>
-            <p>의뢰인이 작업물을 승인하면 거래가 완료됩니다. 채팅방에 "의뢰인이 작업물을 승인하였습니다. 거래가 완료되었습니다." 시스템 메시지가 전송되고, <strong>등록한 정산 계좌로 영업일 기준 3~4일 내 자동 입금</strong>됩니다.</p>
+            <p>의뢰인이 작업물을 승인하면 거래가 완료됩니다. 채팅방에 "의뢰인이 작업물을 승인하였습니다. 거래가 완료되었습니다." 시스템 메시지가 전송되고, <strong>등록한 정산 계좌로 영업일 기준 6~8일 내 자동 입금</strong>됩니다. (에스크로 PG사 정산 처리에 소요되는 기간입니다.)</p>
             <div class="step-screenshot">
               <img src="images/chat-8-approved.png" alt="승인 후 채팅">
               <img src="images/chat-9-earnings.png" alt="수익관리 확인">
@@ -905,7 +939,7 @@
                 <ul>
                   <li><strong>총 순수익</strong> — 전체 수익에서 수수료를 뺀 순수익</li>
                   <li><strong>정산 완료</strong> — 이미 계좌에 입금된 금액</li>
-                  <li><strong>정산 대기</strong> — 아직 입금되지 않은 금액 (영업일 3~4일 소요)</li>
+                  <li><strong>정산 대기</strong> — 아직 입금되지 않은 금액 (에스크로 PG사 정산 기준 영업일 6~8일 소요)</li>
                   <li><strong>PG사 수수료</strong> — 결제 수수료 합계 (약 3.5%)</li>
                   <li>월별/주간/일별 차트로 수익 추이 확인</li>
                 </ul>
