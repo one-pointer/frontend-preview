@@ -9,315 +9,646 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --primary: #7C4DFF;
-      --primary-light: #B388FF;
-      --primary-dark: #5E35B1;
-      --accent: #00E5A0;
-      --accent-dark: #00C98A;
-      --dark: #1A1A2E;
-      --dark-card: #16213E;
-      --text: #2D3436;
-      --text-light: #636E72;
-      --text-muted: #95A5A6;
-      --bg: #FAFBFC;
+      --primary: #7C3AED;
+      --primary-light: #A78BFA;
+      --primary-lighter: #C4B5FD;
+      --primary-bg: #F5F3FF;
+      --primary-bg2: #EDE9FE;
+      --accent: #10B981;
+      --accent-light: #D1FAE5;
+      --dark: #1E1B4B;
+      --text-900: #111827;
+      --text-700: #374151;
+      --text-500: #6B7280;
+      --text-400: #9CA3AF;
       --white: #FFFFFF;
-      --border: #E8ECF0;
-      --warning: #FF6B6B;
-      --warning-bg: #FFF5F5;
-      --info: #4ECDC4;
-      --info-bg: #F0FFFE;
-      --success: #2ECC71;
-      --step-line: #E0D6FF;
+      --bg: #FAFAFE;
+      --border: #E5E7EB;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-      color: var(--text);
-      background: var(--bg);
+      color: var(--text-700);
+      background: var(--white);
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
+
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .rd1 { transition-delay: .1s } .rd2 { transition-delay: .2s } .rd3 { transition-delay: .3s } .rd4 { transition-delay: .4s }
 
     /* ===== NAV ===== */
     .nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      transition: box-shadow 0.3s;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid transparent;
+      transition: all .3s;
     }
-    .nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+    .nav.scrolled { border-bottom-color: var(--border); }
     .nav-inner {
       max-width: 1200px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 24px;
+      padding: 16px 32px;
     }
     .nav-logo {
       display: flex; align-items: center; gap: 10px;
-      font-weight: 800; font-size: 20px; color: var(--primary); text-decoration: none;
+      font-weight: 800; font-size: 20px; color: var(--text-900); text-decoration: none;
     }
-    .nav-logo img { width: 32px; height: 32px; border-radius: 8px; }
-    .nav-logo span { color: var(--accent-dark); }
+    .nav-logo img { width: 36px; height: 36px; border-radius: 10px; }
+    .nav-logo .dot { color: var(--primary); }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--text-500);
+      text-decoration: none; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text-900); }
+    .nav-links a.active { color: var(--primary); font-weight: 600; }
 
     /* ===== HERO ===== */
     .hero {
-      padding: 120px 24px 48px;
-      background: linear-gradient(135deg, #1A1A2E 0%, #2D1B69 50%, #1A1A2E 100%);
-      text-align: center; position: relative; overflow: hidden;
+      padding: 140px 32px 80px;
+      background: linear-gradient(180deg, #F5F3FF 0%, #EDE9FE 40%, #F5F3FF 100%);
+      position: relative; overflow: hidden;
     }
     .hero::before {
-      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-      background: radial-gradient(circle at 30% 50%, rgba(124,77,255,0.15) 0%, transparent 50%),
-                  radial-gradient(circle at 70% 50%, rgba(0,229,160,0.1) 0%, transparent 50%);
-      animation: float 20s ease-in-out infinite;
+      content: ''; position: absolute; top: -200px; right: -200px;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
     }
-    @keyframes float { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-2%,2%); } }
-    .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+    .hero::after {
+      content: ''; position: absolute; bottom: -100px; left: -100px;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%);
+    }
+    .hero-inner {
+      max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    .hero-text {}
     .hero-badge {
-      display: inline-block; background: rgba(124,77,255,0.2); border: 1px solid rgba(124,77,255,0.3);
-      color: var(--primary-light); padding: 6px 18px; border-radius: 20px;
-      font-size: 13px; font-weight: 600; margin-bottom: 24px; letter-spacing: 0.5px;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--white); border: 1px solid var(--primary-lighter);
+      padding: 8px 18px; border-radius: 100px;
+      font-size: 13px; font-weight: 600; color: var(--primary);
+      margin-bottom: 28px; box-shadow: 0 2px 8px rgba(124,58,237,0.08);
     }
-    .hero h1 { font-size: 44px; font-weight: 800; color: white; line-height: 1.3; margin-bottom: 20px; }
-    .hero h1 em { font-style: normal; color: var(--accent); }
-    .hero p { font-size: 17px; color: rgba(255,255,255,0.65); max-width: 600px; margin: 0 auto 0; line-height: 1.8; }
+    .hero-badge .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent); animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .6; transform: scale(.9); } }
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 56px); font-weight: 800;
+      line-height: 1.2; color: var(--text-900); margin-bottom: 24px;
+      letter-spacing: -.03em;
+    }
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, var(--primary), #EC4899);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-desc {
+      font-size: 18px; color: var(--text-500); line-height: 1.8;
+      margin-bottom: 40px; max-width: 460px;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--primary); color: white;
+      padding: 16px 32px; border-radius: 16px;
+      font-size: 16px; font-weight: 700; text-decoration: none;
+      box-shadow: 0 8px 24px rgba(124,58,237,0.3);
+      transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(124,58,237,0.4); }
+    .hero-cta svg { width: 20px; height: 20px; }
 
-    /* ===== TAB NAVIGATION ===== */
-    .tab-nav-wrapper {
-      position: sticky; top: 56px; z-index: 90;
-      background: rgba(255,255,255,0.96);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    .hero-phones {
+      position: relative; display: flex; justify-content: center; align-items: center;
+      height: 520px;
     }
-    .tab-nav {
+    .hero-phone {
+      position: absolute; background: var(--white); border-radius: 32px; padding: 8px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+    .hero-phone img { border-radius: 24px; display: block; }
+    .hero-phone-1 { width: 240px; z-index: 2; transform: rotate(-3deg); left: 10%; top: 10%; }
+    .hero-phone-1 img { width: 224px; }
+    .hero-phone-2 { width: 260px; z-index: 3; right: 5%; top: 5%; transform: rotate(3deg); }
+    .hero-phone-2 img { width: 244px; }
+    .hero-phone-3 {
+      width: 220px; z-index: 1; left: 30%; bottom: 0;
+      transform: rotate(-1deg); opacity: .85;
+    }
+    .hero-phone-3 img { width: 204px; }
+
+    /* floating badge on hero */
+    .float-badge {
+      position: absolute; z-index: 10;
+      background: var(--white); border-radius: 16px; padding: 14px 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      display: flex; align-items: center; gap: 12px;
+      animation: floaty 4s ease-in-out infinite;
+    }
+    .float-badge-1 { top: 5%; right: -5%; animation-delay: 0s; }
+    .float-badge-2 { bottom: 15%; left: -5%; animation-delay: 1.5s; }
+    @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .float-badge .fb-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .float-badge .fb-icon.purple { background: var(--primary-bg); }
+    .float-badge .fb-icon.green { background: var(--accent-light); }
+    .float-badge .fb-text .fb-title { font-size: 13px; font-weight: 700; color: var(--text-900); }
+    .float-badge .fb-text .fb-sub { font-size: 11px; color: var(--text-400); }
+
+    /* ===== STATS BAR ===== */
+    .stats-bar {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      padding: 48px 32px;
+    }
+    .stats-inner {
       max-width: 1200px; margin: 0 auto;
-      display: flex; gap: 0; overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      display: flex; justify-content: center; gap: 80px; flex-wrap: wrap;
     }
-    .tab-nav::-webkit-scrollbar { display: none; }
-    .tab-btn {
-      flex: 1; min-width: 140px;
-      padding: 16px 24px;
-      border: none; background: none;
-      font-family: inherit; font-size: 15px; font-weight: 600;
-      color: var(--text-muted); cursor: pointer;
-      position: relative; white-space: nowrap;
-      transition: color 0.2s;
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-size: 48px; font-weight: 800; letter-spacing: -.03em;
+      background: linear-gradient(135deg, var(--primary), #EC4899);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; line-height: 1;
     }
-    .tab-btn:hover { color: var(--text); }
-    .tab-btn.active { color: var(--primary); }
-    .tab-btn.active::after {
-      content: ''; position: absolute; bottom: 0; left: 16px; right: 16px;
-      height: 3px; background: var(--primary); border-radius: 3px 3px 0 0;
-    }
-    .tab-btn .tab-num {
-      display: inline-block; background: var(--border); color: var(--text-muted);
-      width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: 700;
-      line-height: 22px; text-align: center; margin-right: 8px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .tab-btn.active .tab-num { background: var(--primary); color: white; }
+    .stat-label { font-size: 14px; color: var(--text-400); margin-top: 8px; font-weight: 500; }
 
-    /* ===== TAB CONTENT ===== */
-    .tab-panel { display: none; animation: fadeIn 0.3s ease; }
-    .tab-panel.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    /* ===== SECTION COMMON ===== */
+    .section { padding: 100px 32px; }
+    .section.alt-bg { background: var(--primary-bg); }
+    .section.white-bg { background: var(--white); }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
 
-    /* ===== COMMON ===== */
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-    .section-content { padding: 80px 0; }
-    .section-label {
-      display: inline-block; background: rgba(124,77,255,0.08); color: var(--primary);
-      padding: 6px 16px; border-radius: 16px; font-size: 13px; font-weight: 600;
-      margin-bottom: 16px; letter-spacing: 0.5px;
+    .section-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--primary-bg2); color: var(--primary);
+      padding: 6px 16px; border-radius: 100px;
+      font-size: 12px; font-weight: 700; letter-spacing: .5px;
+      margin-bottom: 16px;
     }
-    .section-title { font-size: 36px; font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
-    .section-desc { font-size: 17px; color: var(--text-light); max-width: 640px; line-height: 1.8; }
-    .section-header { text-align: center; margin-bottom: 64px; }
+    .section-title {
+      font-size: clamp(28px, 4vw, 44px); font-weight: 800;
+      line-height: 1.25; color: var(--text-900); margin-bottom: 16px;
+      letter-spacing: -.02em;
+    }
+    .section-title .highlight { color: var(--primary); }
+    .section-desc {
+      font-size: 17px; color: var(--text-500); line-height: 1.8;
+      max-width: 600px;
+    }
+    .section-header { text-align: center; margin-bottom: 72px; }
     .section-header .section-desc { margin: 0 auto; }
 
-    /* ===== PROFILE WHY SECTION ===== */
-    .profile-why {
-      background: white; border-radius: 24px; padding: 48px 40px;
-      border: 1px solid var(--border); margin-bottom: 64px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.03);
+    /* ===== BENEFIT CARDS (2x2) ===== */
+    .benefits-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+      max-width: 960px; margin: 0 auto;
     }
-    .profile-why__header { text-align: center; margin-bottom: 40px; }
-    .profile-why__icon-wrap {
-      width: 64px; height: 64px; margin: 0 auto 20px;
+    .benefit-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 24px; padding: 36px 32px;
+      transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative; overflow: hidden;
     }
-    .profile-why__icon { width: 64px; height: 64px; border-radius: 16px; }
-    .profile-why__title {
-      font-size: 26px; font-weight: 800; line-height: 1.4; margin-bottom: 16px;
-      color: var(--text);
+    .benefit-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      opacity: 0; transition: opacity .3s;
     }
-    .profile-why__title em { font-style: normal; color: var(--primary); }
-    .profile-why__subtitle {
-      font-size: 15px; color: var(--text-light); line-height: 1.9; max-width: 580px; margin: 0 auto;
+    .benefit-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(124,58,237,0.1); }
+    .benefit-card:hover::before { opacity: 1; }
+    .benefit-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      background: var(--primary-bg); display: flex; align-items: center;
+      justify-content: center; font-size: 28px; margin-bottom: 20px;
     }
-    .profile-why__grid {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
+    .benefit-card h3 {
+      font-size: 19px; font-weight: 700; color: var(--text-900);
+      margin-bottom: 12px; letter-spacing: -.01em;
     }
-    .profile-why__card {
-      background: var(--bg); border-radius: 16px; padding: 28px 24px;
-      border: 1px solid var(--border); position: relative;
-      transition: transform 0.2s, box-shadow 0.2s;
+    .benefit-card p { font-size: 15px; color: var(--text-500); line-height: 1.8; }
+    .benefit-card p strong { color: var(--text-700); font-weight: 600; }
+
+    /* ===== FEATURE ROW (alternating img+text) ===== */
+    .feature-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: center; margin-bottom: 100px;
     }
-    .profile-why__card:hover {
-      transform: translateY(-3px); box-shadow: 0 8px 28px rgba(124,77,255,0.08);
+    .feature-row:last-child { margin-bottom: 0; }
+    .feature-row.reverse { direction: rtl; }
+    .feature-row.reverse > * { direction: ltr; }
+
+    .feature-visual {
+      position: relative; display: flex; justify-content: center;
     }
-    .profile-why__card-num {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: var(--primary); color: white;
+    .feature-phone {
+      background: linear-gradient(145deg, var(--primary-bg), var(--primary-bg2));
+      border-radius: 32px; padding: 12px;
+      box-shadow: 0 20px 60px rgba(124,58,237,0.12);
+      position: relative;
+    }
+    .feature-phone img {
+      width: 260px; border-radius: 22px; display: block;
+    }
+    .feature-phone-small {
+      position: absolute; bottom: -20px; right: -40px;
+      background: var(--white); border-radius: 24px; padding: 8px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    }
+    .feature-phone-small img {
+      width: 180px; border-radius: 18px; display: block;
+    }
+
+    .feature-text {}
+    .feature-step {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent-light); color: #059669; padding: 6px 14px;
+      border-radius: 100px; font-size: 12px; font-weight: 700;
+      margin-bottom: 20px; letter-spacing: .3px;
+    }
+    .feature-text h2 {
+      font-size: clamp(24px, 3.5vw, 36px); font-weight: 800;
+      line-height: 1.3; color: var(--text-900); margin-bottom: 16px;
+      letter-spacing: -.02em;
+    }
+    .feature-text > p {
+      font-size: 16px; color: var(--text-500); line-height: 1.8;
+      margin-bottom: 28px; max-width: 480px;
+    }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .feature-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 15px; color: var(--text-700); line-height: 1.6;
+    }
+    .feature-list .check {
+      width: 24px; height: 24px; border-radius: 8px; flex-shrink: 0;
+      background: var(--primary-bg); color: var(--primary);
       display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 700; margin-bottom: 16px;
+      font-size: 14px; margin-top: 2px;
     }
-    .profile-why__card h4 { font-size: 17px; font-weight: 700; margin-bottom: 10px; color: var(--text); }
-    .profile-why__card p { font-size: 14px; color: var(--text-light); line-height: 1.8; }
 
-    /* ===== FLOW SECTION ===== */
-    .step-flow {
-      position: relative; max-width: 900px; margin: 0 auto;
+    /* ===== ALERT CALLOUT ===== */
+    .callout {
+      border-radius: 20px; padding: 24px 28px; margin-top: 24px;
+      display: flex; gap: 16px; align-items: flex-start;
     }
-    .step-flow::before {
-      content: ''; position: absolute; left: 28px; top: 0; bottom: 0;
-      width: 3px; background: var(--step-line); border-radius: 3px;
-    }
-    .flow-step {
-      position: relative; padding-left: 76px; padding-bottom: 56px;
-    }
-    .flow-step:last-child { padding-bottom: 0; }
-    .step-number {
-      position: absolute; left: 8px; top: 0;
-      width: 44px; height: 44px; border-radius: 50%;
-      background: var(--primary); color: white;
+    .callout-icon {
+      width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 16px; font-weight: 700; z-index: 2;
-      box-shadow: 0 4px 16px rgba(124,77,255,0.3);
+      font-size: 20px;
     }
-    .step-number.accent { background: var(--accent-dark); box-shadow: 0 4px 16px rgba(0,229,160,0.3); }
-    .step-number.warning { background: var(--warning); box-shadow: 0 4px 16px rgba(255,107,107,0.3); }
-    .step-content h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
-    .step-content > p { font-size: 15px; color: var(--text-light); line-height: 1.8; margin-bottom: 20px; }
-    .step-screenshot {
-      background: var(--bg); border-radius: 16px; padding: 24px;
-      border: 1px solid var(--border);
-      display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;
-    }
-    .step-screenshot img {
-      width: 220px; border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-      transition: transform 0.3s;
-    }
-    .step-screenshot img:hover { transform: scale(1.03); }
-    .step-screenshot .caption { flex: 1; min-width: 260px; }
-    .step-screenshot .caption h4 {
-      font-size: 15px; font-weight: 600; color: var(--primary-dark); margin-bottom: 10px;
-    }
-    .step-screenshot .caption p, .step-screenshot .caption li {
-      font-size: 14px; color: var(--text-light); line-height: 1.8;
-    }
-    .step-screenshot .caption ul { padding-left: 18px; }
-    .step-screenshot .caption li { margin-bottom: 4px; }
+    .callout-content h4 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .callout-content p { font-size: 13px; line-height: 1.8; }
+    .callout.tip { background: var(--primary-bg); border: 1px solid var(--primary-bg2); }
+    .callout.tip .callout-icon { background: var(--primary-bg2); }
+    .callout.tip .callout-content h4 { color: #5B21B6; }
+    .callout.tip .callout-content p { color: #6D28D9; }
+    .callout.warn { background: #FEF2F2; border: 1px solid #FECACA; }
+    .callout.warn .callout-icon { background: #FEE2E2; }
+    .callout.warn .callout-content h4 { color: #B91C1C; }
+    .callout.warn .callout-content p { color: #991B1B; }
+    .callout.info { background: #ECFEFF; border: 1px solid #A5F3FC; }
+    .callout.info .callout-icon { background: #CFFAFE; }
+    .callout.info .callout-content h4 { color: #0E7490; }
+    .callout.info .callout-content p { color: #155E75; }
 
-    /* ===== ALERT BOXES ===== */
-    .alert {
-      border-radius: 14px; padding: 20px 24px; margin: 20px 0;
-      display: flex; gap: 14px; align-items: flex-start;
+    /* ===== WORKFLOW PIPELINE ===== */
+    .pipeline-section {
+      background: var(--dark); padding: 100px 32px; color: white;
+      position: relative; overflow: hidden;
     }
-    .alert-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
-    .alert-content h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-    .alert-content p { font-size: 14px; line-height: 1.7; }
-    .alert.critical { background: var(--warning-bg); border: 1.5px solid #FFCCCC; }
-    .alert.critical .alert-content h4 { color: #D63031; }
-    .alert.critical .alert-content p { color: #C0392B; }
-    .alert.info { background: var(--info-bg); border: 1.5px solid #B2DFDB; }
-    .alert.info .alert-content h4 { color: #00897B; }
-    .alert.info .alert-content p { color: #00796B; }
-    .alert.tip { background: #F3F0FF; border: 1.5px solid #D1C4E9; }
-    .alert.tip .alert-content h4 { color: var(--primary-dark); }
-    .alert.tip .alert-content p { color: #5E35B1; }
+    .pipeline-section::before {
+      content: ''; position: absolute; top: -200px; right: -200px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,58,237,0.2), transparent 70%);
+    }
+    .pipeline-section::after {
+      content: ''; position: absolute; bottom: -100px; left: -100px;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(16,185,129,0.1), transparent 70%);
+    }
+    .pipeline-inner { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+    .pipeline-header { text-align: center; margin-bottom: 64px; }
+    .pipeline-header .section-badge {
+      background: rgba(255,255,255,0.1); color: var(--primary-lighter);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .pipeline-header .section-title { color: white; }
+    .pipeline-header .section-desc { color: rgba(255,255,255,0.5); margin: 0 auto; }
 
-    /* ===== WORKFLOW HIGHLIGHT ===== */
-    .workflow-highlight {
-      background: linear-gradient(135deg, #1A1A2E, #2D1B69);
-      border-radius: 24px; padding: 48px 40px; margin: 40px 0;
-      color: white; position: relative; overflow: hidden;
+    .pipeline-flow {
+      display: flex; align-items: stretch; gap: 0; margin-bottom: 64px;
+      position: relative;
     }
-    .workflow-highlight::before {
-      content: ''; position: absolute; top: -50%; right: -20%; width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(0,229,160,0.15) 0%, transparent 70%);
+    .pipeline-flow::before {
+      content: ''; position: absolute; top: 50%; left: 40px; right: 40px;
+      height: 2px; background: linear-gradient(90deg, var(--primary-light), var(--accent));
+      opacity: .3; transform: translateY(-50%);
     }
-    .workflow-highlight h3 { font-size: 24px; font-weight: 700; margin-bottom: 24px; position: relative; }
-    .wf-steps {
-      display: flex; align-items: center; gap: 12px; flex-wrap: wrap; position: relative;
+    .pipe-step {
+      flex: 1; text-align: center; position: relative; z-index: 1;
+      padding: 0 8px;
     }
-    .wf-step {
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 12px; padding: 14px 20px; text-align: center; flex: 1; min-width: 120px;
+    .pipe-step-dot {
+      width: 48px; height: 48px; border-radius: 16px; margin: 0 auto 16px;
+      background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 800; color: var(--primary-lighter);
+      backdrop-filter: blur(8px);
+      transition: all .3s;
     }
-    .wf-step .num { font-size: 11px; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
-    .wf-step .label { font-size: 13px; font-weight: 600; }
-    .wf-arrow { font-size: 20px; color: var(--accent); flex-shrink: 0; }
+    .pipe-step:hover .pipe-step-dot {
+      background: var(--primary); border-color: var(--primary);
+      color: white; transform: scale(1.1);
+    }
+    .pipe-step-label {
+      font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.8);
+      line-height: 1.4;
+    }
+    .pipe-step-sub { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 4px; }
 
-    /* ===== COMPARISON TABLE ===== */
-    .comparison {
-      background: white; border-radius: 16px; overflow: hidden;
-      border: 1px solid var(--border); margin: 40px 0;
+    /* comparison cards */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .compare-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px; padding: 36px 32px;
+      backdrop-filter: blur(8px);
     }
-    .comp-header {
-      display: grid; grid-template-columns: 1.5fr 1fr 1fr;
-      background: var(--dark); color: white; padding: 16px 24px;
-      font-weight: 600; font-size: 14px;
+    .compare-card h3 {
+      font-size: 20px; font-weight: 700; margin-bottom: 24px;
+      display: flex; align-items: center; gap: 12px;
     }
-    .comp-row {
-      display: grid; grid-template-columns: 1.5fr 1fr 1fr;
-      padding: 14px 24px; border-bottom: 1px solid var(--border);
-      font-size: 14px; align-items: center;
+    .compare-card h3 .cc-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
     }
-    .comp-row:last-child { border-bottom: none; }
-    .comp-row:nth-child(even) { background: var(--bg); }
-    .comp-row .item-label { font-weight: 500; }
+    .compare-card .cc-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+    .compare-card .cc-list li {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 14px;
+    }
+    .compare-card .cc-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .cc-label { color: rgba(255,255,255,0.5); }
+    .cc-value { color: white; font-weight: 600; text-align: right; }
 
-    /* ===== CTA ===== */
-    .cta-section {
-      background: linear-gradient(135deg, #1A1A2E, #2D1B69);
-      text-align: center; padding: 100px 24px; position: relative; overflow: hidden;
+    /* ===== DETAILED STEPS (timeline in sections) ===== */
+    .detail-steps { max-width: 800px; margin: 0 auto; }
+    .detail-step {
+      display: flex; gap: 32px; margin-bottom: 48px; align-items: flex-start;
     }
-    .cta-section::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at 50% 120%, rgba(0,229,160,0.15) 0%, transparent 60%);
+    .detail-step:last-child { margin-bottom: 0; }
+    .ds-phone {
+      flex-shrink: 0;
+      background: linear-gradient(145deg, var(--primary-bg), var(--primary-bg2));
+      border-radius: 24px; padding: 8px;
+      box-shadow: 0 12px 40px rgba(124,58,237,0.1);
     }
-    .cta-section h2 { font-size: 40px; font-weight: 800; color: white; margin-bottom: 16px; position: relative; }
-    .cta-section h2 em { font-style: normal; color: var(--accent); }
-    .cta-section p { font-size: 17px; color: rgba(255,255,255,0.6); position: relative; line-height: 1.8; }
+    .ds-phone img { width: 180px; border-radius: 18px; display: block; }
+    .ds-content { flex: 1; padding-top: 8px; }
+    .ds-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 10px;
+      background: var(--primary); color: white;
+      font-size: 14px; font-weight: 700; margin-bottom: 12px;
+    }
+    .ds-num.green { background: var(--accent); }
+    .ds-num.red { background: #EF4444; }
+    .ds-content h3 {
+      font-size: 20px; font-weight: 700; color: var(--text-900);
+      margin-bottom: 8px; letter-spacing: -.01em;
+    }
+    .ds-content > p {
+      font-size: 15px; color: var(--text-500); line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .ds-bullets { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .ds-bullets li {
+      font-size: 14px; color: var(--text-500); line-height: 1.7;
+      padding-left: 20px; position: relative;
+    }
+    .ds-bullets li::before {
+      content: ''; position: absolute; left: 0; top: 9px;
+      width: 6px; height: 6px; border-radius: 50%; background: var(--primary-light);
+    }
+    .ds-bullets li strong { color: var(--text-700); font-weight: 600; }
+
+    /* ===== CTA SECTION ===== */
+    .cta {
+      padding: 120px 32px;
+      background: linear-gradient(180deg, var(--primary-bg) 0%, #EDE9FE 50%, var(--primary-bg) 100%);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta::before {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,58,237,0.1), transparent 70%);
+    }
+    .cta-inner { position: relative; z-index: 1; }
+    .cta h2 {
+      font-size: clamp(32px, 5vw, 52px); font-weight: 800;
+      color: var(--text-900); line-height: 1.25; margin-bottom: 20px;
+      letter-spacing: -.03em;
+    }
+    .cta h2 .gradient {
+      background: linear-gradient(135deg, var(--primary), #EC4899);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cta p { font-size: 18px; color: var(--text-500); line-height: 1.8; margin-bottom: 40px; }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--primary); color: white;
+      padding: 18px 36px; border-radius: 16px;
+      font-size: 17px; font-weight: 700; text-decoration: none;
+      box-shadow: 0 8px 24px rgba(124,58,237,0.3);
+      transition: all .3s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(124,58,237,0.4); }
+
+    /* button resets for CTA buttons */
+    button.hero-cta, button.cta-btn {
+      border: none; cursor: pointer; font-family: inherit;
+    }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(30, 27, 75, 0.5);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden;
+      transition: opacity .4s cubic-bezier(0.16, 1, 0.3, 1), visibility .4s;
+      padding: 20px;
+    }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+
+    .modal-card {
+      background: var(--white);
+      border-radius: 28px;
+      padding: 48px 40px 40px;
+      max-width: 440px; width: 100%;
+      box-shadow: 0 32px 80px rgba(30, 27, 75, 0.25), 0 8px 24px rgba(124, 58, 237, 0.1);
+      transform: scale(0.9) translateY(20px);
+      transition: transform .4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative; text-align: center;
+    }
+    .modal-overlay.active .modal-card { transform: scale(1) translateY(0); }
+
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      width: 36px; height: 36px; border-radius: 12px;
+      border: none; background: var(--primary-bg); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-500); transition: all .2s;
+    }
+    .modal-close:hover { background: var(--primary-bg2); color: var(--primary); }
+    .modal-close svg { width: 18px; height: 18px; }
+
+    .modal-emoji {
+      width: 72px; height: 72px; border-radius: 20px;
+      background: linear-gradient(135deg, var(--primary-bg), var(--primary-bg2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; margin: 0 auto 24px;
+      box-shadow: 0 4px 16px rgba(124, 58, 237, 0.1);
+    }
+
+    .modal-title {
+      font-size: 22px; font-weight: 800; color: var(--text-900);
+      margin-bottom: 8px; letter-spacing: -.02em;
+    }
+    .modal-date {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: linear-gradient(135deg, var(--primary), #EC4899);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 28px; font-weight: 800; letter-spacing: -.02em;
+      margin-bottom: 20px;
+    }
+
+    .modal-divider {
+      width: 48px; height: 3px; border-radius: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      margin: 0 auto 20px;
+    }
+
+    .modal-body {
+      font-size: 15px; color: var(--text-500); line-height: 1.8;
+      margin-bottom: 28px;
+    }
+    .modal-body strong { color: var(--text-700); font-weight: 600; }
+
+    .modal-contact {
+      background: var(--primary-bg); border-radius: 16px;
+      padding: 20px 24px; text-align: left;
+    }
+    .modal-contact-title {
+      font-size: 13px; font-weight: 700; color: var(--primary);
+      margin-bottom: 12px; letter-spacing: .3px;
+    }
+    .modal-contact-item {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 8px; font-size: 14px; color: var(--text-700);
+    }
+    .modal-contact-item:last-child { margin-bottom: 0; }
+    .modal-contact-item .mci-icon {
+      width: 32px; height: 32px; border-radius: 10px;
+      background: var(--white); display: flex; align-items: center;
+      justify-content: center; font-size: 16px; flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .modal-contact-item a {
+      color: var(--primary); font-weight: 600; text-decoration: none;
+    }
+    .modal-contact-item a:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      .modal-card { padding: 40px 24px 32px; }
+      .modal-title { font-size: 19px; }
+      .modal-date { font-size: 24px; }
+    }
 
     /* ===== FOOTER ===== */
     .footer {
-      background: var(--dark); color: rgba(255,255,255,0.4);
-      text-align: center; padding: 32px 24px; font-size: 13px;
+      background: var(--dark); text-align: center; padding: 36px 32px;
     }
+    .footer p { font-size: 13px; color: rgba(255,255,255,0.3); }
 
     /* ===== RESPONSIVE ===== */
-    @media (max-width: 768px) {
-      .hero h1 { font-size: 30px; }
-      .hero { padding: 100px 24px 40px; }
-      .profile-why { padding: 32px 20px; }
-      .profile-why__grid { grid-template-columns: 1fr; }
-      .profile-why__title { font-size: 22px; }
-      .section-title { font-size: 28px; }
-      .step-screenshot { flex-direction: column; }
-      .step-screenshot img { width: 100%; max-width: 280px; }
-      .wf-steps { flex-direction: column; }
-      .wf-arrow { transform: rotate(90deg); }
-      .comp-header, .comp-row { grid-template-columns: 1.2fr 1fr 1fr; font-size: 12px; padding: 12px 16px; }
-      .workflow-highlight { padding: 32px 24px; }
-      .flow-step { padding-left: 64px; }
-      .tab-btn { font-size: 13px; padding: 14px 16px; min-width: 110px; }
+    @media (max-width: 960px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-desc { margin: 0 auto 40px; }
+      .hero-phones { height: 400px; margin-top: 32px; }
+      .hero-phone-1 { left: 5%; top: 10%; width: 200px; }
+      .hero-phone-1 img { width: 184px; }
+      .hero-phone-2 { right: 5%; top: 5%; width: 220px; }
+      .hero-phone-2 img { width: 204px; }
+      .hero-phone-3 { left: 25%; width: 180px; }
+      .hero-phone-3 img { width: 164px; }
+      .float-badge { display: none; }
+
+      .feature-row, .feature-row.reverse { grid-template-columns: 1fr; gap: 48px; direction: ltr; }
+      .feature-visual { order: -1; }
+
+      .benefits-grid { grid-template-columns: 1fr; max-width: 500px; }
+      .stats-inner { gap: 40px; }
+
+      .compare-grid { grid-template-columns: 1fr; }
+
+      .pipeline-flow { flex-wrap: wrap; gap: 12px; }
+      .pipeline-flow::before { display: none; }
+      .pipe-step { min-width: calc(33% - 12px); }
+
+      .detail-step { flex-direction: column; align-items: center; text-align: center; }
+      .ds-content { padding-top: 0; }
+      .ds-bullets { align-items: center; }
+      .ds-bullets li { text-align: left; }
+
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 120px 20px 60px; }
+      .hero-phones { height: 320px; }
+      .hero-phone-1 { width: 160px; left: 0; }
+      .hero-phone-1 img { width: 144px; }
+      .hero-phone-2 { width: 180px; right: 0; }
+      .hero-phone-2 img { width: 164px; }
+      .hero-phone-3 { width: 150px; left: 20%; }
+      .hero-phone-3 img { width: 134px; }
+
+      .section { padding: 72px 20px; }
+      .stats-inner { gap: 24px; }
+      .stat-num { font-size: 36px; }
+
+      .feature-phone img { width: 220px; }
+      .feature-phone-small { right: -20px; bottom: -10px; }
+      .feature-phone-small img { width: 140px; }
+
+      .pipeline-section { padding: 72px 20px; }
+      .pipe-step { min-width: calc(50% - 12px); }
+
+      .ds-phone img { width: 160px; }
+
+      .nav-inner { padding: 14px 20px; }
+      .cta { padding: 80px 20px; }
     }
   </style>
 </head>
@@ -328,681 +659,566 @@
   <div class="nav-inner">
     <a href="#" class="nav-logo">
       <img src="../assets/service_icon.png" alt="쪽집게">
-      쪽집게<span>.</span>
+      쪽집게<span class="dot">.</span>
     </a>
+    <div class="nav-links">
+      <a href="#benefits" class="active">왜 쪽집게?</a>
+      <a href="#profile">프로필 등록</a>
+      <a href="#search">의뢰 탐색</a>
+      <a href="#workflow">워크플로우</a>
+      <a href="#earnings">수익관리</a>
+    </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-content">
-    <div class="hero-badge">EXPERT ONBOARDING GUIDE</div>
-    <h1><em>쪽집게</em> 전문가<br>온보딩 가이드</h1>
-    <p>쪽집게에서 전문가로 활동하기 위해 알아야 할 모든 것을 정리했습니다.<br>프로필 등록부터 수익 정산까지, 단계별로 안내합니다.</p>
+  <div class="hero-inner">
+    <div class="hero-text reveal">
+      <div class="hero-badge"><span class="dot"></span> 전문가 온보딩 가이드</div>
+      <h1>수수료 0%,<br>당신의 <span class="gradient">재능</span>이<br>곧 수익입니다.</h1>
+      <p class="hero-desc">쪽집게에서 전문가로 활동하기 위한 모든 것을 안내합니다. 프로필 등록 5분이면 시작할 수 있어요.</p>
+      <button class="hero-cta" onclick="openModal()">
+        시작하기
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+      </button>
+    </div>
+    <div class="hero-phones reveal rd2">
+      <div class="hero-phone hero-phone-1">
+        <img src="images/profile-complete.png" alt="전문가 프로필">
+      </div>
+      <div class="hero-phone hero-phone-2">
+        <img src="images/ticket-feed.png" alt="의뢰 피드">
+      </div>
+      <div class="hero-phone hero-phone-3">
+        <img src="images/chat-1-created.png" alt="채팅">
+      </div>
+      <div class="float-badge float-badge-1">
+        <div class="fb-icon purple">💰</div>
+        <div class="fb-text">
+          <div class="fb-title">중개 수수료 0%</div>
+          <div class="fb-sub">PG 수수료만 3.5%</div>
+        </div>
+      </div>
+      <div class="float-badge float-badge-2">
+        <div class="fb-icon green">⚡</div>
+        <div class="fb-text">
+          <div class="fb-title">5분 만에 등록</div>
+          <div class="fb-sub">바로 활동 시작</div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- TAB NAVIGATION -->
-<div class="tab-nav-wrapper">
-  <div class="tab-nav">
-    <button class="tab-btn active" data-tab="profile"><span class="tab-num">1</span>프로필 등록</button>
-    <button class="tab-btn" data-tab="search"><span class="tab-num">2</span>의뢰 탐색</button>
-    <button class="tab-btn" data-tab="workflow"><span class="tab-num">3</span>채팅 워크플로우</button>
-    <button class="tab-btn" data-tab="earnings"><span class="tab-num">4</span>수익관리</button>
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item reveal"><div class="stat-num">0%</div><div class="stat-label">중개 수수료</div></div>
+    <div class="stat-item reveal rd1"><div class="stat-num">5분</div><div class="stat-label">프로필 등록</div></div>
+    <div class="stat-item reveal rd2"><div class="stat-num">무료</div><div class="stat-label">제안서 발송</div></div>
+    <div class="stat-item reveal rd3"><div class="stat-num">96.5%</div><div class="stat-label">전문가 수령률</div></div>
   </div>
 </div>
 
-<!-- ========================================== -->
-<!-- TAB 1: 프로필 등록 -->
-<!-- ========================================== -->
-<div class="tab-panel active" id="tab-profile">
-  <div class="section-content" style="background: var(--bg);">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label">STEP 1</div>
-        <h2 class="section-title">전문가 프로필 등록</h2>
-        <p class="section-desc">마이페이지에서 5단계로 간편하게 전문가 프로필을 등록하세요.</p>
+<!-- WHY SECTION -->
+<section class="section alt-bg" id="benefits">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-badge">WHY 쪽집게?</div>
+      <h2 class="section-title"><span class="highlight">전문가 프로필</span>이<br>곧 경쟁력입니다</h2>
+      <p class="section-desc">쪽집게는 일반 재능마켓과 다릅니다. 의뢰인이 원하는 작업을 등록하면 전문가가 직접 선택해서 제안하는 구조예요.</p>
+    </div>
+
+    <div class="benefits-grid">
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">📋</div>
+        <h3>포트폴리오 & 자격증</h3>
+        <p>의뢰인은 제안서를 받으면 가장 먼저 <strong>전문가 프로필</strong>을 확인합니다. 포트폴리오와 자격증이 충실할수록 <strong>제안서 수락 확률이 높아집니다.</strong></p>
+      </div>
+      <div class="benefit-card reveal rd1">
+        <div class="benefit-icon">✍️</div>
+        <h3>상세 소개 작성</h3>
+        <p>경력, 전문 분야, 서비스 제공 방식을 <strong>구체적으로</strong> 작성해주세요. <strong>신뢰도가 높아지고</strong>, 제안서가 채택될 가능성이 커집니다.</p>
+      </div>
+      <div class="benefit-card reveal rd2">
+        <div class="benefit-icon">🔗</div>
+        <h3>프로필 공유로 고객 유치</h3>
+        <p><strong>내 프로필 링크를 기존 고객에게 공유</strong>하면, 수수료 0%로 거래할 수 있어요. 신규 가입 고객은 <strong>웰컴 쿠폰으로 무료 이용</strong> 가능!</p>
+      </div>
+      <div class="benefit-card reveal rd3">
+        <div class="benefit-icon">📈</div>
+        <h3>매칭률 = 프로필 완성도</h3>
+        <p>같은 제안이라도 프로필이 잘 갖춰진 전문가가 선택됩니다. <strong>프로필을 꼼꼼히 채울수록 더 많은 의뢰인과 연결</strong>될 수 있어요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILE REGISTRATION -->
+<section class="section white-bg" id="profile">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-badge">STEP 01</div>
+      <h2 class="section-title">전문가 프로필 <span class="highlight">등록</span></h2>
+      <p class="section-desc">마이페이지에서 5단계로 간편하게 등록하세요.</p>
+    </div>
+
+    <!-- Row 1 -->
+    <div class="feature-row reveal">
+      <div class="feature-visual">
+        <div class="feature-phone">
+          <img src="images/profile-mypage.png" alt="마이페이지">
+        </div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-step">01 마이페이지</div>
+        <h2>마이페이지에서<br>전문가 등록 시작</h2>
+        <p>하단 탭의 '마이페이지'에서 '전문가' 탭을 선택하면 전문가 등록 배너가 보여요.</p>
+        <ul class="feature-list">
+          <li><span class="check">✓</span><strong>의뢰인 / 전문가</strong> 탭 자유롭게 전환</li>
+          <li><span class="check">✓</span>'전문가 등록' 배너를 탭하면 등록 시작</li>
+          <li><span class="check">✓</span>제안서 관리, 직접 받은 의뢰 등 메뉴 노출</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="feature-row reverse reveal">
+      <div class="feature-visual">
+        <div class="feature-phone">
+          <img src="images/profile-register.png" alt="등록 폼">
+        </div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-step">02 기본 정보</div>
+        <h2>5단계로<br>프로필 완성</h2>
+        <p>한 줄 소개, 상세 소개, 경력, 활동 방식, 카테고리, 자격증, 포트폴리오, 활동 시간/지역, 정산 계좌를 입력합니다.</p>
+        <ul class="feature-list">
+          <li><span class="check">✓</span><strong>한줄 소개</strong> — 나를 표현하는 짧은 문장 (최대 100자)</li>
+          <li><span class="check">✓</span><strong>활동 방식</strong> — 오프라인 / 온라인 / 온·오프라인</li>
+          <li><span class="check">✓</span><strong>전문 카테고리</strong> — 최대 3개 선택</li>
+        </ul>
+        <div class="callout warn">
+          <div class="callout-icon">🏦</div>
+          <div class="callout-content">
+            <h4>온라인 거래 시 정산 계좌 등록 필수</h4>
+            <p>오프라인 전용이라면 계좌 없이도 활동 가능합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="feature-row reveal">
+      <div class="feature-visual">
+        <div class="feature-phone">
+          <img src="images/profile-cert.png" alt="자격증">
+        </div>
+        <div class="feature-phone-small">
+          <img src="images/profile-portfolio.png" alt="포트폴리오">
+        </div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-step">03 포트폴리오</div>
+        <h2>자격증 & 포트폴리오로<br>전문성 어필</h2>
+        <p>자격증은 최대 5개, 포트폴리오는 최대 10개까지 등록할 수 있어요.</p>
+        <ul class="feature-list">
+          <li><span class="check">✓</span><strong>자격증</strong> — 자격증명 + 발급기관 (최대 5개)</li>
+          <li><span class="check">✓</span><strong>포트폴리오</strong> — 설명 + 이미지 (포트폴리오당 최대 7장)</li>
+          <li><span class="check">✓</span>작성 후 수정/삭제 자유롭게 가능</li>
+        </ul>
+        <div class="callout tip">
+          <div class="callout-icon">⭐</div>
+          <div class="callout-content">
+            <h4>자격증과 포트폴리오를 추가하면, 매칭률이 올라가요!</h4>
+            <p>의뢰인이 전문가를 선택할 때 가장 중요하게 봅니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="feature-row reverse reveal">
+      <div class="feature-visual">
+        <div class="feature-phone">
+          <img src="images/share-profile.png" alt="프로필 공유">
+        </div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-step">04 공유하기</div>
+        <h2>내 프로필을 공유해서<br>고객을 데려오세요</h2>
+        <p>타 플랫폼에서 높은 수수료를 내고 있나요? 내 프로필 링크를 기존 고객에게 보내면, <strong>수수료 0%로 거래</strong>할 수 있습니다.</p>
+        <ul class="feature-list">
+          <li><span class="check">✓</span><strong>카카오톡으로 공유</strong> — 채팅으로 바로 전송</li>
+          <li><span class="check">✓</span><strong>링크 복사</strong> — 어디든 붙여넣기</li>
+          <li><span class="check">✓</span><strong>다른 앱 공유</strong> — 인스타 DM, 문자, 이메일 등</li>
+        </ul>
+        <div class="callout tip">
+          <div class="callout-icon">🎁</div>
+          <div class="callout-content">
+            <h4>신규 가입 고객은 웰컴 쿠폰을 받아요!</h4>
+            <p>내 링크로 가입한 의뢰인은 무료로 의뢰를 등록할 수 있어요.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH & PROPOSAL -->
+<section class="section alt-bg" id="search">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-badge">STEP 02</div>
+      <h2 class="section-title">의뢰 탐색 & <span class="highlight">제안서 보내기</span></h2>
+      <p class="section-desc">의뢰인이 등록한 의뢰를 탐색하고, 마음에 드는 의뢰에 제안서를 보내세요. 제안서 발송은 무료!</p>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-visual">
+        <div class="feature-phone">
+          <img src="images/ticket-feed.png" alt="의뢰 피드">
+        </div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-step">의뢰 피드</div>
+        <h2>다양한 의뢰를<br>한눈에 탐색</h2>
+        <p>카테고리, 지역, 유형(온/오프라인), 정렬(최신순, 예산 높은순, 마감임박순)으로 필터링하세요.</p>
+        <ul class="feature-list">
+          <li><span class="check">✓</span>각 의뢰의 <strong>예산 범위, 마감일(D-day), 제안 수</strong> 한눈에</li>
+          <li><span class="check">✓</span>온라인/오프라인 유형 태그 구분</li>
+          <li><span class="check">✓</span>카테고리별 세부 필터</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-row reverse reveal">
+      <div class="feature-visual">
+        <div class="feature-phone">
+          <img src="images/ticket-detail.png" alt="의뢰 상세">
+        </div>
+        <div class="feature-phone-small">
+          <img src="images/proposal-create.png" alt="제안서 작성">
+        </div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-step">제안서 작성</div>
+        <h2>매력적인 제안서로<br>의뢰인을 사로잡으세요</h2>
+        <p>의뢰 상세를 확인하고 '제안서 보내기' 버튼으로 제안서를 작성합니다.</p>
+        <ul class="feature-list">
+          <li><span class="check">✓</span><strong>제안 금액</strong> + <strong>예상 작업 시간</strong></li>
+          <li><span class="check">✓</span><strong>어필 메시지</strong> — 나만의 강점을 어필 (최대 1,000자)</li>
+          <li><span class="check">✓</span><strong>가능 일시</strong> — 날짜와 시간대 추가</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-visual">
+        <div class="feature-phone">
+          <img src="images/proposal-manage.png" alt="제안서 관리">
+        </div>
+        <div class="feature-phone-small">
+          <img src="images/proposal-detail.png" alt="제안서 상세">
+        </div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-step">제안서 관리</div>
+        <h2>보낸 제안서를<br>한곳에서 관리</h2>
+        <p>마이페이지에서 진행중/완료 탭으로 상태를 구분하며, 대기 중인 제안서는 철회도 가능합니다.</p>
+        <ul class="feature-list">
+          <li><span class="check">✓</span><strong>대기중</strong> → <strong>선택됨</strong> → <strong>완료</strong></li>
+          <li><span class="check">✓</span>선택되면 1:1 채팅방 자동 생성</li>
+          <li><span class="check">✓</span>대기 중 제안서 철회 가능</li>
+        </ul>
+        <div class="callout info">
+          <div class="callout-icon">ℹ️</div>
+          <div class="callout-content">
+            <h4>의뢰인이 수락하면 채팅방이 열립니다</h4>
+            <p>채팅방에서 세부 일정, 금액, 범위 등을 협의하게 됩니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW PIPELINE -->
+<section class="pipeline-section" id="workflow">
+  <div class="pipeline-inner">
+    <div class="pipeline-header reveal">
+      <div class="section-badge">STEP 03 — 가장 중요!</div>
+      <h2 class="section-title">채팅 <span style="color:var(--primary-lighter)">워크플로우</span></h2>
+      <p class="section-desc">매칭 후 합의서 → 결제 → 작업물 전달 → 승인 → 정산까지의 전체 흐름</p>
+    </div>
+
+    <div class="pipeline-flow reveal">
+      <div class="pipe-step">
+        <div class="pipe-step-dot">1</div>
+        <div class="pipe-step-label">매칭 완료</div>
+        <div class="pipe-step-sub">채팅방 생성</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-step-dot">2</div>
+        <div class="pipe-step-label">합의서 확인</div>
+        <div class="pipe-step-sub">수락 / 거부</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-step-dot">3</div>
+        <div class="pipe-step-label">의뢰인 결제</div>
+        <div class="pipe-step-sub">에스크로 보관</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-step-dot">4</div>
+        <div class="pipe-step-label">작업물 전달</div>
+        <div class="pipe-step-sub">파일 / 메모</div>
+      </div>
+      <div class="pipe-step">
+        <div class="pipe-step-dot">5</div>
+        <div class="pipe-step-label">승인 → 정산</div>
+        <div class="pipe-step-sub">영업일 6~8일</div>
+      </div>
+    </div>
+
+    <!-- Comparison -->
+    <div class="compare-grid reveal">
+      <div class="compare-card">
+        <h3><span class="cc-icon" style="background:rgba(167,139,250,.2);">🏠</span> 오프라인 의뢰</h3>
+        <ul class="cc-list">
+          <li><span class="cc-label">서비스 방식</span><span class="cc-value">대면 서비스</span></li>
+          <li><span class="cc-label">합의서</span><span class="cc-value">없음 (채팅 협의)</span></li>
+          <li><span class="cc-label">결제</span><span class="cc-value">당사자 간 직접</span></li>
+          <li><span class="cc-label">작업물 전달</span><span class="cc-value">없음</span></li>
+          <li><span class="cc-label">완료</span><span class="cc-value">48시간 자동 완료</span></li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <h3><span class="cc-icon" style="background:rgba(16,185,129,.2);">💻</span> 온라인 의뢰</h3>
+        <ul class="cc-list">
+          <li><span class="cc-label">서비스 방식</span><span class="cc-value">제품 납품</span></li>
+          <li><span class="cc-label">합의서</span><span class="cc-value">필수 (금액·마감·범위)</span></li>
+          <li><span class="cc-label">결제</span><span class="cc-value">에스크로 안전결제</span></li>
+          <li><span class="cc-label">작업물 전달</span><span class="cc-value">앱에서 전달 필수</span></li>
+          <li><span class="cc-label">완료</span><span class="cc-value">승인 시 (72시간 자동)</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW DETAILS -->
+<section class="section white-bg">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-badge">온라인 의뢰 상세</div>
+      <h2 class="section-title">단계별 <span class="highlight">상세 가이드</span></h2>
+    </div>
+
+    <div class="detail-steps">
+      <div class="detail-step reveal">
+        <div class="ds-phone"><img src="images/chat-1-created.png" alt="채팅 생성"></div>
+        <div class="ds-content">
+          <div class="ds-num green">1</div>
+          <h3>매칭 완료 → 채팅방 자동 생성</h3>
+          <p>의뢰인이 내 제안서를 수락하면 자동으로 1:1 채팅방이 생성됩니다.</p>
+          <ul class="ds-bullets">
+            <li>상단 스텝바로 현재 진행 상태 파악</li>
+            <li>온라인 의뢰: 의뢰인이 합의서를 작성·제안</li>
+          </ul>
+          <div class="callout tip">
+            <div class="callout-icon">💡</div>
+            <div class="callout-content">
+              <h4>의뢰인과 충분히 대화하세요</h4>
+              <p>금액, 작업 범위, 마감일을 미리 협의하면 합의서가 한 번에 확정될 가능성이 높아요.</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- 프로필이 왜 중요한가 -->
-      <div class="profile-why">
-        <div class="profile-why__header">
-          <div class="profile-why__icon-wrap">
-            <img src="../assets/service_icon.png" alt="쪽집게" class="profile-why__icon">
-          </div>
-          <h3 class="profile-why__title">쪽집게는 <em>전문가 프로필</em>이 곧 경쟁력입니다</h3>
-          <p class="profile-why__subtitle">쪽집게는 일반 재능마켓과 다릅니다.<br>전문가가 상품을 올리는 것이 아니라, <strong>의뢰인이 원하는 작업을 등록하면 전문가가 직접 선택해서 제안</strong>하는 구조예요.</p>
+      <div class="detail-step reveal">
+        <div class="ds-phone"><img src="images/chat-3-agreement-detail.png" alt="합의서 상세"></div>
+        <div class="ds-content">
+          <div class="ds-num green">2</div>
+          <h3>합의서 확인 (온라인 전용)</h3>
+          <p>의뢰인이 합의서를 제안하면 채팅방에 시스템 메시지가 나타납니다.</p>
+          <ul class="ds-bullets">
+            <li><strong>작업 마감일</strong>, <strong>작업 범위</strong>, <strong>수정 횟수</strong> 확인</li>
+            <li><strong>납품 형식</strong>, <strong>최종 금액</strong> 확인</li>
+            <li><strong>수락</strong> → 결제 배너 노출 / <strong>거부</strong> → 재협의</li>
+          </ul>
         </div>
+      </div>
 
-        <div class="profile-why__grid">
-          <div class="profile-why__card">
-            <div class="profile-why__card-num">1</div>
-            <h4>포트폴리오 & 자격증</h4>
-            <p>의뢰인은 제안서를 받으면 가장 먼저 <strong>전문가 프로필</strong>을 확인합니다. 포트폴리오와 자격증이 충실할수록 전문성을 인정받아 <strong>제안서 수락 확률이 높아집니다.</strong></p>
-          </div>
-          <div class="profile-why__card">
-            <div class="profile-why__card-num">2</div>
-            <h4>상세 소개 작성</h4>
-            <p>경력, 전문 분야, 서비스 제공 방식을 <strong>구체적으로</strong> 작성해주세요. 의뢰인이 더 많은 정보를 얻을 수 있어 <strong>신뢰도가 높아지고</strong>, 제안서가 채택될 가능성이 커집니다.</p>
-          </div>
-          <div class="profile-why__card">
-            <div class="profile-why__card-num">3</div>
-            <h4>프로필 공유로 고객 유치</h4>
-            <p>타 플랫폼에서 높은 수수료를 내고 있나요? <strong>내 프로필 링크를 기존 고객에게 공유</strong>하면, 쪽집게에서 수수료 0%로 거래할 수 있어요. 신규 가입 고객은 <strong>웰컴 쿠폰으로 무료 이용</strong> 가능해서 전환이 쉽습니다!</p>
-          </div>
-          <div class="profile-why__card">
-            <div class="profile-why__card-num">4</div>
-            <h4>매칭률 = 프로필 완성도</h4>
-            <p>같은 제안이라도 프로필이 잘 갖춰진 전문가가 선택됩니다. <strong>프로필을 꼼꼼히 채울수록 더 많은 의뢰인과 연결</strong>될 수 있어요.</p>
+      <div class="detail-step reveal">
+        <div class="ds-phone"><img src="images/chat-5-after-payment.png" alt="결제 완료"></div>
+        <div class="ds-content">
+          <div class="ds-num green">3</div>
+          <h3>의뢰인 결제 (에스크로)</h3>
+          <p>합의서 수락 후 의뢰인이 결제하면, "결제가 완료되었습니다" 메시지가 전송됩니다.</p>
+          <ul class="ds-bullets">
+            <li>결제 대금은 <strong>PG사(토스페이먼츠)가 에스크로로 보관</strong></li>
+            <li>전문가 화면: "작업물을 전달해주세요" 배너로 전환</li>
+          </ul>
+          <div class="callout info">
+            <div class="callout-icon">🔒</div>
+            <div class="callout-content">
+              <h4>에스크로 안전결제</h4>
+              <p>의뢰인이 작업물을 승인해야 전문가에게 정산됩니다. 양쪽 모두 안전합니다.</p>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="step-flow">
-        <!-- Step 1-1 -->
-        <div class="flow-step">
-          <div class="step-number">1</div>
-          <div class="step-content">
-            <h3>마이페이지 → 전문가 등록</h3>
-            <p>하단 탭의 '마이페이지'로 이동해서 '전문가' 탭을 선택하면, 전문가 등록 배너가 보여요. 배너를 탭하면 5단계 등록이 시작됩니다.</p>
-            <div class="step-screenshot">
-              <img src="images/profile-mypage.png" alt="마이페이지 전문가 등록">
-              <div class="caption">
-                <h4>마이페이지 화면</h4>
-                <ul>
-                  <li><strong>의뢰인 / 전문가</strong> 탭 전환 가능</li>
-                  <li>'전문가 등록' 배너를 탭하면 등록 시작</li>
-                  <li>제안서 관리, 직접 받은 의뢰 등 전문가 메뉴 노출</li>
-                </ul>
-              </div>
+      <div class="detail-step reveal">
+        <div class="ds-phone"><img src="images/chat-6-delivery-form.png" alt="작업물 전달"></div>
+        <div class="ds-content">
+          <div class="ds-num red">4</div>
+          <h3>작업물 전달 (가장 중요!)</h3>
+          <p>채팅방 상단의 '작업물 전달' 버튼으로 결과물을 전달합니다.</p>
+          <ul class="ds-bullets">
+            <li><strong>메모로 전달</strong> — 파일 없이 메모로 작성</li>
+            <li><strong>파일 전달</strong> — 사진 최대 10장, PDF 최대 10개</li>
+          </ul>
+          <div class="callout warn">
+            <div class="callout-icon">🚨</div>
+            <div class="callout-content">
+              <h4>반드시 읽어주세요!</h4>
+              <p>영상 등 사진/PDF 외 작업물은 의뢰인과 협의 후 이메일 등으로 전달하세요. <strong>하지만 쪽집게 앱에서 '작업물 전달' 버튼은 반드시 눌러야 합니다.</strong> 그래야 정산이 진행됩니다. 72시간 미확인 시 자동 승인됩니다.</p>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Step 1-2 -->
-        <div class="flow-step">
-          <div class="step-number">2</div>
-          <div class="step-content">
-            <h3>기본 정보 입력 (1~5단계)</h3>
-            <p>한 줄 소개, 상세 소개, 경력, 활동 방식(온라인/오프라인/둘 다), 전문 카테고리(최대 3개), 자격증, 포트폴리오, 활동 가능 시간과 지역, 정산 계좌를 입력합니다.</p>
-            <div class="step-screenshot">
-              <img src="images/profile-register.png" alt="전문가 등록 폼">
-              <div class="caption">
-                <h4>등록 폼 (5단계)</h4>
-                <ul>
-                  <li><strong>한줄 소개</strong> — 나를 표현하는 짧은 문장 (최대 100자)</li>
-                  <li><strong>상세 소개</strong> — 경험, 전문 분야, 강점 등을 자유롭게</li>
-                  <li><strong>경력</strong> — 예: "5년", "10년 이상"</li>
-                  <li><strong>활동 방식</strong> — 오프라인 / 온라인 / 온·오프라인</li>
-                </ul>
-                <div class="alert tip" style="margin-top:12px;">
-                  <div class="alert-icon">💡</div>
-                  <div class="alert-content">
-                    <h4>TIP</h4>
-                    <p>외부 플랫폼(인스타, 페이스북), 전화번호, 이메일 등을 기재하면 제재 대상이 될 수 있습니다.</p>
-                  </div>
-                </div>
-                <div class="alert critical" style="margin-top:12px;">
-                  <div class="alert-icon">🏦</div>
-                  <div class="alert-content">
-                    <h4>온라인 거래를 이용하려면 정산 계좌 등록이 필수입니다</h4>
-                    <p>5단계에서 정산 계좌를 등록해야 온라인 의뢰에 제안서를 보낼 수 있습니다. 오프라인 전용이라면 계좌 없이도 활동 가능합니다.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="detail-step reveal">
+        <div class="ds-phone"><img src="images/chat-7-delivery-review.png" alt="작업물 확인"></div>
+        <div class="ds-content">
+          <div class="ds-num green">5</div>
+          <h3>의뢰인 확인 → 승인 또는 수정</h3>
+          <p>의뢰인이 작업물을 확인 후 승인하거나 수정을 요청합니다.</p>
+          <ul class="ds-bullets">
+            <li><strong>승인</strong> → 거래 완료, 에스크로 정산 진행</li>
+            <li><strong>수정 요청</strong> → 사유 입력 필수, 수정 횟수 차감</li>
+            <li>수정 횟수 소진 후 거절 시 <strong>분쟁 조정</strong> 진행</li>
+          </ul>
         </div>
+      </div>
 
-        <!-- Step 1-3 -->
-        <div class="flow-step">
-          <div class="step-number">3</div>
-          <div class="step-content">
-            <h3>자격증 & 포트폴리오 관리</h3>
-            <p>자격증은 최대 5개, 포트폴리오는 최대 10개까지 등록할 수 있어요. 포트폴리오에는 설명과 이미지를 함께 올려 어필하세요.</p>
-            <div class="step-screenshot">
-              <img src="images/profile-cert.png" alt="자격증 관리">
-              <img src="images/profile-portfolio.png" alt="포트폴리오 관리">
-              <div class="caption">
-                <h4>자격증 / 포트폴리오</h4>
-                <ul>
-                  <li><strong>자격증</strong> — 자격증명 + 발급기관 입력 (최대 5개)</li>
-                  <li><strong>포트폴리오</strong> — 설명 + 이미지 (포트폴리오당 최대 7장, 최대 10개)</li>
-                  <li>작성 후 수정/삭제 자유롭게 가능</li>
-                </ul>
-                <div class="alert tip" style="margin-top:12px;">
-                  <div class="alert-icon">⭐</div>
-                  <div class="alert-content">
-                    <h4>자격증과 포트폴리오를 추가하면, 매칭률이 올라가요!</h4>
-                    <p>의뢰인이 전문가를 선택할 때 자격증과 포트폴리오를 중요하게 봅니다. 꼭 등록해주세요.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 1-4 -->
-        <div class="flow-step">
-          <div class="step-number">4</div>
-          <div class="step-content">
-            <h3>완성된 프로필</h3>
-            <p>모든 단계를 완료하면 전문가 프로필이 완성됩니다. 이제 의뢰 피드에서 의뢰를 탐색하고 제안서를 보낼 수 있어요!</p>
-            <div class="step-screenshot">
-              <img src="images/profile-complete.png" alt="완성된 전문가 프로필">
-              <div class="caption">
-                <h4>완성된 전문가 프로필</h4>
-                <ul>
-                  <li>소개, 포트폴리오, 자격증, 리뷰가 모두 노출</li>
-                  <li><strong>리뷰 평점</strong>과 <strong>매칭 횟수</strong>가 표시되어 신뢰도 확보</li>
-                  <li>활동 시간, 지역, 본인인증 배지 등 노출</li>
-                  <li>프로필이 매력적일수록 의뢰인의 선택 확률이 높아져요</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 1-5: 프로필 공유 -->
-        <div class="flow-step">
-          <div class="step-number accent">5</div>
-          <div class="step-content">
-            <h3>내 프로필 공유하기</h3>
-            <p>완성된 프로필을 기존 고객이나 SNS에 공유하세요. 수수료가 비싼 타 플랫폼에서 받은 의뢰인에게 링크를 보내면, <strong>쪽집게에서 수수료 0%로 거래</strong>할 수 있습니다.</p>
-            <div class="step-screenshot">
-              <img src="images/share-profile.png" alt="프로필 공유 화면">
-              <div class="caption">
-                <h4>프로필 공유 방법</h4>
-                <ul>
-                  <li><strong>마이페이지</strong> > <strong>전문가 탭</strong> > <strong>내 전문가 프로필</strong> 진입</li>
-                  <li>화면 우측 상단의 <strong>공유 버튼</strong>을 탭</li>
-                  <li><strong>카카오톡으로 공유</strong> — 카카오톡 채팅으로 바로 전송</li>
-                  <li><strong>링크 복사하기</strong> — 링크를 복사하여 어디든 붙여넣기</li>
-                  <li><strong>다른 앱으로 공유</strong> — 인스타 DM, 문자, 이메일 등으로 공유</li>
-                </ul>
-                <div class="alert tip" style="margin-top:12px;">
-                  <div class="alert-icon">🎁</div>
-                  <div class="alert-content">
-                    <h4>신규 가입 고객은 웰컴 쿠폰을 받아요!</h4>
-                    <p>내 프로필 링크를 통해 쪽집게에 가입한 의뢰인은 <strong>웰컴 쿠폰</strong>을 받아 <strong>무료로 의뢰를 등록</strong>할 수 있어요. 수수료 부담 없이 바로 거래를 시작할 수 있으니, 타 플랫폼 고객에게 적극적으로 공유해보세요!</p>
-                  </div>
-                </div>
-              </div>
+      <div class="detail-step reveal">
+        <div class="ds-phone"><img src="images/chat-9-earnings.png" alt="수익관리"></div>
+        <div class="ds-content">
+          <div class="ds-num green">6</div>
+          <h3>승인 완료 → 자동 정산</h3>
+          <p>의뢰인이 승인하면 등록한 정산 계좌로 <strong>영업일 6~8일 내 자동 입금</strong>됩니다.</p>
+          <ul class="ds-bullets">
+            <li>예: 300,000원 → PG 수수료 10,500원 = <strong>289,500원 수령</strong></li>
+            <li>수익관리 페이지에서 정산 상태 실시간 확인</li>
+          </ul>
+          <div class="callout tip">
+            <div class="callout-icon">💰</div>
+            <div class="callout-content">
+              <h4>중개 수수료 0%</h4>
+              <p>쪽집게는 중개 수수료를 받지 않습니다. PG사 수수료(약 3.5%)만 차감됩니다.</p>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ========================================== -->
-<!-- TAB 2: 의뢰 탐색 -->
-<!-- ========================================== -->
-<div class="tab-panel" id="tab-search">
-  <div class="section-content">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label">STEP 2</div>
-        <h2 class="section-title">의뢰 탐색 & 제안서 보내기</h2>
-        <p class="section-desc">의뢰인이 등록한 의뢰를 탐색하고, 마음에 드는 의뢰에 제안서를 보내세요. 제안서 발송은 무료입니다!</p>
+<!-- EARNINGS -->
+<section class="section alt-bg" id="earnings">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-badge">STEP 04</div>
+      <h2 class="section-title">수익을 <span class="highlight">한눈에</span> 관리</h2>
+      <p class="section-desc">수익 대시보드에서 정산 현황, 거래 내역, 리뷰를 한곳에서 확인하세요.</p>
+    </div>
+
+    <div class="feature-row reveal">
+      <div class="feature-visual">
+        <div class="feature-phone">
+          <img src="images/earnings-1.png" alt="수익 대시보드">
+        </div>
+        <div class="feature-phone-small">
+          <img src="images/earnings-2.png" alt="거래 내역">
+        </div>
       </div>
+      <div class="feature-text">
+        <div class="feature-step">수익관리</div>
+        <h2>수익 대시보드 &<br>거래 내역</h2>
+        <p>기간별 수익 현황을 차트로 확인하고, 거래건별 상세 내역을 조회할 수 있습니다.</p>
+        <ul class="feature-list">
+          <li><span class="check">✓</span><strong>총 순수익</strong> — 수수료를 뺀 실제 수익</li>
+          <li><span class="check">✓</span><strong>정산 완료 / 대기</strong> 상태 구분</li>
+          <li><span class="check">✓</span><strong>PG사 수수료</strong> (약 3.5%) 합계 확인</li>
+          <li><span class="check">✓</span>월별/주간/일별 차트로 추이 확인</li>
+        </ul>
+      </div>
+    </div>
 
-      <div class="step-flow">
-        <div class="flow-step">
-          <div class="step-number">1</div>
-          <div class="step-content">
-            <h3>의뢰 피드 탐색</h3>
-            <p>홈 화면에서 카테고리별로 등록된 의뢰를 탐색하세요. 다양한 분야의 의뢰가 올라옵니다. 카테고리, 지역, 유형(온/오프라인), 정렬(최신순, 예산 높은순, 마감임박순)으로 필터링할 수 있어요.</p>
-            <div class="step-screenshot">
-              <img src="images/ticket-feed.png" alt="의뢰 피드">
-              <div class="caption">
-                <h4>의뢰 피드 화면</h4>
-                <ul>
-                  <li>의뢰 / 전문가 탭 전환</li>
-                  <li>카테고리별 세부 필터</li>
-                  <li>각 의뢰의 <strong>예산 범위, 마감일(D-day), 제안 수</strong> 한눈에 확인</li>
-                  <li>온라인/오프라인 유형 태그로 구분</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+    <div class="feature-row reverse reveal">
+      <div class="feature-visual">
+        <div class="feature-phone">
+          <img src="images/review-manage.png" alt="리뷰 관리">
         </div>
-
-        <div class="flow-step">
-          <div class="step-number">2</div>
-          <div class="step-content">
-            <h3>의뢰 상세 확인 → 제안서 보내기</h3>
-            <p>의뢰를 탭하면 상세 내용을 확인할 수 있어요. 내가 잘 할 수 있는 의뢰라면 '제안서 보내기' 버튼을 눌러 제안서를 작성합니다.</p>
-            <div class="step-screenshot">
-              <img src="images/ticket-detail.png" alt="의뢰 상세">
-              <img src="images/proposal-create.png" alt="제안서 작성">
-              <div class="caption">
-                <h4>제안서 작성 항목</h4>
-                <ul>
-                  <li><strong>제안 금액</strong> — 서비스 대가 (필수)</li>
-                  <li><strong>예상 작업 시간</strong> — 분/시간/일/주/개월 단위 (협의 가능 체크 가능)</li>
-                  <li><strong>서비스 제공 방식</strong> — 온라인: 납품 방식 (링크, 이미지, PDF 등) / 오프라인: 장소 제안</li>
-                  <li><strong>어필 메시지</strong> — 의뢰인에게 나를 어필하는 메시지 (필수, 최대 1,000자)</li>
-                  <li><strong>가능 일시</strong> — 가능한 날짜와 시간대 추가</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="flow-step">
-          <div class="step-number">3</div>
-          <div class="step-content">
-            <h3>제안서 관리</h3>
-            <p>보낸 제안서는 마이페이지 > 제안서 관리에서 확인할 수 있어요. '진행중'과 '완료' 탭으로 상태를 구분하며, 대기 중인 제안서는 철회도 가능합니다.</p>
-            <div class="step-screenshot">
-              <img src="images/proposal-manage.png" alt="제안서 관리">
-              <img src="images/proposal-detail.png" alt="제안서 상세">
-              <div class="caption">
-                <h4>제안서 상태</h4>
-                <ul>
-                  <li><strong>대기중</strong> — 의뢰인이 아직 검토 중 (철회 가능)</li>
-                  <li><strong>선택됨</strong> — 의뢰인이 내 제안서를 수락! → 1:1 채팅방이 자동 생성</li>
-                  <li><strong>완료</strong> — 거래 완료된 제안서</li>
-                  <li><strong>거절/철회</strong> — 미채택되거나 내가 철회한 제안서</li>
-                </ul>
-                <div class="alert info" style="margin-top:12px;">
-                  <div class="alert-icon">ℹ️</div>
-                  <div class="alert-content">
-                    <h4>의뢰인이 제안서를 수락하면 1:1 채팅방이 열립니다</h4>
-                    <p>채팅방에서 세부 일정, 금액, 범위 등을 협의하게 됩니다.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      </div>
+      <div class="feature-text">
+        <div class="feature-step">리뷰 관리</div>
+        <h2>채팅 기반 투명 리뷰로<br>신뢰도 UP</h2>
+        <p>거래 완료 후 채팅 내역이 자동으로 리뷰로 공개됩니다. 프로필의 핵심 자산이에요.</p>
+        <ul class="feature-list">
+          <li><span class="check">✓</span>평균 별점 + 매칭 완료 수 표시</li>
+          <li><span class="check">✓</span>실제 채팅 대화 스냅샷 포함</li>
+          <li><span class="check">✓</span>개인정보 자동 마스킹 + 비공개 처리 가능</li>
+          <li><span class="check">✓</span>전문가 답변도 리뷰에 남길 수 있음</li>
+        </ul>
       </div>
     </div>
   </div>
-</div>
-
-<!-- ========================================== -->
-<!-- TAB 3: 채팅 워크플로우 -->
-<!-- ========================================== -->
-<div class="tab-panel" id="tab-workflow">
-  <div class="section-content" style="background: var(--bg);">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label">STEP 3 — 가장 중요!</div>
-        <h2 class="section-title">채팅 워크플로우 (온라인 의뢰)</h2>
-        <p class="section-desc">매칭 후 채팅방에서 협의 → 합의서 → 결제 → 작업물 전달 → 승인 → 정산까지의 전체 흐름을 단계별로 안내합니다.</p>
-      </div>
-
-      <!-- Overall flow diagram -->
-      <div class="workflow-highlight">
-        <h3>온라인 의뢰 전체 흐름</h3>
-        <div class="wf-steps">
-          <div class="wf-step"><div class="num">STEP 1</div><div class="label">매칭 완료<br>채팅 생성</div></div>
-          <div class="wf-arrow">→</div>
-          <div class="wf-step"><div class="num">STEP 2</div><div class="label">합의서<br>확인·수락</div></div>
-          <div class="wf-arrow">→</div>
-          <div class="wf-step"><div class="num">STEP 3</div><div class="label">의뢰인<br>결제</div></div>
-          <div class="wf-arrow">→</div>
-          <div class="wf-step"><div class="num">STEP 4</div><div class="label">작업물<br>전달</div></div>
-          <div class="wf-arrow">→</div>
-          <div class="wf-step"><div class="num">STEP 5</div><div class="label">승인 →<br>정산</div></div>
-        </div>
-      </div>
-
-      <!-- Offline vs Online comparison -->
-      <div class="comparison">
-        <div class="comp-header">
-          <div>구분</div>
-          <div>오프라인 의뢰</div>
-          <div>온라인 의뢰</div>
-        </div>
-        <div class="comp-row">
-          <div class="item-label">서비스 방식</div>
-          <div>대면 서비스</div>
-          <div>제품 납품 (사진, PDF, 링크 등)</div>
-        </div>
-        <div class="comp-row">
-          <div class="item-label">합의서</div>
-          <div>없음 (채팅 협의)</div>
-          <div>필수 (금액·마감일·범위)</div>
-        </div>
-        <div class="comp-row">
-          <div class="item-label">결제 방식</div>
-          <div>당사자 간 직접 결제</div>
-          <div>에스크로 안전결제</div>
-        </div>
-        <div class="comp-row">
-          <div class="item-label">작업물 전달</div>
-          <div>없음</div>
-          <div>앱에서 전달 필수</div>
-        </div>
-        <div class="comp-row">
-          <div class="item-label">정산</div>
-          <div>직접 수령</div>
-          <div>승인 후 자동 정산 (영업일 6~8일)</div>
-        </div>
-        <div class="comp-row">
-          <div class="item-label">완료 처리</div>
-          <div>48시간 미확인 시 자동 완료</div>
-          <div>작업물 승인 시 완료 (72시간 미확인 시 자동 승인)</div>
-        </div>
-      </div>
-
-      <div class="step-flow">
-        <!-- WF Step 1: 채팅 생성 -->
-        <div class="flow-step">
-          <div class="step-number accent">1</div>
-          <div class="step-content">
-            <h3>매칭 완료 → 채팅방 자동 생성</h3>
-            <p>의뢰인이 내 제안서를 수락하면 <strong>자동으로 1:1 채팅방이 생성</strong>됩니다. 채팅방 상단에는 현재 진행 상태가 스텝바로 표시되어 현재 어디까지 진행됐는지 한눈에 파악할 수 있어요.</p>
-            <div class="step-screenshot">
-              <img src="images/chat-1-created.png" alt="채팅 생성">
-              <div class="caption">
-                <h4>채팅방 화면 (전문가 시점)</h4>
-                <ul>
-                  <li>상단 스텝바: <strong>매칭완료 → 합의서 확정 → 결제 → 서비스 진행 → 작업물 전달</strong></li>
-                  <li>'합의서를 작성해주세요' 배너가 표시됨</li>
-                  <li>온라인 의뢰: 의뢰인이 합의서를 작성·제안합니다</li>
-                </ul>
-                <div class="alert tip" style="margin-top:12px;">
-                  <div class="alert-icon">💡</div>
-                  <div class="alert-content">
-                    <h4>의뢰인과 충분히 대화하세요</h4>
-                    <p>의뢰인과 충분한 얘기를 나눈 뒤 합의서 작성을 부탁하세요. 금액, 작업 범위, 마감일 등을 채팅에서 미리 협의하면 합의서가 한 번에 확정될 가능성이 높아요.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- WF Step 2: 합의서 제안 -->
-        <div class="flow-step">
-          <div class="step-number accent">2</div>
-          <div class="step-content">
-            <h3>합의서 확인 (온라인 의뢰 전용)</h3>
-            <p>온라인 의뢰의 경우, <strong>의뢰인이 합의서를 제안</strong>합니다. 채팅방에 "합의서가 제안되었습니다" 시스템 메시지가 나타나고, '합의서 확인하기' 버튼을 눌러 세부 내용을 확인하세요.</p>
-            <div class="step-screenshot">
-              <img src="images/chat-2-agreement-proposed.png" alt="합의서 제안">
-              <img src="images/chat-3-agreement-detail.png" alt="합의서 상세">
-              <div class="caption">
-                <h4>합의서 상세 확인 항목</h4>
-                <ul>
-                  <li><strong>작업 마감일</strong> — 예: 2026년 3월 30일 (월)</li>
-                  <li><strong>작업 범위</strong> — 예: 영상 제작까지 부탁드려요</li>
-                  <li><strong>수정 횟수</strong> — 기본 2회 (합의에 따라 변경 가능)</li>
-                  <li><strong>납품 형식</strong> — 예: 링크전송</li>
-                  <li><strong>최종 금액</strong> — 예: 300,000원</li>
-                </ul>
-                <p style="margin-top:8px; font-size:13px; color:var(--text-muted);">※ 위 내용은 예시이며, 실제 합의서 항목은 의뢰에 따라 달라집니다.</p>
-                <p style="margin-top:12px; font-weight:600; color:var(--primary-dark);">합의서 하단의 '수락' 또는 '거부' 버튼으로 응답합니다.</p>
-                <ul style="margin-top:8px;">
-                  <li><strong>수락</strong> → 합의서 확정, 의뢰인에게 결제 배너 노출</li>
-                  <li><strong>거부</strong> → 채팅에서 재협의 후 의뢰인이 새 합의서 제안</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- WF Step 3: 결제 -->
-        <div class="flow-step">
-          <div class="step-number accent">3</div>
-          <div class="step-content">
-            <h3>의뢰인 결제 (에스크로)</h3>
-            <p>전문가가 합의서를 수락하면, <strong>의뢰인의 채팅 화면에 결제 배너가 나타납니다.</strong> 의뢰인이 합의서 금액을 에스크로로 결제하면, 전문가 채팅방에 "결제가 완료되었습니다" 시스템 메시지가 전송됩니다.</p>
-            <div class="step-screenshot">
-              <img src="images/chat-4-payment-client.png" alt="결제 대기 (의뢰인 화면)">
-              <img src="images/chat-5-after-payment.png" alt="결제 후 (전문가 화면)">
-              <div class="caption">
-                <h4>결제 흐름</h4>
-                <ul>
-                  <li><strong>의뢰인 화면</strong>: "결제 대기중 300,000원" + 결제하기 버튼</li>
-                  <li><strong>결제 완료 후</strong>: 금액이 <strong>에스크로에 보관</strong>됨 (바로 전문가에게 지급되지 않음)</li>
-                  <li><strong>전문가 화면</strong>: "작업 진행중 — 작업물을 전달해주세요" 배너로 전환</li>
-                </ul>
-                <div class="alert info" style="margin-top:12px;">
-                  <div class="alert-icon">🔒</div>
-                  <div class="alert-content">
-                    <h4>에스크로 안전결제</h4>
-                    <p>결제 대금은 PG사(토스페이먼츠)가 보관합니다. 의뢰인이 작업물을 승인해야 전문가에게 정산됩니다. 양쪽 모두에게 안전한 구조입니다.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- WF Step 4: 작업물 전달 -->
-        <div class="flow-step">
-          <div class="step-number warning">4</div>
-          <div class="step-content">
-            <h3>작업물 전달 (가장 중요!)</h3>
-            <p>서비스가 완료되면 채팅방 상단의 <strong>'작업물 전달'</strong> 버튼을 눌러 작업물을 전달합니다. 전달 유형은 '메모로 전달'과 '파일 전달' 두 가지입니다.</p>
-            <div class="step-screenshot">
-              <img src="images/chat-6-delivery-form.png" alt="작업물 전달 화면">
-              <div class="caption">
-                <h4>작업물 전달 화면</h4>
-                <ul>
-                  <li><strong>전달 유형 선택</strong></li>
-                  <li style="list-style:none; margin-left:16px;">• <strong>메모로 전달</strong> — 전달할 파일이 없는 경우, 메모에 내용을 작성</li>
-                  <li style="list-style:none; margin-left:16px;">• <strong>파일 전달</strong> — 작업 결과물 파일을 첨부하여 전달 (사진 0/10, PDF 0/10)</li>
-                  <li><strong>메모</strong> — 의뢰인에게 전달할 메시지 작성 (작업 내용, 참고 사항 등)</li>
-                  <li><strong>첨부파일</strong> — 사진 최대 10장, PDF 최대 10개</li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="alert critical" style="margin-top:20px;">
-              <div class="alert-icon">🚨</div>
-              <div class="alert-content">
-                <h4>반드시 읽어주세요 — 작업물 전달 필수 안내</h4>
-                <p style="font-size:15px; line-height:1.9;">
-                  이미지 or PDF 파일 외 작업물이라면, <strong>의뢰인과 협의 → 개별 연락 후 작업물 전송</strong>하세요.<br><br>
-                  영상 전달은 서비스 지원 준비중입니다. 영상은 의뢰인과 협의 후 이메일 등으로 전송해주세요.<br><br>
-                  링크 등 사진/PDF 외 작업물은 메모에 작업물 링크를 작성하거나, 의뢰인과 상의하여 이메일 등으로 전달해주세요.<br><br>
-                  하지만, <strong style="font-size:16px; color:#D63031;">쪽집게 어플에서 '작업물 전달' 버튼은 반드시 눌러야 합니다.</strong><br>
-                  그래야 의뢰인이 작업물을 승인 후 결제가 정산되어요.<br><br>
-                  작업물 전달 후, 의뢰인이 <strong>72시간 내에 승인하지 않으면 자동 승인</strong> 처리됩니다.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- WF Step 5: 작업물 확인 & 승인 -->
-        <div class="flow-step">
-          <div class="step-number accent">5</div>
-          <div class="step-content">
-            <h3>의뢰인 확인 → 승인 또는 수정 요청</h3>
-            <p>의뢰인이 작업물을 확인합니다. 승인하거나 수정을 요청할 수 있어요.</p>
-            <div class="step-screenshot">
-              <img src="images/chat-7-delivery-review.png" alt="작업물 확인 (의뢰인)">
-              <img src="images/chat-8-approved.png" alt="작업물 승인 후 채팅">
-              <div class="caption">
-                <h4>작업물 상세 화면 (의뢰인 시점)</h4>
-                <ul>
-                  <li>상태: <strong>승인 대기중</strong></li>
-                  <li>전달 유형, 수정 횟수(잔여), 작업 마감일 표시</li>
-                  <li>메모 내용 확인 + 첨부파일 다운로드</li>
-                  <li><strong>72시간 미확인 시 자동 승인</strong> 안내 표시</li>
-                </ul>
-                <h4 style="margin-top:16px;">의뢰인 선택지</h4>
-                <ul>
-                  <li><strong>승인</strong> → 거래 완료, 에스크로 정산 진행</li>
-                  <li><strong>수정 요청</strong> → 사유 입력 필수, 의뢰인이 새 마감일 직접 선택, 수정 횟수 차감</li>
-                </ul>
-                <div class="alert info" style="margin-top:12px;">
-                  <div class="alert-icon">🔄</div>
-                  <div class="alert-content">
-                    <h4>수정 요청 시</h4>
-                    <p>합의서에서 정한 수정 횟수(기본 2회, 합의에 따라 변경 가능)만큼 수정 요청이 가능합니다. 수정 요청 시 의뢰인이 새로운 마감일을 직접 선택하며, 전문가는 해당 마감일까지 수정 후 다시 전달합니다.</p>
-                  </div>
-                </div>
-                <div class="alert critical" style="margin-top:12px;">
-                  <div class="alert-icon">⚖️</div>
-                  <div class="alert-content">
-                    <h4>수정 횟수 소진 후 의뢰인이 거절하면?</h4>
-                    <p>수정 횟수를 모두 사용한 뒤에도 의뢰인이 거절할 경우, <strong>분쟁 조정</strong>에 들어갑니다. 전액 환불이 아니라 양측 사유를 검토하여 공정하게 조정합니다. 자세한 내용은 <strong>어플 설정 → 온라인 환불/분쟁 정책</strong>에서 확인하세요.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- WF Step 6: 정산 -->
-        <div class="flow-step">
-          <div class="step-number accent">6</div>
-          <div class="step-content">
-            <h3>승인 완료 → 자동 정산</h3>
-            <p>의뢰인이 작업물을 승인하면 거래가 완료됩니다. 채팅방에 "의뢰인이 작업물을 승인하였습니다. 거래가 완료되었습니다." 시스템 메시지가 전송되고, <strong>등록한 정산 계좌로 영업일 기준 6~8일 내 자동 입금</strong>됩니다. (에스크로 PG사 정산 처리에 소요되는 기간입니다.)</p>
-            <div class="step-screenshot">
-              <img src="images/chat-8-approved.png" alt="승인 후 채팅">
-              <img src="images/chat-9-earnings.png" alt="수익관리 확인">
-              <div class="caption">
-                <h4>정산 확인</h4>
-                <ul>
-                  <li>수익관리 페이지에서 <strong>정산 대기</strong> → <strong>정산 완료</strong> 상태 확인</li>
-                  <li>예시: 300,000원 → PG사 수수료 10,500원 = <strong>289,500원 수령</strong></li>
-                </ul>
-                <div class="alert tip" style="margin-top:12px;">
-                  <div class="alert-icon">💰</div>
-                  <div class="alert-content">
-                    <h4>중개 수수료 0%</h4>
-                    <p>쪽집게는 중개 수수료를 받지 않습니다. PG사 결제 수수료(약 3.5%)만 차감되며, 나머지 전액을 전문가가 수령합니다.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 리뷰 생성 조건 -->
-      <div class="alert info" style="max-width:900px; margin:40px auto 0;">
-        <div class="alert-icon">⭐</div>
-        <div class="alert-content">
-          <h4>리뷰는 언제 생성되나요?</h4>
-          <p><strong>온라인 의뢰</strong>: 의뢰인이 작업물을 승인(수락)하면 리뷰가 자동 생성됩니다.<br>
-          <strong>오프라인 의뢰</strong>: 의뢰인이 '거래완료' 버튼을 누르면 리뷰가 자동 생성됩니다.<br>
-          거래 완료 후 채팅 내역이 리뷰로 공개되며, 개인정보는 자동 마스킹됩니다. 공개하고 싶지 않은 메시지는 비공개 처리할 수 있어요.</p>
-        </div>
-      </div>
-
-      <!-- 오프라인 의뢰 안내 -->
-      <div class="workflow-highlight" style="margin-top:64px;">
-        <h3>오프라인 의뢰는 어떻게 진행되나요?</h3>
-        <p style="color:rgba(255,255,255,0.7); font-size:15px; line-height:1.8; position:relative; margin-bottom:24px;">
-          오프라인 의뢰는 합의서·에스크로·작업물 전달 단계가 없습니다. 매칭 후 채팅에서 일정·장소·금액을 협의하고, 약속된 시간에 만나서 대면 서비스를 진행합니다. 결제는 현금·이체 등 당사자 간 직접 진행하며, 서비스 완료 후 의뢰인이 완료 확인을 하거나 48시간 경과 시 자동 완료 처리됩니다.
-        </p>
-        <div class="wf-steps">
-          <div class="wf-step"><div class="num">STEP 1</div><div class="label">매칭 완료</div></div>
-          <div class="wf-arrow">→</div>
-          <div class="wf-step"><div class="num">STEP 2</div><div class="label">채팅 협의</div></div>
-          <div class="wf-arrow">→</div>
-          <div class="wf-step"><div class="num">STEP 3</div><div class="label">대면 서비스</div></div>
-          <div class="wf-arrow">→</div>
-          <div class="wf-step"><div class="num">STEP 4</div><div class="label">완료 확인</div></div>
-          <div class="wf-arrow">→</div>
-          <div class="wf-step"><div class="num">STEP 5</div><div class="label">리뷰</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ========================================== -->
-<!-- TAB 4: 수익관리 -->
-<!-- ========================================== -->
-<div class="tab-panel" id="tab-earnings">
-  <div class="section-content">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label">STEP 4</div>
-        <h2 class="section-title">수익 관리</h2>
-        <p class="section-desc">마이페이지 > 수익관리에서 전체 수익 현황, 거래 내역, 정산 상태를 한눈에 확인하세요.</p>
-      </div>
-
-      <div class="step-flow">
-        <div class="flow-step">
-          <div class="step-number">1</div>
-          <div class="step-content">
-            <h3>수익 대시보드</h3>
-            <p>기간별(1개월/3개월/6개월/1년) 수익 현황을 확인할 수 있습니다. 총 순수익, 정산 완료, 정산 대기, PG사 수수료가 한눈에 표시됩니다.</p>
-            <div class="step-screenshot">
-              <img src="images/earnings-1.png" alt="수익 관리 대시보드">
-              <div class="caption">
-                <h4>수익 관리 화면</h4>
-                <ul>
-                  <li><strong>총 순수익</strong> — 전체 수익에서 수수료를 뺀 순수익</li>
-                  <li><strong>정산 완료</strong> — 이미 계좌에 입금된 금액</li>
-                  <li><strong>정산 대기</strong> — 아직 입금되지 않은 금액 (에스크로 PG사 정산 기준 영업일 6~8일 소요)</li>
-                  <li><strong>PG사 수수료</strong> — 결제 수수료 합계 (약 3.5%)</li>
-                  <li>월별/주간/일별 차트로 수익 추이 확인</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="flow-step">
-          <div class="step-number">2</div>
-          <div class="step-content">
-            <h3>거래 내역 상세</h3>
-            <p>각 거래건별로 의뢰명, 의뢰인, 완료 시점, 원래 금액, 수수료, 실수령액과 정산 상태를 확인할 수 있습니다.</p>
-            <div class="step-screenshot">
-              <img src="images/earnings-2.png" alt="거래 내역">
-              <div class="caption">
-                <h4>거래 내역 예시</h4>
-                <ul>
-                  <li>거래별 원래 금액, PG사 수수료, 실수령액 확인</li>
-                  <li>정산 상태: <strong>정산 대기</strong> / <strong>정산 완료</strong></li>
-                </ul>
-                <p style="margin-top:12px; font-size:13px; color:var(--text-muted);">전체/정산완료/정산대기 필터로 조회 가능</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="flow-step">
-          <div class="step-number">3</div>
-          <div class="step-content">
-            <h3>리뷰 관리</h3>
-            <p>거래 완료 후 채팅 내역이 자동으로 리뷰로 공개됩니다. 전문가 프로필의 신뢰도를 높여주는 핵심 자산이에요.</p>
-            <div class="step-screenshot">
-              <img src="images/review-manage.png" alt="리뷰 관리">
-              <div class="caption">
-                <h4>리뷰 관리 화면</h4>
-                <ul>
-                  <li><strong>평균 별점</strong>과 <strong>총 리뷰 수, 매칭 완료 수</strong> 표시</li>
-                  <li>각 리뷰에는 의뢰인의 별점 + 실제 채팅 대화 스냅샷 포함</li>
-                  <li>평균 응답 시간, 첫 응답 시간도 표시 — 빠른 응답이 좋은 인상!</li>
-                  <li>전문가 답변도 리뷰에 남길 수 있음</li>
-                </ul>
-                <div class="alert tip" style="margin-top:12px;">
-                  <div class="alert-icon">🔒</div>
-                  <div class="alert-content">
-                    <h4>개인정보 보호</h4>
-                    <p>개인정보(전화번호, 이메일 등)는 자동으로 마스킹됩니다. 거래 완료 후 24시간 내에 공개하고 싶지 않은 메시지를 직접 비공개 처리할 수도 있어요.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+</section>
 
 <!-- CTA -->
-<section class="cta-section" id="cta">
-  <h2>지금 바로,<br><em>쪽집게 전문가</em>가 되어보세요</h2>
-  <p>마이페이지 > 전문가 탭에서 프로필을 등록하고,<br>의뢰인에게 제안서를 보내보세요.</p>
+<section class="cta">
+  <div class="cta-inner reveal">
+    <h2>지금 바로,<br><span class="gradient">쪽집게 전문가</span>가<br>되어보세요</h2>
+    <p>마이페이지 > 전문가 탭에서 프로필을 등록하고,<br>의뢰인에게 제안서를 보내보세요.</p>
+    <button class="cta-btn" onclick="openModal()">
+      전문가 등록 시작하기
+      <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+    </button>
+  </div>
 </section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal(event, true)">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-emoji">🎉</div>
+    <div class="modal-title">서비스 오픈 예정</div>
+    <div class="modal-date">5/1 OPEN</div>
+    <div class="modal-divider"></div>
+    <p class="modal-body">
+      쪽집게가 곧 여러분을 찾아갑니다!<br>
+      리마인드 알림을 받으시려면<br>
+      <strong>전문가님 성함</strong>을 아래로 남겨주세요.
+    </p>
+    <div class="modal-contact">
+      <div class="modal-contact-title">📬 연락처</div>
+      <div class="modal-contact-item">
+        <span class="mci-icon">✉️</span>
+        <a href="mailto:simmim1768@gmail.com">simmim1768@gmail.com</a>
+      </div>
+      <div class="modal-contact-item">
+        <span class="mci-icon">📱</span>
+        <a href="tel:010-8313-1764">010-8313-1764</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer class="footer">
@@ -1010,29 +1226,62 @@
 </footer>
 
 <script>
-  // Nav scroll effect
+  // Nav scroll
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id], .pipeline-section');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      const top = s.offsetTop - 200;
+      if (window.scrollY >= top) current = s.id || '';
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }, { passive: true });
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+      }
+    });
   });
 
-  // Tab switching
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const tabPanels = document.querySelectorAll('.tab-panel');
-
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const tabId = btn.dataset.tab;
-
-      tabBtns.forEach(b => b.classList.remove('active'));
-      tabPanels.forEach(p => p.classList.remove('active'));
-
-      btn.classList.add('active');
-      document.getElementById('tab-' + tabId).classList.add('active');
-
-      // Scroll to top of content
-      window.scrollTo({ top: document.querySelector('.tab-nav-wrapper').offsetTop - 56, behavior: 'smooth' });
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
     });
+  }, { threshold: 0.06, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Modal
+  const modal = document.getElementById('modal');
+  function openModal() {
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(e, force) {
+    if (force || e.target === modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
   });
 </script>
 </body>
