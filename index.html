@@ -3752,10 +3752,70 @@ function showSocialSignupForm(code, redirectUri, provider, accessToken) {
   };
 }
 
+// ═══ Image Pre-validation (서버 ImageSpec과 동일 규격) ═══
+const IMAGE_SPECS = {
+  PROFILE:       { maxMB: 5,  maxW: 2048, maxH: 2048, recW: 400,  recH: 400,  label: '프로필 사진',     guide: '1:1, 400×400 이상 권장' },
+  EXPERT_BANNER: { maxMB: 10, maxW: 4096, maxH: 4096, recW: 1080, recH: 432,  label: '배너 이미지',     guide: '1080×432 권장 (2.5:1)' },
+  PORTFOLIO:     { maxMB: 10, maxW: 4096, maxH: 4096, recW: 1920, recH: 1920, label: '포트폴리오 이미지', guide: '최대 1920×1920 권장' }
+};
+const ALLOWED_IMAGE_EXT = ['jpg', 'jpeg', 'png'];
+
+function validateImageFile(file, specKey) {
+  return new Promise((resolve) => {
+    const spec = IMAGE_SPECS[specKey];
+    if (!file) return resolve({ ok: false, message: '파일이 선택되지 않았습니다.' });
+
+    // 확장자 체크
+    const ext = (file.name.split('.').pop() || '').toLowerCase();
+    if (!ALLOWED_IMAGE_EXT.includes(ext)) {
+      return resolve({ ok: false, message: `${spec.label}은 ${ALLOWED_IMAGE_EXT.join(', ')} 확장자만 업로드 가능합니다.` });
+    }
+
+    // 파일 크기 체크
+    const sizeMB = file.size / (1024 * 1024);
+    if (sizeMB > spec.maxMB) {
+      return resolve({
+        ok: false,
+        message: `${spec.label} 파일이 ${spec.maxMB}MB를 초과했어요 (현재 ${sizeMB.toFixed(1)}MB).\n이미지를 압축하거나 ${spec.guide} 규격으로 수정 후 다시 업로드해주세요.`
+      });
+    }
+
+    // 해상도 체크 (이미지 로드)
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = function() {
+      URL.revokeObjectURL(url);
+      if (img.width > spec.maxW || img.height > spec.maxH) {
+        resolve({
+          ok: false,
+          message: `${spec.label} 해상도가 너무 커요 (${img.width}×${img.height}).\n${spec.maxW}×${spec.maxH} 이하로 줄여주세요. 권장: ${spec.guide}`
+        });
+      } else {
+        resolve({ ok: true });
+      }
+    };
+    img.onerror = function() {
+      URL.revokeObjectURL(url);
+      resolve({ ok: false, message: '이미지 형식을 읽을 수 없습니다. 다른 파일로 시도해주세요.' });
+    };
+    img.src = url;
+  });
+}
+
 // ═══ Step 2: Profile Image ═══
 async function uploadProfileImage(input) {
   if (!input.files[0]) return;
   const msgEl = document.getElementById('step2Msg');
+
+  // 업로드 전 규격 검증
+  const check = await validateImageFile(input.files[0], 'PROFILE');
+  if (!check.ok) {
+    msgEl.textContent = check.message;
+    msgEl.className = 'reg-msg reg-msg--error';
+    input.value = '';
+    return;
+  }
+
   msgEl.textContent = '업로드 중...';
   msgEl.className = 'reg-msg';
   try {
@@ -3833,6 +3893,15 @@ function toggleCategory(chip, id) {
 
 async function uploadBannerImage(input) {
   if (!input.files[0]) return;
+
+  // 업로드 전 규격 검증
+  const check = await validateImageFile(input.files[0], 'EXPERT_BANNER');
+  if (!check.ok) {
+    alert(check.message);
+    input.value = '';
+    return;
+  }
+
   try {
     const json = await apiUpload('/v1/api/image/upload', input.files[0], 'EXPERT_BANNER');
     if (json.success) {
@@ -3841,8 +3910,12 @@ async function uploadBannerImage(input) {
       preview.src = bannerImageUrl;
       preview.style.display = 'block';
       document.getElementById('bannerUploadText').textContent = '클릭하여 변경';
+    } else {
+      alert(json.message || '배너 업로드에 실패했습니다.');
     }
-  } catch (e) {}
+  } catch (e) {
+    alert('배너 업로드 중 오류가 발생했습니다.');
+  }
 }
 
 function validateStep3() {
@@ -4060,23 +4133,38 @@ function getPortfolioKey(row) {
   return row.dataset.portfolioKey;
 }
 
-function handlePortfolioImages(input) {
+async function handlePortfolioImages(input) {
   const row = input.closest('.reg-list-item');
   const key = getPortfolioKey(row);
   if (!portfolioFilesMap[key]) portfolioFilesMap[key] = [];
 
   const existing = portfolioFilesMap[key];
-  const newFiles = Array.from(input.files);
-  const total = existing.length + newFiles.length;
+  const incoming = Array.from(input.files);
 
+  // 각 파일 업로드 전 규격 검증 — 통과한 것만 수집
+  const validFiles = [];
+  const errors = [];
+  for (const file of incoming) {
+    const check = await validateImageFile(file, 'PORTFOLIO');
+    if (check.ok) {
+      validFiles.push(file);
+    } else {
+      errors.push(`• ${file.name}\n  ${check.message}`);
+    }
+  }
+  if (errors.length > 0) {
+    alert('아래 포트폴리오 이미지는 규격에 맞지 않아 제외되었습니다.\n\n' + errors.join('\n\n'));
+  }
+
+  const total = existing.length + validFiles.length;
   if (total > 7) {
     alert('포트폴리오당 이미지는 최대 7장까지 업로드 가능합니다.');
     const allowed = 7 - existing.length;
     if (allowed > 0) {
-      portfolioFilesMap[key] = existing.concat(newFiles.slice(0, allowed));
+      portfolioFilesMap[key] = existing.concat(validFiles.slice(0, allowed));
     }
   } else {
-    portfolioFilesMap[key] = existing.concat(newFiles);
+    portfolioFilesMap[key] = existing.concat(validFiles);
   }
 
   input.value = '';
