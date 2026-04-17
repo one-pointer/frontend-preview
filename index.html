@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>쪽집게 - 중개 수수료 0% 전문가 매칭 플랫폼</title>
-  <meta name="description" content="채팅이 곧 리뷰. 리뷰 조작 불가능. 전문가 수수료 0%. 커피 한잔 가격의 쿠폰으로 전문가를 만나보세요.">
+  <title>쪽집게 - 배우고 싶을 때, 맡기고 싶을 때, 쪽 집어보세요.</title>
+  <meta name="description" content="중개 수수료 0%, 실제 대화가 리뷰가 되는 재능 마켓 쪽집게. 배우고 싶을 때, 맡기고 싶을 때, 쪽 집어보세요.">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&display=swap" rel="stylesheet">
@@ -251,8 +251,6 @@ body {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
   padding: 100px 28px 80px;
   position: relative;
   overflow: hidden;
@@ -280,18 +278,28 @@ body {
   left: -100px;
   animation-delay: 3s;
 }
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  width: 100%;
+}
 .hero__content {
   position: relative;
   z-index: 2;
-  max-width: 720px;
 }
 .hero__eyebrow {
   animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
 }
 .hero__title {
-  font-size: clamp(36px, 6.5vw, 64px);
+  font-size: clamp(32px, 5vw, 52px);
   font-weight: 900;
-  line-height: 1.2;
+  line-height: 1.25;
   letter-spacing: -0.035em;
   margin-top: 28px;
   animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
@@ -304,18 +312,31 @@ body {
   background-clip: text;
 }
 .hero__sub {
-  font-size: clamp(16px, 2.5vw, 19px);
+  font-size: clamp(15px, 2vw, 18px);
   color: var(--text-secondary);
-  margin-top: 24px;
+  margin-top: 20px;
   line-height: 1.8;
   animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s both;
   font-weight: 400;
 }
+.hero__sub-highlight {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--purple-bg);
+  color: var(--purple);
+  font-size: 0.95em;
+  font-weight: 500;
+  line-height: 1.6;
+}
+.hero__sub-highlight strong {
+  font-weight: 800;
+}
 .hero__actions {
   display: flex;
-  justify-content: center;
   gap: 14px;
-  margin-top: 44px;
+  margin-top: 36px;
   animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both;
 }
 .hero__btn {
@@ -328,6 +349,9 @@ body {
   transition: all 0.3s;
   font-family: inherit;
   border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 .hero__btn--primary {
   background: var(--purple);
@@ -348,6 +372,169 @@ body {
   border-color: var(--purple);
   color: var(--purple);
   transform: translateY(-2px);
+}
+/* Hero illustration */
+.hero__visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
+}
+.hero__illustration {
+  width: 100%;
+  max-width: 540px;
+  position: relative;
+}
+/* Blob background — like the reference's soft cloud shape */
+.hero__blob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 105%;
+  height: 95%;
+  border-radius: 42% 58% 62% 38% / 52% 46% 54% 48%;
+  background: linear-gradient(160deg, rgba(108,92,231,0.07) 0%, rgba(167,139,250,0.13) 50%, rgba(196,181,253,0.08) 100%);
+  z-index: 0;
+}
+/* Main SVG illustration image */
+.hero__illust-img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 30px 20px 20px;
+  display: block;
+}
+/* Floating badge elements around illustration */
+.hero__float {
+  position: absolute;
+  border-radius: 14px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: var(--card-shadow);
+  background: var(--white);
+  z-index: 3;
+  animation: floatSlow 4s ease-in-out infinite;
+  white-space: nowrap;
+}
+.hero__float--1 {
+  top: 8%;
+  right: 0;
+  color: var(--purple);
+  border: 1px solid rgba(108,92,231,0.12);
+}
+.hero__float--2 {
+  bottom: 12%;
+  left: -5%;
+  color: var(--green);
+  border: 1px solid rgba(16,185,129,0.15);
+  animation-delay: 2s;
+}
+.hero__float--3 {
+  top: 50%;
+  right: -8%;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  animation-delay: 1s;
+}
+/* Paper airplane decorations (CSS triangles + rotation) */
+.hero__paper-plane {
+  position: absolute;
+  z-index: 2;
+  opacity: 0.35;
+  animation: floatSlow 5s ease-in-out infinite;
+}
+.hero__paper-plane svg {
+  fill: var(--purple);
+}
+.hero__paper-plane--1 {
+  top: 2%;
+  left: 10%;
+  transform: rotate(-25deg);
+}
+.hero__paper-plane--2 {
+  bottom: 5%;
+  right: 5%;
+  transform: rotate(15deg) scaleX(-1);
+  animation-delay: 2.5s;
+  opacity: 0.25;
+}
+.hero__paper-plane--3 {
+  top: 30%;
+  left: -5%;
+  transform: rotate(-40deg);
+  animation-delay: 1.5s;
+  opacity: 0.2;
+}
+/* Small decorative dots/circles around illustration */
+.hero__deco-circle {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 0;
+}
+.hero__deco-circle--1 {
+  width: 10px; height: 10px;
+  background: var(--purple);
+  opacity: 0.3;
+  top: 15%;
+  left: 2%;
+  animation: pulse 3s ease-in-out infinite;
+}
+.hero__deco-circle--2 {
+  width: 7px; height: 7px;
+  background: var(--green);
+  opacity: 0.4;
+  bottom: 20%;
+  right: 3%;
+  animation: pulse 3s ease-in-out infinite 1s;
+}
+.hero__deco-circle--3 {
+  width: 12px; height: 12px;
+  background: var(--purple-light);
+  opacity: 0.2;
+  top: 5%;
+  right: 25%;
+  animation: pulse 4s ease-in-out infinite 0.5s;
+}
+.hero__deco-circle--4 {
+  width: 6px; height: 6px;
+  background: #f59e0b;
+  opacity: 0.35;
+  bottom: 8%;
+  left: 20%;
+  animation: pulse 3.5s ease-in-out infinite 2s;
+}
+/* Dashed orbit ring like the reference */
+.hero__orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 110%;
+  height: 100%;
+  border: 1.5px dashed rgba(108,92,231,0.12);
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+}
+/* Pagination dots below hero text */
+.hero__deco-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 28px;
+}
+.hero__deco-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.hero__deco-dot--active {
+  background: var(--purple);
+  width: 24px;
+  border-radius: 4px;
 }
 
 /* Marquee */
@@ -989,22 +1176,45 @@ body {
   order: 2;
 }
 .flow-step__dot {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   flex-shrink: 0;
   position: relative;
   z-index: 2;
+  box-shadow: 0 0 0 4px var(--white), 0 0 0 6px currentColor;
 }
-.flow-step__dot--purple { background: var(--purple); }
-.flow-step__dot--green { background: var(--green); }
+.flow-step__dot::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.12;
+  animation: pulseRing 2.4s ease-in-out infinite;
+}
+@keyframes pulseRing {
+  0%, 100% { transform: scale(0.8); opacity: 0.12; }
+  50% { transform: scale(1.15); opacity: 0.04; }
+}
+.flow-step__dot--purple { background: var(--purple); color: var(--purple); }
+.flow-step__dot--green { background: var(--green); color: var(--green); }
 .flow-step__connector {
   width: 2px;
   flex: 1;
   min-height: 100px;
+  position: relative;
 }
-.flow-step__connector--purple { background: linear-gradient(to bottom, var(--purple), rgba(108,92,231,0.1)); }
-.flow-step__connector--green { background: linear-gradient(to bottom, var(--green), rgba(16,185,129,0.1)); }
+.flow-step__connector::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: blur(4px);
+  opacity: 0.4;
+}
+.flow-step__connector--purple { background: linear-gradient(to bottom, var(--purple) 0%, rgba(108,92,231,0.35) 70%, rgba(108,92,231,0.05) 100%); }
+.flow-step__connector--green { background: linear-gradient(to bottom, var(--green) 0%, rgba(16,185,129,0.35) 70%, rgba(16,185,129,0.05) 100%); }
 
 /* Phone in flow */
 .flow-step__phone {
@@ -1246,6 +1456,766 @@ body {
   text-decoration: underline;
 }
 
+/* ── Nav Expert Button ── */
+.nav__expert-btn {
+  padding: 9px 18px;
+  background: var(--green);
+  color: var(--white);
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+.nav__expert-btn:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(16,185,129,0.2);
+}
+
+/* ── Hero D-day ── */
+.hero__dday {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--purple);
+  margin-left: 10px;
+}
+.hero__dday strong {
+  font-weight: 800;
+}
+
+/* ── Hero Counter Badge ── */
+.hero__counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border-radius: 100px;
+  background: var(--green-bg);
+  border: 1px solid rgba(16,185,129,0.15);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--green);
+  margin-top: 24px;
+  animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1s both;
+}
+.hero__counter-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ── Registration Modal (Full-screen Overlay) ── */
+.reg-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 2000;
+  background: var(--cream);
+  overflow-y: auto;
+}
+.reg-overlay.active { display: block; }
+
+.reg-modal {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 40px 28px 80px;
+  min-height: 100vh;
+}
+.reg-modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+.reg-modal__close {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.reg-modal__close:hover {
+  border-color: var(--text-muted);
+}
+.reg-modal__close svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--text-secondary);
+}
+.reg-modal__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+.reg-modal__logo img {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
+
+/* Progress bar */
+.reg-progress {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 40px;
+}
+.reg-progress__step {
+  flex: 1;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--border);
+  transition: background 0.4s;
+}
+.reg-progress__step.active {
+  background: var(--green);
+}
+.reg-progress__step.done {
+  background: var(--green);
+}
+
+/* Step content */
+.reg-step {
+  display: none;
+}
+.reg-step.active { display: block; }
+
+.reg-step__title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.reg-step__desc {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+/* Form elements */
+.reg-form-group {
+  margin-bottom: 20px;
+}
+.reg-form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.reg-form-group label .optional {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+.reg-input,
+.reg-select,
+.reg-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
+  background: var(--white);
+  color: var(--text-primary);
+  transition: border-color 0.2s;
+  outline: none;
+}
+.reg-input:focus,
+.reg-select:focus,
+.reg-textarea:focus {
+  border-color: var(--green);
+}
+.reg-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.reg-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238e8ea0' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+/* Checkbox/toggle */
+.reg-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 0;
+}
+.reg-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+
+/* Agreements Section */
+.reg-agreements {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.reg-agreements__all {
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.reg-agreements__all .reg-checkbox { font-weight: 700; color: var(--text-primary); }
+.reg-agreements__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.reg-agreement-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.reg-agreement-row .reg-checkbox { flex: 1; }
+.reg-view-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+  font-family: inherit;
+  flex-shrink: 0;
+  padding: 4px 8px;
+}
+.reg-view-btn:hover { color: var(--purple); }
+
+/* Terms Modal */
+.terms-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 3000;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 20px;
+  overflow-y: auto;
+}
+.terms-modal.open { display: flex; align-items: center; justify-content: center; }
+.terms-modal__content {
+  background: var(--white);
+  border-radius: 20px;
+  max-width: 640px;
+  width: 100%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+.terms-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.terms-modal__header h4 { font-size: 17px; font-weight: 700; }
+.terms-modal__close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 0;
+  line-height: 1;
+}
+.terms-modal__close:hover { color: var(--text-primary); }
+.terms-modal__body {
+  padding: 24px;
+  overflow-y: auto;
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+}
+.terms-modal__body h2 { font-size: 18px; font-weight: 800; color: var(--text-primary); margin: 28px 0 12px; }
+.terms-modal__body h2:first-child { margin-top: 0; }
+.terms-modal__body h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); margin: 20px 0 8px; }
+.terms-modal__body p { margin-bottom: 8px; }
+.terms-modal__footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* Social login buttons */
+.reg-social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.reg-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.reg-social-btn--kakao {
+  background: #FEE500;
+  color: #191919;
+}
+.reg-social-btn--kakao:hover { background: #F5DC00; }
+.reg-social-btn--google {
+  background: var(--white);
+  color: var(--text-primary);
+  border: 1.5px solid var(--border);
+}
+.reg-social-btn--google:hover { border-color: var(--text-muted); }
+
+.reg-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.reg-divider::before,
+.reg-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Nickname check */
+.reg-input-row {
+  display: flex;
+  gap: 8px;
+}
+.reg-input-row .reg-input { flex: 1; }
+.reg-check-btn {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid var(--green);
+  background: transparent;
+  color: var(--green);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.reg-check-btn:hover {
+  background: var(--green-bg);
+}
+
+/* Category selection chips */
+.reg-category-group {
+  margin-bottom: 16px;
+}
+.reg-category-group__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.reg-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.reg-chip {
+  padding: 8px 16px;
+  border-radius: 100px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.reg-chip:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+.reg-chip.selected {
+  border-color: var(--green);
+  background: var(--green-bg);
+  color: var(--green);
+  font-weight: 600;
+}
+
+/* Image upload */
+.reg-upload {
+  width: 100%;
+  padding: 32px;
+  border: 2px dashed var(--border);
+  border-radius: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--white);
+}
+.reg-upload:hover {
+  border-color: var(--green);
+  background: var(--green-bg);
+}
+.reg-upload__icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+.reg-upload__text {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.reg-upload__preview {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 12px;
+  display: none;
+}
+
+/* Dynamic list items (certifications, portfolios, times) */
+.reg-list-item {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.reg-list-item .reg-input { flex: 1; }
+
+/* Portfolio image preview grid */
+.portfolio-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  min-height: 20px;
+}
+.portfolio-thumb {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid #e8e5e0;
+  cursor: grab;
+  transition: transform 0.15s, box-shadow 0.15s;
+  user-select: none;
+}
+.portfolio-thumb:active { cursor: grabbing; }
+.portfolio-thumb.dragging {
+  opacity: 0.4;
+  transform: scale(0.95);
+}
+.portfolio-thumb.drag-over {
+  border-color: #6C5CE7;
+  box-shadow: 0 0 0 2px rgba(108,92,231,0.3);
+}
+.portfolio-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.portfolio-thumb__order {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.portfolio-thumb__remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.portfolio-thumb__remove:hover { background: #e74c3c; }
+.portfolio-hint {
+  font-size: 12px;
+  color: #9e9a93;
+  margin-top: 4px;
+}
+
+.reg-remove-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--text-muted);
+  transition: all 0.2s;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.reg-remove-btn:hover { border-color: #ef4444; color: #ef4444; }
+.reg-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1.5px dashed var(--border);
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.reg-add-btn:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* Action buttons */
+.reg-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 32px;
+}
+.reg-btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.3s;
+  border: none;
+  text-align: center;
+}
+.reg-btn--primary {
+  background: var(--green);
+  color: var(--white);
+}
+.reg-btn--primary:hover { background: #059669; }
+.reg-btn--primary:disabled {
+  background: var(--border);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+.reg-btn--secondary {
+  background: var(--white);
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border);
+}
+.reg-btn--secondary:hover { border-color: var(--text-muted); }
+.reg-btn--skip {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+}
+.reg-btn--skip:hover { color: var(--text-secondary); }
+
+/* Error/success messages */
+.reg-msg {
+  font-size: 13px;
+  margin-top: 6px;
+}
+.reg-msg--error { color: #ef4444; }
+.reg-msg--success { color: var(--green); }
+
+/* Completion screen */
+.reg-complete {
+  text-align: center;
+  padding: 80px 0;
+}
+.reg-complete__icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--green-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  font-size: 40px;
+}
+.reg-complete__title {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+.reg-complete__desc {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+
+/* ── Region Search ── */
+.region-search-wrap {
+  position: relative;
+}
+.region-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  max-height: 220px;
+  overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.region-dropdown.open {
+  display: block;
+}
+.region-dropdown__item {
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  color: var(--text-primary);
+}
+.region-dropdown__item:hover {
+  background: var(--purple-bg);
+}
+.region-dropdown__empty {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+}
+.region-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.region-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border-radius: 100px;
+  background: var(--purple-bg);
+  border: 1px solid rgba(108,92,231,0.15);
+  color: var(--purple);
+  font-size: 13px;
+  font-weight: 600;
+}
+.region-chip__remove {
+  background: none;
+  border: none;
+  color: var(--purple);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0 2px;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+.region-chip__remove:hover {
+  opacity: 1;
+}
+
+/* ── Confetti ── */
+@keyframes confettiFall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+.confetti-piece {
+  position: absolute;
+  top: -10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  animation: confettiFall linear forwards;
+}
+
+/* Loading spinner */
+.reg-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .transparent__grid,
@@ -1261,10 +2231,19 @@ body {
   .section { padding: 80px 0; }
   .container { padding: 0 20px; }
 
-  .nav__links { display: none; }
+  .nav__links .nav__link { display: none; }
 
-  .hero { min-height: auto; padding: 120px 20px 80px; }
+
+  .hero { min-height: auto; padding: 120px 20px 60px; }
+  .hero__inner { grid-template-columns: 1fr; gap: 40px; text-align: center; }
   .hero__actions { flex-direction: column; align-items: center; }
+  .hero__visual { order: -1; }
+  .hero__illustration { max-width: 380px; margin: 0 auto; }
+  .hero__float { display: none; }
+  .hero__paper-plane { display: none; }
+  .hero__orbit { display: none; }
+  .hero__counter { justify-content: center; }
+  .hero__deco-dots { justify-content: center; }
 
   .transparent__grid,
   .coupon__grid {
@@ -1326,7 +2305,8 @@ body {
 }
 
 @media (max-width: 480px) {
-  .hero__title { font-size: 32px; }
+  .hero__title { font-size: 28px; }
+  .hero__illustration { max-width: 300px; }
   .stats-row { grid-template-columns: 1fr; }
   .expert-benefits { grid-template-columns: 1fr 1fr; }
 }
@@ -1344,7 +2324,6 @@ body {
     <a href="#transparent" class="nav__link">투명 리뷰</a>
     <a href="#how" class="nav__link">이용방법</a>
     <a href="#faq" class="nav__link">FAQ</a>
-    <a href="#cta" class="nav__cta">시작하기</a>
   </div>
 </nav>
 
@@ -1352,20 +2331,68 @@ body {
 <section class="hero">
   <div class="hero__bg-orb hero__bg-orb--1"></div>
   <div class="hero__bg-orb hero__bg-orb--2"></div>
-  <div class="hero__content">
-    <div class="hero__eyebrow">
-      <span class="label label--purple">중개 수수료 0% 전문가 매칭</span>
+  <div class="hero__inner">
+    <!-- Left: Text -->
+    <div class="hero__content">
+      <div class="hero__eyebrow">
+        <span class="label label--purple">중개 수수료 0% 재능 마켓</span>
+        <span class="hero__dday" id="heroDday">5.1 오픈 · <strong id="heroDdayBadge"></strong></span>
+      </div>
+      <h1 class="hero__title">
+        배우고 싶을 때,<br>맡기고 싶을 때,<br><em>쪽 집어보세요.</em>
+      </h1>
+      <p class="hero__sub">
+        중개 수수료 0%, 실제 대화가 리뷰가 되는 재능 마켓.<br>
+        전문가라면 지금 사전 등록하고 런칭 혜택을 받아보세요.<br>
+        <span class="hero__sub-highlight">사전 등록 전문가에겐 <strong>‘얼리버드’ 뱃지</strong>와 혜택이 부여됩니다.</span>
+      </p>
+      <div class="hero__actions">
+        <button class="hero__btn hero__btn--primary" onclick="openRegistration()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          전문가 사전 등록
+        </button>
+      </div>
+      <div class="hero__counter" id="heroCounter" style="display:none;">
+        <span class="hero__counter-dot"></span>
+        <span>현재 <strong id="heroCountNum">0</strong>명의 전문가가 등록했습니다</span>
+      </div>
+      <div class="hero__deco-dots">
+        <div class="hero__deco-dot"></div>
+        <div class="hero__deco-dot"></div>
+        <div class="hero__deco-dot hero__deco-dot--active"></div>
+        <div class="hero__deco-dot"></div>
+        <div class="hero__deco-dot"></div>
+      </div>
     </div>
-    <h1 class="hero__title">
-      별점 대신<br><em>실제 대화</em>로<br>전문가를 고르세요.
-    </h1>
-    <p class="hero__sub">
-      채팅 내역이 그대로 리뷰가 됩니다.<br>
-      조작 불가능한 리뷰, 수수료 없는 투명한 구조.
-    </p>
-    <div class="hero__actions">
-      <a href="#cta" class="hero__btn hero__btn--primary">무료로 시작하기</a>
-      <a href="#how" class="hero__btn hero__btn--secondary">이용방법 보기</a>
+    <!-- Right: Illustration -->
+    <div class="hero__visual">
+      <div class="hero__illustration">
+        <!-- Blob background shape -->
+        <div class="hero__blob"></div>
+        <!-- Dashed orbit ring -->
+        <div class="hero__orbit"></div>
+        <!-- Main illustration -->
+        <img class="hero__illust-img" src="https://cdn.undraw.co/illustration/teamwork_zplp.svg" alt="전문가 매칭 일러스트">
+        <!-- Floating badges -->
+        <div class="hero__float hero__float--1">&#x1f4b0; 수수료 0%</div>
+        <div class="hero__float hero__float--2">&#x1f4e8; 제안서 전송 0원</div>
+        <div class="hero__float hero__float--3">&#x1f4ac; 채팅 리뷰</div>
+        <!-- Paper airplanes -->
+        <div class="hero__paper-plane hero__paper-plane--1">
+          <svg width="24" height="24" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </div>
+        <div class="hero__paper-plane hero__paper-plane--2">
+          <svg width="20" height="20" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </div>
+        <div class="hero__paper-plane hero__paper-plane--3">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </div>
+        <!-- Decorative dots -->
+        <div class="hero__deco-circle hero__deco-circle--1"></div>
+        <div class="hero__deco-circle hero__deco-circle--2"></div>
+        <div class="hero__deco-circle hero__deco-circle--3"></div>
+        <div class="hero__deco-circle hero__deco-circle--4"></div>
+      </div>
     </div>
   </div>
   <div class="hero__scroll">
@@ -1374,53 +2401,9 @@ body {
   </div>
 </section>
 
-<!-- ═══ Marquee ═══ -->
+<!-- ═══ Marquee (카테고리 중분류 자동 스크롤) ═══ -->
 <div class="marquee-wrap">
-  <div class="marquee">
-    <div class="marquee__item"><span class="marquee__dot"></span>포토샵</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>UI/UX 디자인</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>아이콘</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>로고 디자인</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>브랜드 디자인</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>광고·홍보 영상</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>행사 영상</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>유튜브 영상</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>프로필 사진</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>사진보정</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>제품 홍보</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>앱</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>웹사이트 제작</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>퍼블리싱</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>골프</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>테니스</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>피트니스</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>필라테스·요가</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>영어</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>수학</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>국어</div>
-    <!-- Duplicate for seamless loop -->
-    <div class="marquee__item"><span class="marquee__dot"></span>포토샵</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>UI/UX 디자인</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>아이콘</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>로고 디자인</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>브랜드 디자인</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>광고·홍보 영상</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>행사 영상</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>유튜브 영상</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>프로필 사진</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>사진보정</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>제품 홍보</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>앱</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>웹사이트 제작</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>퍼블리싱</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>골프</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>테니스</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>피트니스</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>필라테스·요가</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>영어</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>수학</div>
-    <div class="marquee__item"><span class="marquee__dot"></span>국어</div>
-  </div>
+  <div class="marquee" id="categoryMarquee"></div>
 </div>
 
 <!-- ═══ Section: Commission Free ═══ -->
@@ -1481,12 +2464,6 @@ body {
         <div class="compare-box__badge">추천</div>
         <div class="compare-box__title">쪽집게에서 의뢰할 때</div>
         <div class="compare-row">
-          <span class="compare-row__label">쿠폰 비용</span>
-          <span class="compare-row__value compare-row__value--purple">~2,000원</span>
-        </div>
-        <div class="compare-row">
-          <span class="compare-row__label">전문가 수수료</span>
-          <span class="compare-row__value compare-row__value--green">0원</span>
         </div>
         <div class="compare-row">
           <span class="compare-row__label">서비스 비용</span>
@@ -1602,86 +2579,13 @@ body {
   </div>
 </section>
 
-<!-- ═══ Section: Coupon System ═══ -->
-<section class="section coupon-section" id="coupon">
-  <div class="container">
-    <div class="coupon__grid">
-      <div class="coupon__text">
-        <span class="label label--purple rv">쿠폰 시스템</span>
-        <h2 class="coupon__title rv rv-d1" style="margin-top:20px;">
-          아메리카노 한 잔 가격으로<br><em>전문가를 만나보세요</em>
-        </h2>
-        <p class="coupon__desc rv rv-d2">
-          의뢰인이 소액 쿠폰으로 의뢰를 등록하는 구조.
-          허위/찔러보기 의뢰를 없애고, 정말 서비스를 원하는 분들만 의뢰를 등록합니다.
-        </p>
-        <div class="coupon__points">
-          <div class="coupon-point rv rv-d3">
-            <div class="coupon-point__check">
-              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <div class="coupon-point__text">
-              <strong>웰컴쿠폰 3장</strong>과 <strong>추천인 이벤트</strong>로<br>
-              결제 없이 부담없이 시작해보세요.
-            </div>
-          </div>
-          <div class="coupon-point rv rv-d4">
-            <div class="coupon-point__check">
-              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <div class="coupon-point__text">
-              원하는 전문가를 선택할 때까지<br>
-              <strong>쿠폰은 재사용 가능</strong>합니다.
-            </div>
-          </div>
-          <div class="coupon-point rv rv-d5">
-            <div class="coupon-point__check">
-              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <div class="coupon-point__text">
-              매칭 전 취소/만료 시 <strong>쿠폰은 자동 반환</strong>.<br>
-              부담 없이 의뢰를 등록하세요.
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="coupon__visual">
-        <div class="coupon__cards">
-          <div class="coupon-card coupon-card--highlight rv rv-d2">
-            <div class="coupon-card__icon">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.8" stroke-linecap="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>
-            </div>
-            <div class="coupon-card__title">웰컴쿠폰 3장 무료</div>
-            <div class="coupon-card__desc">쿠폰 구매 페이지에서 웰컴쿠폰 3장을 직접 받으세요. 결제 없이 바로 의뢰를 등록할 수 있어요.</div>
-            <div class="coupon-card__tag">쿠폰 구매 페이지에서 수령</div>
-          </div>
-          <div class="coupon-card rv rv-d3">
-            <div class="coupon-card__icon">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            </div>
-            <div class="coupon-card__title">추천인 이벤트</div>
-            <div class="coupon-card__desc">친구를 초대하면 나도, 친구도 쿠폰을 받아요. 결제 없이 계속 이용하세요.</div>
-          </div>
-          <div class="coupon-card rv rv-d4">
-            <div class="coupon-card__icon">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="1.8" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-            </div>
-            <div class="coupon-card__title">매칭 전 자동 반환</div>
-            <div class="coupon-card__desc">매칭되지 않으면 쿠폰이 자동으로 돌아와요. 원하는 전문가를 찾을 때까지 다시 사용 가능.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ═══ Section: How It Works ═══ -->
 <section class="section how-section" id="how">
   <div class="container">
     <div class="how__header">
       <span class="label label--purple rv">이용 방법</span>
-      <h2 class="how__title rv rv-d1">실제 앱 화면으로 보는<br>이용 흐름</h2>
+      <h2 class="how__title rv rv-d1">실제 앱 화면으로 보는<br>6단계 타임라인</h2>
       <p class="how__sub rv rv-d2">의뢰인과 전문가, 각각의 관점에서 확인하세요.</p>
     </div>
 
@@ -1698,7 +2602,7 @@ body {
           <div class="flow-step__content rv-left">
             <div class="flow-step__num flow-step__num--purple">01</div>
             <div class="flow-step__title">의뢰를 등록하세요</div>
-            <div class="flow-step__desc">카테고리와 유형(온/오프라인)을 선택하고 원하는 서비스를 자유롭게 작성하세요. 쿠폰 1장으로 2주간 모집됩니다.</div>
+            <div class="flow-step__desc">카테고리와 유형을 고르고 원하는 서비스를 자유롭게 작성하세요. 쿠폰 1장으로 2주간 모집됩니다.</div>
           </div>
           <div class="flow-step__line">
             <div class="flow-step__dot flow-step__dot--purple"></div>
@@ -1716,7 +2620,7 @@ body {
           <div class="flow-step__content rv-right">
             <div class="flow-step__num flow-step__num--purple">02</div>
             <div class="flow-step__title">제안서를 비교하세요</div>
-            <div class="flow-step__desc">전문가들이 금액, 소요시간, 어필 메시지를 담은 제안서를 보냅니다. 프로필과 리뷰를 확인하고 선택하세요.</div>
+            <div class="flow-step__desc">전문가들의 금액·소요시간·어필 메시지를 한눈에 비교하고, 프로필과 리뷰를 확인 후 선택합니다.</div>
           </div>
           <div class="flow-step__line">
             <div class="flow-step__dot flow-step__dot--purple"></div>
@@ -1734,7 +2638,7 @@ body {
           <div class="flow-step__content rv-left">
             <div class="flow-step__num flow-step__num--purple">03</div>
             <div class="flow-step__title">채팅으로 상세 협의</div>
-            <div class="flow-step__desc">매칭 확정 후 1:1 채팅방에서 일정, 금액, 범위를 조율합니다. 온라인 의뢰는 합의서로 조건을 확정해요.</div>
+            <div class="flow-step__desc">매칭 직후 1:1 채팅방이 열립니다. 일정·범위·금액을 조율하고, 온라인 의뢰는 합의서로 확정합니다.</div>
           </div>
           <div class="flow-step__line">
             <div class="flow-step__dot flow-step__dot--purple"></div>
@@ -1752,7 +2656,7 @@ body {
           <div class="flow-step__content rv-right">
             <div class="flow-step__num flow-step__num--purple">04</div>
             <div class="flow-step__title">에스크로 안전결제</div>
-            <div class="flow-step__desc">온라인 의뢰는 에스크로로 결제 금액이 안전 보관됩니다. 작업 완료 후 확인하면 전문가에게 전달돼요.</div>
+            <div class="flow-step__desc">온라인 의뢰는 결제 금액을 쪽집게가 안전하게 보관해요. 작업을 승인한 후에만 전문가에게 정산됩니다.</div>
           </div>
           <div class="flow-step__line">
             <div class="flow-step__dot flow-step__dot--purple"></div>
@@ -1909,39 +2813,6 @@ body {
     <div class="faq__list rv rv-d2">
       <div class="faq__item">
         <div class="faq__q" onclick="toggleFaq(this)">
-          <span class="faq__q-text">쿠폰은 왜 필요한가요?</span>
-          <svg class="faq__arrow" viewBox="0 0 24 24" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="faq__a"><div class="faq__a-inner">쪽집게는 전문가에게 수수료를 부과하지 않습니다. 대신 의뢰인이 아메리카노 한 잔 가격의 쿠폰으로 의뢰를 등록합니다. 이 구조 덕분에 허위/찔러보기 의뢰가 없고, 전문가가 부담하는 수수료가 서비스 가격에 반영되는 "숨은 수수료"를 없앨 수 있었습니다.</div></div>
-      </div>
-      <div class="faq__item">
-        <div class="faq__q" onclick="toggleFaq(this)">
-          <span class="faq__q-text">매칭에 실패하면 쿠폰은 어떻게 되나요?</span>
-          <svg class="faq__arrow" viewBox="0 0 24 24" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="faq__a"><div class="faq__a-inner">모집 기간(2주) 내에 전문가를 선택하지 않으면 쿠폰은 자동으로 반환됩니다. 매칭이 성사되지 않으면 비용이 발생하지 않으니 부담 없이 의뢰를 등록하세요. 원하는 전문가를 찾을 때까지 쿠폰은 계속 재사용 가능합니다.</div></div>
-      </div>
-      <div class="faq__item">
-        <div class="faq__q" onclick="toggleFaq(this)">
-          <span class="faq__q-text">전문가 등록은 정말 무료인가요?</span>
-          <svg class="faq__arrow" viewBox="0 0 24 24" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="faq__a"><div class="faq__a-inner">네, 완전 무료입니다. 등록비, 제안서 비용, 중개 수수료 모두 0원입니다. 오프라인 서비스는 비용이 전혀 없으며, 온라인 서비스는 PG사 수수료 3.5%만 별도로 발생합니다. 일한 만큼 전부 가져가세요.</div></div>
-      </div>
-      <div class="faq__item">
-        <div class="faq__q" onclick="toggleFaq(this)">
-          <span class="faq__q-text">채팅이 공개된다는데, 어떤 내용이 보이나요?</span>
-          <svg class="faq__arrow" viewBox="0 0 24 24" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="faq__a"><div class="faq__a-inner">서비스 완료 후 대화 내용이 리뷰로 공개됩니다. 단, 전화번호/계좌번호 등 민감 정보는 시스템이 자동으로 마스킹 처리하며, 원하는 메시지를 직접 비공개 처리할 수도 있습니다. 실제 대화 기반이라 리뷰 조작이 구조적으로 불가능합니다.</div></div>
-      </div>
-      <div class="faq__item">
-        <div class="faq__q" onclick="toggleFaq(this)">
-          <span class="faq__q-text">웰컴쿠폰은 어떻게 받나요?</span>
-          <svg class="faq__arrow" viewBox="0 0 24 24" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-        <div class="faq__a"><div class="faq__a-inner">쿠폰 구매 페이지에서 웰컴쿠폰 3장을 직접 수령하실 수 있습니다. 결제 없이 바로 의뢰를 등록할 수 있어요. 추가로 추천인 이벤트를 통해 친구를 초대하면 나도, 친구도 쿠폰을 받을 수 있습니다.</div></div>
-      </div>
       <div class="faq__item">
         <div class="faq__q" onclick="toggleFaq(this)">
           <span class="faq__q-text">온라인 결제는 안전한가요?</span>
@@ -1960,15 +2831,16 @@ body {
   </div>
 </section>
 
+
 <!-- ═══ CTA ═══ -->
 <section class="section cta-section" id="cta">
   <div class="container">
     <h2 class="cta__title rv">
-      투명한 구조에서<br>더 좋은 서비스가 시작됩니다.
+      딱 맞는 전문가,<br>쪽 집어드립니다.
     </h2>
     <p class="cta__sub rv rv-d1">
-      웰컴쿠폰 3장으로 지금 바로 시작해보세요.<br>
-      결제 없이, 부담 없이.
+      지금 바로 무료로 시작해보세요.<br>
+      수수료 없이, 부담 없이.
     </p>
     <div class="cta__buttons rv rv-d2">
       <a href="#" class="cta__btn cta__btn--primary">
@@ -1979,7 +2851,7 @@ body {
     <div class="cta__trust rv rv-d3">
       <span class="cta__trust-item">
         <span class="cta__trust-check"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
-        웰컴쿠폰 3장 무료
+        완전 무료 시작
       </span>
       <span class="cta__trust-item">
         <span class="cta__trust-check"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
@@ -2003,7 +2875,7 @@ body {
       </div>
       <div>
         <div class="footer__copy">&copy; 2026 쪽집게. All rights reserved.</div>
-        <div class="footer__tagline">중개 수수료 0% 전문가 매칭 플랫폼</div>
+        <div class="footer__tagline">중개 수수료 0%, 실제 대화가 리뷰가 되는 재능 마켓</div>
       </div>
     </div>
     <hr class="footer__divider">
@@ -2020,7 +2892,333 @@ body {
   </div>
 </footer>
 
+<!-- ═══ Registration Modal Overlay ═══ -->
+<div class="reg-overlay" id="regOverlay">
+  <div class="reg-modal">
+    <div class="reg-modal__header">
+      <div class="reg-modal__logo">
+        <img src="assets/service_icon.png" alt="쪽집게">
+        전문가 사전 등록
+      </div>
+      <button class="reg-modal__close" onclick="closeRegistration()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="reg-progress" id="regProgress">
+      <div class="reg-progress__step active"></div>
+      <div class="reg-progress__step"></div>
+      <div class="reg-progress__step"></div>
+      <div class="reg-progress__step"></div>
+      <div class="reg-progress__step"></div>
+    </div>
+
+    <!-- ── Step 1: 회원가입 ── -->
+    <div class="reg-step active" id="regStep1">
+      <h3 class="reg-step__title">회원가입</h3>
+      <p class="reg-step__desc">전문가 등록을 위해 먼저 계정을 만들어주세요.</p>
+
+      <div class="reg-social-buttons">
+        <button class="reg-social-btn reg-social-btn--kakao" onclick="socialLogin('kakao')">
+          <svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 3C6.48 3 2 6.58 2 10.94c0 2.8 1.86 5.27 4.66 6.67l-1.19 4.39 5.08-3.35c.47.05.96.08 1.45.08 5.52 0 10-3.58 10-7.94S17.52 3 12 3z" fill="#191919"/></svg>
+          카카오로 시작하기
+        </button>
+        <button class="reg-social-btn reg-social-btn--google" onclick="socialLogin('google')">
+          <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 001 12c0 1.77.42 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Google로 시작하기
+        </button>
+      </div>
+
+      <div class="reg-divider">또는 이메일로 가입</div>
+
+      <div class="reg-form-group">
+        <label>이메일</label>
+        <div class="reg-input-row">
+          <input type="email" class="reg-input" id="regEmail" placeholder="email@example.com">
+          <button class="reg-check-btn" onclick="checkEmail()">중복확인</button>
+        </div>
+        <div class="reg-msg" id="emailMsg"></div>
+      </div>
+      <div class="reg-form-group">
+        <label>비밀번호</label>
+        <input type="password" class="reg-input" id="regPassword" placeholder="8자 이상">
+      </div>
+      <div class="reg-form-group">
+        <label>비밀번호 확인</label>
+        <input type="password" class="reg-input" id="regPasswordConfirm" placeholder="비밀번호를 다시 입력해주세요">
+        <div class="reg-msg" id="passwordConfirmMsg"></div>
+      </div>
+      <div class="reg-form-group">
+        <label>이름</label>
+        <input type="text" class="reg-input" id="regName" placeholder="실명을 입력해주세요">
+      </div>
+      <div class="reg-form-group">
+        <label>닉네임</label>
+        <div class="reg-input-row">
+          <input type="text" class="reg-input" id="regNickname" placeholder="2~7자" minlength="2" maxlength="7">
+          <button class="reg-check-btn" onclick="checkNickname()">중복확인</button>
+        </div>
+        <div class="reg-msg" id="nicknameMsg"></div>
+      </div>
+      <div class="reg-form-group">
+        <label>연락처</label>
+        <input type="tel" class="reg-input" id="regPhone" placeholder="01012341234" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" maxlength="11">
+        <div class="reg-msg" style="color:#6C5CE7;font-size:12px;margin-top:4px;">서비스 오픈 시점에 문자 메시지를 전송해 드리기 위해, 반드시 입력해주세요.</div>
+      </div>
+      <div class="reg-agreements">
+        <div class="reg-agreements__all">
+          <label class="reg-checkbox">
+            <input type="checkbox" id="regAgreeAll" onchange="toggleAllAgreements(this)">
+            전체 동의
+          </label>
+        </div>
+        <div class="reg-agreements__list">
+          <div class="reg-agreement-row">
+            <label class="reg-checkbox">
+              <input type="checkbox" id="regTerms" class="reg-required-agree" onchange="updateAgreeAll()">
+              서비스 이용약관 동의 (필수)
+            </label>
+            <button class="reg-view-btn" onclick="event.preventDefault();showTerms('terms')">보기</button>
+          </div>
+          <div class="reg-agreement-row">
+            <label class="reg-checkbox">
+              <input type="checkbox" id="regPrivacy" class="reg-required-agree" onchange="updateAgreeAll()">
+              개인정보 수집 및 이용 동의 (필수)
+            </label>
+            <button class="reg-view-btn" onclick="event.preventDefault();showTerms('privacy')">보기</button>
+          </div>
+          <div class="reg-agreement-row">
+            <label class="reg-checkbox">
+              <input type="checkbox" id="regChatReview" class="reg-required-agree" onchange="updateAgreeAll()">
+              채팅 내역 리뷰 활용 동의 (필수)
+            </label>
+            <button class="reg-view-btn" onclick="event.preventDefault();showTerms('chatReview')">보기</button>
+          </div>
+          <div class="reg-agreement-row">
+            <label class="reg-checkbox">
+              <input type="checkbox" id="regMarketing" onchange="updateAgreeAll()">
+              마케팅 정보 수신 동의 (선택)
+            </label>
+            <button class="reg-view-btn" onclick="event.preventDefault();showTerms('marketing')">보기</button>
+          </div>
+        </div>
+      </div>
+      <div class="reg-msg reg-msg--error" id="step1Error"></div>
+
+      <div class="reg-actions">
+        <button class="reg-btn reg-btn--primary" id="step1NextBtn" onclick="submitStep1()" disabled>다음</button>
+      </div>
+    </div>
+
+    <!-- ── Step 2: 프로필 사진 ── -->
+    <div class="reg-step" id="regStep2">
+      <h3 class="reg-step__title">프로필 사진</h3>
+      <p class="reg-step__desc">전문가 프로필에 보여질 사진을 등록해주세요.</p>
+
+      <div class="reg-upload" onclick="document.getElementById('profileImageInput').click()">
+        <img class="reg-upload__preview" id="profilePreview">
+        <div class="reg-upload__icon" id="profileUploadIcon">&#x1f4f7;</div>
+        <div class="reg-upload__text" id="profileUploadText">클릭하여 이미지를 업로드하세요</div>
+      </div>
+      <input type="file" id="profileImageInput" accept="image/*" style="display:none" onchange="uploadProfileImage(this)">
+      <div class="reg-msg" id="step2Msg"></div>
+
+      <div class="reg-actions">
+        <button class="reg-btn reg-btn--secondary" onclick="goToStep(1)">이전</button>
+        <button class="reg-btn reg-btn--skip" onclick="goToStep(3)">건너뛰기</button>
+        <button class="reg-btn reg-btn--primary" onclick="goToStep(3)">다음</button>
+      </div>
+    </div>
+
+    <!-- ── Step 3: 전문가 기본정보 ── -->
+    <div class="reg-step" id="regStep3">
+      <h3 class="reg-step__title">전문가 프로필</h3>
+      <p class="reg-step__desc">의뢰인에게 보여질 전문가 정보를 입력해주세요.</p>
+
+      <div class="reg-form-group">
+        <label>한 줄 소개</label>
+        <input type="text" class="reg-input" id="regIntro" placeholder="예: 10년차 골프 레슨 프로">
+      </div>
+      <div class="reg-form-group">
+        <label>상세 소개</label>
+        <textarea class="reg-textarea" id="regDetailIntro" placeholder="경력, 강점, 수업 스타일 등을 자유롭게 작성해주세요."></textarea>
+      </div>
+      <div class="reg-form-group">
+        <label>경력 기간</label>
+        <input type="text" class="reg-input" id="regCareer" placeholder="예: 5년">
+      </div>
+      <div class="reg-form-group">
+        <label>활동 방식</label>
+        <select class="reg-select" id="regActivityMethod">
+          <option value="">선택해주세요</option>
+          <option value="ONLINE">온라인</option>
+          <option value="OFFLINE">오프라인</option>
+          <option value="BOTH">온/오프라인 모두</option>
+        </select>
+      </div>
+      <div class="reg-form-group">
+        <label>전문 분야 (최대 3개)</label>
+        <div id="categoryContainer">
+          <div class="reg-msg" style="color:var(--text-muted)">카테고리를 불러오는 중...</div>
+        </div>
+      </div>
+      <div class="reg-form-group">
+        <label>배너 이미지 <span class="optional">(선택)</span></label>
+        <div class="reg-upload" onclick="document.getElementById('bannerImageInput').click()" style="padding:20px;">
+          <img class="reg-upload__preview" id="bannerPreview" style="width:100%;height:120px;border-radius:12px;">
+          <div class="reg-upload__text" id="bannerUploadText">배너 이미지 업로드</div>
+        </div>
+        <input type="file" id="bannerImageInput" accept="image/*" style="display:none" onchange="uploadBannerImage(this)">
+      </div>
+      <div class="reg-form-group" id="regionGroup">
+        <label>활동 가능 지역 <span class="optional" id="regionOptionalLabel">(선택)</span></label>
+        <div class="region-search-wrap">
+          <input type="text" class="reg-input" id="regRegionSearch" placeholder="지역명을 검색하세요 (예: 강남, 수원)" autocomplete="off">
+          <div class="region-dropdown" id="regionDropdown"></div>
+        </div>
+        <div class="region-chips" id="regionChips"></div>
+      </div>
+      <div class="reg-msg reg-msg--error" id="step3Error"></div>
+
+      <div class="reg-actions">
+        <button class="reg-btn reg-btn--secondary" onclick="goToStep(2)">이전</button>
+        <button class="reg-btn reg-btn--primary" onclick="validateStep3()">다음</button>
+      </div>
+    </div>
+
+    <!-- ── Step 4: 포트폴리오 & 자격증 ── -->
+    <div class="reg-step" id="regStep4">
+      <h3 class="reg-step__title">포트폴리오 & 자격증</h3>
+      <p class="reg-step__desc">포트폴리오는 최소 1개 이상 등록해야 합니다.</p>
+
+      <div class="reg-form-group">
+        <label>포트폴리오 <span style="color:#e74c3c;font-weight:700;">(필수)</span></label>
+        <div id="portfolioContainer">
+          <div class="reg-list-item" style="flex-direction:column;gap:10px;">
+            <input type="text" class="reg-input" placeholder="포트폴리오 제목/유형" data-portfolio-type>
+            <textarea class="reg-textarea" placeholder="설명" data-portfolio-desc style="min-height:60px;"></textarea>
+            <div class="reg-upload" onclick="this.querySelector('input[type=file]').click()" style="padding:16px;">
+              <div class="reg-upload__text">이미지 업로드 (최소 1장, 최대 7장)</div>
+              <input type="file" accept="image/*" multiple style="display:none" data-portfolio-images onchange="handlePortfolioImages(this)">
+            </div>
+            <div class="portfolio-preview" data-portfolio-preview></div>
+            <div class="portfolio-hint">드래그하여 순서를 변경할 수 있습니다</div>
+          </div>
+        </div>
+        <button class="reg-add-btn" onclick="addPortfolioRow()">+ 포트폴리오 추가</button>
+      </div>
+
+      <div class="reg-form-group">
+        <label>자격증 <span class="optional">(선택)</span></label>
+        <div id="certContainer">
+          <div class="reg-list-item">
+            <input type="text" class="reg-input" placeholder="자격증명" data-cert-name>
+            <input type="text" class="reg-input" placeholder="발급기관" data-cert-issuer>
+          </div>
+        </div>
+        <button class="reg-add-btn" onclick="addCertRow()">+ 자격증 추가</button>
+      </div>
+
+      <div class="reg-msg reg-msg--error" id="step4Error"></div>
+
+      <div class="reg-actions">
+        <button class="reg-btn reg-btn--secondary" onclick="goToStep(3)">이전</button>
+        <button class="reg-btn reg-btn--primary" onclick="validateStep4()">다음</button>
+      </div>
+    </div>
+
+    <!-- ── Step 5: 정산 정보 ── -->
+    <div class="reg-step" id="regStep5">
+      <h3 class="reg-step__title">정산 정보</h3>
+      <p class="reg-step__desc">온라인 의뢰 완료 시 레슨비를 받을 계좌를 입력해주세요.</p>
+
+      <div class="reg-form-group">
+        <label>은행</label>
+        <select class="reg-select" id="regBankCode">
+          <option value="">은행 선택</option>
+          <option value="004">KB국민은행</option>
+          <option value="088">신한은행</option>
+          <option value="020">우리은행</option>
+          <option value="081">하나은행</option>
+          <option value="003">기업은행</option>
+          <option value="011">농협은행</option>
+          <option value="023">SC제일은행</option>
+          <option value="027">한국시티은행</option>
+          <option value="039">경남은행</option>
+          <option value="034">광주은행</option>
+          <option value="031">대구은행</option>
+          <option value="032">부산은행</option>
+          <option value="045">새마을금고</option>
+          <option value="007">수협은행</option>
+          <option value="048">신협</option>
+          <option value="071">우체국</option>
+          <option value="037">전북은행</option>
+          <option value="035">제주은행</option>
+          <option value="090">카카오뱅크</option>
+          <option value="092">토스뱅크</option>
+          <option value="089">케이뱅크</option>
+        </select>
+      </div>
+      <div class="reg-form-group">
+        <label>계좌번호</label>
+        <input type="text" class="reg-input" id="regAccountNumber" placeholder="- 없이 입력">
+      </div>
+      <div class="reg-form-group">
+        <label>예금주</label>
+        <input type="text" class="reg-input" id="regAccountHolder" placeholder="예금주명">
+      </div>
+      <div class="reg-msg reg-msg--error" id="step5Error"></div>
+
+      <div class="reg-actions">
+        <button class="reg-btn reg-btn--secondary" onclick="goToStep(4)">이전</button>
+        <button class="reg-btn reg-btn--primary" id="submitBtn" onclick="submitExpertRegistration()">전문가 등록 완료</button>
+      </div>
+    </div>
+
+    <!-- ── Complete ── -->
+    <div class="reg-step" id="regStepComplete">
+      <div class="reg-complete">
+        <div class="reg-complete__icon" style="width:100px;height:100px;font-size:52px;background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(108,92,231,0.12));border:2px solid rgba(16,185,129,0.2);">&#x1f389;</div>
+        <h3 class="reg-complete__title" style="font-size:32px;background:linear-gradient(135deg,var(--purple),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">전문가 등록 완료!</h3>
+        <p class="reg-complete__desc" style="font-size:17px;line-height:2;">
+          사전 등록이 완료되었습니다.<br>
+          런칭 시 알림을 보내드릴게요.<br>
+          프로필에 <strong style="color:var(--purple);-webkit-text-fill-color:var(--purple);">얼리버드 뱃지</strong>가 부여됩니다!
+        </p>
+        <button class="reg-btn reg-btn--primary" style="max-width:280px;margin:0 auto;font-size:16px;padding:16px 32px;" onclick="closeRegistration()">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Terms Modal ═══ -->
+<div class="terms-modal" id="termsModal">
+  <div class="terms-modal__content">
+    <div class="terms-modal__header">
+      <h4 id="termsModalTitle"></h4>
+      <button class="terms-modal__close" onclick="closeTermsModal()">&times;</button>
+    </div>
+    <div class="terms-modal__body" id="termsModalBody"></div>
+    <div class="terms-modal__footer">
+      <button class="reg-btn reg-btn--primary" style="flex:none;width:100%;" onclick="closeTermsModal()">확인</button>
+    </div>
+  </div>
+</div>
+
 <script>
+// ═══ Config ═══
+const API_BASE = 'https://api.one-pointer.store';
+let authToken = localStorage.getItem('op_token');
+let currentStep = 1;
+let nicknameChecked = false;
+let emailChecked = false;
+let selectedSubCategoryIds = [];
+let profileImageUrl = null;
+let bannerImageUrl = null;
+let portfolioImageUrls = {};
+
+// ═══ Landing Page Scripts ═══
+
 // ── Nav scroll ──
 const nav = document.getElementById('nav');
 let lastScroll = 0;
@@ -2052,15 +3250,10 @@ function switchTab(tab) {
   activeTab.classList.add(tab === 'client' ? 'active--client' : 'active--expert');
   const panel = document.getElementById(`panel-${tab}`);
   panel.classList.add('active');
-
-  // Re-trigger reveal animations for newly visible panel
   panel.querySelectorAll('.rv, .rv-left, .rv-right, .rv-scale').forEach(el => {
     el.classList.remove('visible');
     revealObserver.unobserve(el);
-    // Small delay to reset
-    requestAnimationFrame(() => {
-      revealObserver.observe(el);
-    });
+    requestAnimationFrame(() => { revealObserver.observe(el); });
   });
 }
 
@@ -2083,7 +3276,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// ── Parallax on phone mockups (subtle) ──
+// ── Parallax on phone mockups ──
 if (window.matchMedia('(min-width: 769px)').matches) {
   window.addEventListener('scroll', () => {
     const phones = document.querySelectorAll('.phone-frame:not(.phone-frame--offset)');
@@ -2097,6 +3290,1565 @@ if (window.matchMedia('(min-width: 769px)').matches) {
       }
     });
   }, { passive: true });
+}
+
+// ═══ Expert Counter ═══
+async function loadExpertCount() {
+  try {
+    const res = await fetch(`${API_BASE}/v1/api/expert/count`);
+    const json = await res.json();
+    if (json.success) {
+      document.getElementById('heroCounter').style.display = 'inline-flex';
+      document.getElementById('heroCountNum').textContent = (json.data || 0) + 61;
+    }
+  } catch (e) {
+    // Silently fail - counter just won't show
+  }
+}
+loadExpertCount();
+
+// ═══ D-day Countdown ═══
+(function initDday() {
+  const launch = new Date(2026, 4, 1); // 5월 1일 (month는 0-indexed)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  launch.setHours(0, 0, 0, 0);
+  const diff = Math.ceil((launch - today) / (1000 * 60 * 60 * 24));
+  const badge = document.getElementById('heroDdayBadge');
+  if (diff > 0) {
+    badge.textContent = 'D-' + diff;
+  } else if (diff === 0) {
+    badge.textContent = 'D-DAY';
+  } else {
+    document.getElementById('heroDday').style.display = 'none';
+  }
+})();
+
+loadCategoryMarquee();
+
+// ═══ Category Marquee ═══
+async function loadCategoryMarquee() {
+  const marquee = document.getElementById('categoryMarquee');
+  try {
+    const res = await fetch(`${API_BASE}/v1/api/category`);
+    const json = await res.json();
+    if (json.success && json.data) {
+      const names = [];
+      json.data.forEach(major => {
+        if (major.subCategories) {
+          major.subCategories.forEach(sub => names.push(sub.name));
+        }
+      });
+      if (names.length === 0) return;
+      // Build items + duplicate for seamless loop
+      const html = names.map(n => `<div class="marquee__item"><span class="marquee__dot"></span>${n}</div>`).join('');
+      marquee.innerHTML = html + html;
+      // Adjust speed based on item count
+      const duration = Math.max(30, names.length * 3);
+      marquee.style.animationDuration = duration + 's';
+    }
+  } catch (e) {
+    // Fallback: leave empty, marquee won't show
+  }
+}
+
+// ═══ Registration Modal ═══
+function openRegistration() {
+  document.getElementById('regOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  loadCategories();
+}
+
+function closeRegistration() {
+  document.getElementById('regOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function goToStep(step) {
+  document.querySelectorAll('.reg-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('regStep' + step).classList.add('active');
+  currentStep = step;
+  updateProgress(step);
+  document.getElementById('regOverlay').scrollTop = 0;
+}
+
+function updateProgress(step) {
+  const steps = document.querySelectorAll('.reg-progress__step');
+  steps.forEach((s, i) => {
+    s.classList.remove('active', 'done');
+    if (i < step - 1) s.classList.add('done');
+    if (i === step - 1) s.classList.add('active');
+  });
+}
+
+// ═══ API Helpers ═══
+async function apiFetch(url, options = {}) {
+  const headers = { 'Content-Type': 'application/json', ...options.headers };
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+  const res = await fetch(API_BASE + url, { ...options, headers });
+  return res.json();
+}
+
+async function apiUpload(url, file, domain) {
+  const formData = new FormData();
+  formData.append('file', file);
+  const headers = {};
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+  const res = await fetch(`${API_BASE}${url}?domain=${domain}`, {
+    method: 'POST', headers, body: formData
+  });
+  return res.json();
+}
+
+// ═══ Step 1: Signup ═══
+async function checkEmail() {
+  const email = document.getElementById('regEmail').value.trim();
+  const msg = document.getElementById('emailMsg');
+  if (!email) { msg.textContent = '이메일을 입력해주세요.'; msg.className = 'reg-msg reg-msg--error'; return; }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    msg.textContent = '올바른 이메일 형식을 입력해주세요.';
+    msg.className = 'reg-msg reg-msg--error';
+    emailChecked = false;
+    return;
+  }
+  try {
+    const res = await fetch(`${API_BASE}/v1/api/auth/check-email?email=${encodeURIComponent(email)}`);
+    const json = await res.json();
+    if (json.success && json.data && json.data.available === true) {
+      msg.textContent = '사용 가능한 이메일입니다.';
+      msg.className = 'reg-msg reg-msg--success';
+      emailChecked = true;
+    } else {
+      msg.textContent = '이미 가입된 이메일입니다.';
+      msg.className = 'reg-msg reg-msg--error';
+      emailChecked = false;
+    }
+  } catch (e) {
+    msg.textContent = '서버 연결에 실패했습니다.';
+    msg.className = 'reg-msg reg-msg--error';
+  }
+  updateStep1Button();
+}
+
+async function checkNickname() {
+  const nickname = document.getElementById('regNickname').value.trim();
+  const msg = document.getElementById('nicknameMsg');
+  if (!nickname) { msg.textContent = '닉네임을 입력해주세요.'; msg.className = 'reg-msg reg-msg--error'; return; }
+  if (nickname.length < 2 || nickname.length > 7) {
+    msg.textContent = '닉네임은 2~7자로 입력해주세요.';
+    msg.className = 'reg-msg reg-msg--error';
+    nicknameChecked = false;
+    return;
+  }
+  try {
+    const res = await fetch(`${API_BASE}/v1/api/auth/check-nickname?nickname=${encodeURIComponent(nickname)}`);
+    const json = await res.json();
+    if (json.success && json.data && json.data.duplicated === false) {
+      msg.textContent = '사용 가능한 닉네임입니다.';
+      msg.className = 'reg-msg reg-msg--success';
+      nicknameChecked = true;
+    } else {
+      msg.textContent = '이미 사용 중인 닉네임입니다.';
+      msg.className = 'reg-msg reg-msg--error';
+      nicknameChecked = false;
+    }
+  } catch (e) {
+    msg.textContent = '서버 연결에 실패했습니다.';
+    msg.className = 'reg-msg reg-msg--error';
+  }
+}
+
+async function submitStep1() {
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+  const name = document.getElementById('regName').value.trim();
+  const nickname = document.getElementById('regNickname').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const terms = document.getElementById('regTerms').checked;
+  const privacy = document.getElementById('regPrivacy').checked;
+  const chatReview = document.getElementById('regChatReview').checked;
+  const marketing = document.getElementById('regMarketing').checked;
+  const errEl = document.getElementById('step1Error');
+
+  if (!email || !password || !name || !nickname || !phone) {
+    errEl.textContent = '모든 필수 항목을 입력해주세요.'; return;
+  }
+  if (password.length < 8) {
+    errEl.textContent = '비밀번호는 8자 이상이어야 합니다.'; return;
+  }
+  if (password !== passwordConfirm) {
+    errEl.textContent = '비밀번호가 일치하지 않습니다.'; return;
+  }
+  if (nickname.length < 2 || nickname.length > 7) {
+    errEl.textContent = '닉네임은 2~7자로 입력해주세요.'; return;
+  }
+  if (!terms || !privacy || !chatReview) {
+    errEl.textContent = '필수 약관에 모두 동의해주세요.'; return;
+  }
+  if (!emailChecked) {
+    errEl.textContent = '이메일 중복확인을 해주세요.'; return;
+  }
+  if (!nicknameChecked) {
+    errEl.textContent = '닉네임 중복확인을 해주세요.'; return;
+  }
+  errEl.textContent = '';
+
+  try {
+    const json = await apiFetch('/v1/api/auth/signup', {
+      method: 'POST',
+      body: JSON.stringify({
+        email, password, name, nickname,
+        phoneNumber: phone || null,
+        chatReviewAgreed: chatReview,
+        marketingConsent: marketing,
+        notificationEnabled: true
+      })
+    });
+    if (json.success) {
+      authToken = json.data.accessToken;
+      localStorage.setItem('op_token', authToken);
+      if (json.data.refreshToken) localStorage.setItem('op_refresh', json.data.refreshToken);
+      goToStep(2);
+    } else {
+      errEl.textContent = json.message || '회원가입에 실패했습니다.';
+    }
+  } catch (e) {
+    errEl.textContent = '서버 연결에 실패했습니다.';
+  }
+}
+
+// ═══ Social Login ═══
+async function socialLogin(provider) {
+  if (window.location.protocol === 'file:') {
+    document.getElementById('step1Error').textContent =
+      '소셜 로그인은 로컬 파일에서는 사용할 수 없습니다. 이메일로 가입해주세요.';
+    return;
+  }
+  // Google/Kakao console에 등록된 URI와 완전히 일치해야 하므로 /index.html로 고정
+  const redirectUri = window.location.origin + '/index.html';
+  try {
+    const res = await fetch(`${API_BASE}/v1/api/auth/${provider}/authorize?redirectUri=${encodeURIComponent(redirectUri)}`);
+    const json = await res.json();
+    if (json.success && json.data && json.data.authorizeUrl) {
+      localStorage.setItem('op_social_provider', provider);
+      localStorage.setItem('op_social_redirect', redirectUri);
+      window.location.href = json.data.authorizeUrl;
+    } else {
+      document.getElementById('step1Error').textContent = json.message || '소셜 로그인 URL을 가져올 수 없습니다.';
+    }
+  } catch (e) {
+    document.getElementById('step1Error').textContent = '서버 연결에 실패했습니다.';
+  }
+}
+
+// Handle social login callback
+(async function handleSocialCallback() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+  const provider = localStorage.getItem('op_social_provider');
+  if (!code || !provider) return;
+
+  // Clean URL
+  window.history.replaceState({}, '', window.location.pathname);
+  localStorage.removeItem('op_social_provider');
+  const redirectUri = localStorage.getItem('op_social_redirect') || (window.location.origin + '/index.html');
+  localStorage.removeItem('op_social_redirect');
+
+  // Try login first
+  try {
+    const loginRes = await apiFetch(`/v1/api/auth/${provider}`, {
+      method: 'POST',
+      body: JSON.stringify({ code, redirectUri })
+    });
+    console.log('Login response:', loginRes);
+
+    if (loginRes.success && loginRes.data) {
+      // Check if new user (Jackson serializes isNewUser as newUser)
+      const isNew = loginRes.data.isNewUser || loginRes.data.newUser;
+      console.log('isNewUser:', loginRes.data.isNewUser, 'newUser:', loginRes.data.newUser, 'isNew:', isNew);
+
+      if (isNew) {
+        // Show signup form
+        // Use accessToken from login response (code is already consumed)
+        const accessToken = loginRes.data.googleAccessToken || loginRes.data.kakaoAccessToken;
+        showSocialSignupForm(code, redirectUri, provider, accessToken);
+      } else {
+        // Existing user — save JWT, then check if expert profile is registered.
+        // If not registered, jump into the expert-registration flow starting at Step 2.
+        authToken = loginRes.data.accessToken;
+        if (authToken) localStorage.setItem('op_token', authToken);
+        if (loginRes.data.refreshToken) localStorage.setItem('op_refresh', loginRes.data.refreshToken);
+
+        try {
+          const existsRes = await apiFetch('/v1/api/user/expert/exists');
+          const hasExpertProfile = existsRes && existsRes.success && existsRes.data === true;
+
+          if (!hasExpertProfile) {
+            // 기존 회원 + 전문가 프로필 미등록 → 전문가 프로필 등록 플로우로 진입
+            openRegistration();
+            goToStep(2);
+          } else {
+            // 전문가 프로필까지 등록 완료된 회원
+            alert('이미 전문가로 등록된 계정입니다.\n\n원포인트 앱에서 로그인해주세요.');
+            location.href = '/';
+          }
+        } catch (err) {
+          console.error('expert/exists check failed:', err);
+          alert('전문가 프로필 확인 중 오류가 발생했습니다.');
+          location.href = '/';
+        }
+      }
+    } else {
+      alert('로그인 실패: ' + (loginRes.message || '알 수 없는 오류'));
+    }
+  } catch (e) {
+    console.error('Login error:', e);
+    alert('로그인 중 오류 발생: ' + e.message);
+  }
+})();
+
+function showSocialSignupForm(code, redirectUri, provider, accessToken) {
+  openRegistration();
+
+  // Show a temp message
+  document.getElementById('step1Error').textContent = '소셜 로그인 처리 중...';
+  document.getElementById('step1Error').className = 'reg-msg reg-msg--success';
+
+  // We need nickname & consent - show a simplified form
+  const step1 = document.getElementById('regStep1');
+  step1.innerHTML = `
+    <h3 class="reg-step__title">${provider === 'kakao' ? '카카오' : 'Google'} 계정으로 가입</h3>
+    <p class="reg-step__desc">추가 정보를 입력해주세요.</p>
+    <div class="reg-form-group">
+      <label>닉네임</label>
+      <div class="reg-input-row">
+        <input type="text" class="reg-input" id="regNickname" placeholder="2~7자" minlength="2" maxlength="7">
+        <button class="reg-check-btn" onclick="checkNickname()">중복확인</button>
+      </div>
+      <div class="reg-msg" id="nicknameMsg"></div>
+    </div>
+    <div class="reg-form-group">
+      <label>연락처</label>
+      <input type="tel" class="reg-input" id="regPhone" placeholder="01012341234" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')" maxlength="11">
+      <div class="reg-msg" style="color:#6C5CE7;font-size:12px;margin-top:4px;">서비스 오픈 시점에 문자 메시지를 전송해 드리기 위해, 반드시 입력해주세요.</div>
+    </div>
+    <div class="reg-agreements">
+      <div class="reg-agreements__all">
+        <label class="reg-checkbox">
+          <input type="checkbox" id="regAgreeAll" onchange="toggleAllAgreements(this)">
+          전체 동의
+        </label>
+      </div>
+      <div class="reg-agreements__list">
+        <div class="reg-agreement-row">
+          <label class="reg-checkbox">
+            <input type="checkbox" id="regTerms" class="reg-required-agree" onchange="updateAgreeAll()">
+            서비스 이용약관 동의 (필수)
+          </label>
+          <button class="reg-view-btn" onclick="event.preventDefault();showTerms('terms')">보기</button>
+        </div>
+        <div class="reg-agreement-row">
+          <label class="reg-checkbox">
+            <input type="checkbox" id="regPrivacy" class="reg-required-agree" onchange="updateAgreeAll()">
+            개인정보 수집 및 이용 동의 (필수)
+          </label>
+          <button class="reg-view-btn" onclick="event.preventDefault();showTerms('privacy')">보기</button>
+        </div>
+        <div class="reg-agreement-row">
+          <label class="reg-checkbox">
+            <input type="checkbox" id="regChatReview" class="reg-required-agree" onchange="updateAgreeAll()">
+            채팅 내역 리뷰 활용 동의 (필수)
+          </label>
+          <button class="reg-view-btn" onclick="event.preventDefault();showTerms('chatReview')">보기</button>
+        </div>
+        <div class="reg-agreement-row">
+          <label class="reg-checkbox">
+            <input type="checkbox" id="regMarketing" onchange="updateAgreeAll()">
+            마케팅 정보 수신 동의 (선택)
+          </label>
+          <button class="reg-view-btn" onclick="event.preventDefault();showTerms('marketing')">보기</button>
+        </div>
+      </div>
+    </div>
+    <div class="reg-msg reg-msg--error" id="step1Error"></div>
+    <div class="reg-actions">
+      <button class="reg-btn reg-btn--primary" id="socialSignupBtn" disabled>가입 완료</button>
+    </div>
+  `;
+
+  // Attach real-time validation for social signup form
+  function updateSocialBtn() {
+    const n = document.getElementById('regNickname');
+    const p = document.getElementById('regPhone');
+    const t = document.getElementById('regTerms');
+    const pr = document.getElementById('regPrivacy');
+    const c = document.getElementById('regChatReview');
+    const b = document.getElementById('socialSignupBtn');
+    if (b) b.disabled = !(n && n.value.trim() && p && p.value.trim() && t && t.checked && pr && pr.checked && c && c.checked);
+  }
+  ['regNickname', 'regPhone'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', updateSocialBtn);
+  });
+  ['regTerms', 'regPrivacy', 'regChatReview', 'regMarketing', 'regAgreeAll'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('change', updateSocialBtn);
+  });
+  // Enforce numeric-only on dynamically created phone input
+  const phoneEl = document.getElementById('regPhone');
+  if (phoneEl) phoneEl.addEventListener('input', function() { this.value = this.value.replace(/[^0-9]/g, ''); });
+
+  document.getElementById('socialSignupBtn').onclick = async function() {
+    const nickname = document.getElementById('regNickname').value.trim();
+    const phone = document.getElementById('regPhone').value.trim();
+    const terms = document.getElementById('regTerms').checked;
+    const privacy = document.getElementById('regPrivacy').checked;
+    const chatReview = document.getElementById('regChatReview').checked;
+    const marketing = document.getElementById('regMarketing').checked;
+    const errEl = document.getElementById('step1Error');
+
+    if (!nickname) { errEl.textContent = '닉네임을 입력해주세요.'; return; }
+    if (nickname.length < 2 || nickname.length > 7) { errEl.textContent = '닉네임은 2~7자로 입력해주세요.'; return; }
+    if (!phone) { errEl.textContent = '연락처를 입력해주세요.'; return; }
+    if (!terms || !privacy || !chatReview) { errEl.textContent = '필수 약관에 모두 동의해주세요.'; return; }
+    if (!nicknameChecked) { errEl.textContent = '닉네임 중복확인을 해주세요.'; return; }
+
+    try {
+      console.log('Sending signup request:', {
+        provider,
+        accessToken: accessToken ? accessToken.substring(0, 10) + '...' : 'undefined',
+        redirectUri,
+        nickname
+      });
+
+      const json = await apiFetch(`/v1/api/auth/${provider}/signup`, {
+        method: 'POST',
+        body: JSON.stringify({
+          accessToken,
+          redirectUri,
+          nickname,
+          phoneNumber: phone || null,
+          chatReviewAgreed: chatReview,
+          marketingConsent: marketing
+        })
+      });
+      console.log('Signup response:', json);
+      if (json.success) {
+        authToken = json.data.accessToken;
+        localStorage.setItem('op_token', authToken);
+        if (json.data.refreshToken) localStorage.setItem('op_refresh', json.data.refreshToken);
+        goToStep(2);
+      } else {
+        console.error('Signup failed:', json);
+        errEl.textContent = json.message || '회원가입에 실패했습니다.';
+      }
+    } catch (e) {
+      console.error('Signup error:', e);
+      errEl.textContent = '서버 연결에 실패했습니다: ' + e.message;
+    }
+  };
+}
+
+// ═══ Step 2: Profile Image ═══
+async function uploadProfileImage(input) {
+  if (!input.files[0]) return;
+  const msgEl = document.getElementById('step2Msg');
+  msgEl.textContent = '업로드 중...';
+  msgEl.className = 'reg-msg';
+  try {
+    const json = await apiUpload('/v1/api/image/upload', input.files[0], 'PROFILE');
+    if (json.success) {
+      profileImageUrl = json.data;
+      const preview = document.getElementById('profilePreview');
+      preview.src = profileImageUrl;
+      preview.style.display = 'block';
+      document.getElementById('profileUploadIcon').style.display = 'none';
+      document.getElementById('profileUploadText').textContent = '클릭하여 변경';
+      msgEl.textContent = '업로드 완료!';
+      msgEl.className = 'reg-msg reg-msg--success';
+    } else {
+      msgEl.textContent = json.message || '업로드에 실패했습니다.';
+      msgEl.className = 'reg-msg reg-msg--error';
+    }
+  } catch (e) {
+    msgEl.textContent = '업로드에 실패했습니다.';
+    msgEl.className = 'reg-msg reg-msg--error';
+  }
+}
+
+// ═══ Step 3: Expert Profile ═══
+let categories = [];
+async function loadCategories() {
+  if (categories.length > 0) return;
+  try {
+    const json = await apiFetch('/v1/api/category', { method: 'GET' });
+    if (json.success) {
+      categories = json.data;
+      renderCategories();
+    }
+  } catch (e) {
+    document.getElementById('categoryContainer').innerHTML = '<div class="reg-msg reg-msg--error">카테고리를 불러올 수 없습니다.</div>';
+  }
+}
+
+function renderCategories() {
+  const container = document.getElementById('categoryContainer');
+  container.innerHTML = '';
+  categories.forEach(major => {
+    const group = document.createElement('div');
+    group.className = 'reg-category-group';
+    group.innerHTML = `<div class="reg-category-group__title">${major.name}</div><div class="reg-chips"></div>`;
+    const chips = group.querySelector('.reg-chips');
+    (major.subCategories || []).forEach(sub => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'reg-chip';
+      chip.textContent = sub.name;
+      chip.dataset.id = sub.id;
+      if (selectedSubCategoryIds.includes(sub.id)) chip.classList.add('selected');
+      chip.onclick = () => toggleCategory(chip, sub.id);
+      chips.appendChild(chip);
+    });
+    container.appendChild(group);
+  });
+}
+
+function toggleCategory(chip, id) {
+  if (selectedSubCategoryIds.includes(id)) {
+    selectedSubCategoryIds = selectedSubCategoryIds.filter(x => x !== id);
+    chip.classList.remove('selected');
+  } else {
+    if (selectedSubCategoryIds.length >= 3) {
+      document.getElementById('step3Error').textContent = '최대 3개까지 선택할 수 있습니다.';
+      return;
+    }
+    selectedSubCategoryIds.push(id);
+    chip.classList.add('selected');
+    document.getElementById('step3Error').textContent = '';
+  }
+}
+
+async function uploadBannerImage(input) {
+  if (!input.files[0]) return;
+  try {
+    const json = await apiUpload('/v1/api/image/upload', input.files[0], 'EXPERT_BANNER');
+    if (json.success) {
+      bannerImageUrl = json.data;
+      const preview = document.getElementById('bannerPreview');
+      preview.src = bannerImageUrl;
+      preview.style.display = 'block';
+      document.getElementById('bannerUploadText').textContent = '클릭하여 변경';
+    }
+  } catch (e) {}
+}
+
+function validateStep3() {
+  const intro = document.getElementById('regIntro').value.trim();
+  const method = document.getElementById('regActivityMethod').value;
+  const errEl = document.getElementById('step3Error');
+  if (!intro) { errEl.textContent = '한 줄 소개를 입력해주세요.'; return; }
+  if (!method) { errEl.textContent = '활동 방식을 선택해주세요.'; return; }
+  if (selectedSubCategoryIds.length === 0) { errEl.textContent = '전문 분야를 최소 1개 선택해주세요.'; return; }
+  if ((method === 'OFFLINE' || method === 'BOTH') && selectedRegions.length === 0) {
+    errEl.textContent = '오프라인 활동 시 활동 가능 지역을 최소 1개 선택해주세요.';
+    return;
+  }
+  errEl.textContent = '';
+  goToStep(4);
+}
+
+// ═══ Region Search (Kakao Local API) ═══
+let selectedRegions = [];
+let regionDebounceTimer = null;
+
+document.getElementById('regActivityMethod').addEventListener('change', function() {
+  const regionGroup = document.getElementById('regionGroup');
+  const label = document.getElementById('regionOptionalLabel');
+  if (this.value === 'ONLINE') {
+    regionGroup.style.display = 'none';
+    selectedRegions = [];
+    renderRegionChips();
+  } else {
+    regionGroup.style.display = '';
+    if (this.value === 'OFFLINE' || this.value === 'BOTH') {
+      label.textContent = '(필수)';
+      label.style.color = '#e74c3c';
+      label.style.fontWeight = '700';
+    }
+  }
+});
+
+document.getElementById('regRegionSearch').addEventListener('input', function() {
+  clearTimeout(regionDebounceTimer);
+  const keyword = this.value.trim();
+  const dropdown = document.getElementById('regionDropdown');
+  if (keyword.length < 2) {
+    dropdown.classList.remove('open');
+    return;
+  }
+  regionDebounceTimer = setTimeout(() => searchRegion(keyword), 300);
+});
+
+document.getElementById('regRegionSearch').addEventListener('focus', function() {
+  const keyword = this.value.trim();
+  if (keyword.length >= 2) {
+    searchRegion(keyword);
+  }
+});
+
+document.getElementById('regRegionSearch').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') e.preventDefault();
+});
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.region-search-wrap')) {
+    document.getElementById('regionDropdown').classList.remove('open');
+  }
+});
+
+async function searchRegion(keyword) {
+  const dropdown = document.getElementById('regionDropdown');
+  try {
+    const res = await fetch(API_BASE + '/v1/api/region/search?keyword=' + encodeURIComponent(keyword));
+    const json = await res.json();
+    if (json.success && json.data && json.data.length > 0) {
+      const filtered = json.data.filter(r => !selectedRegions.includes(r));
+      if (filtered.length === 0) {
+        dropdown.innerHTML = '<div class="region-dropdown__empty">모든 결과가 이미 선택되었습니다</div>';
+      } else {
+        dropdown.innerHTML = filtered.map(r =>
+          `<div class="region-dropdown__item" onclick="selectRegion('${r.replace(/'/g, "\\'")}')">` + r + '</div>'
+        ).join('');
+      }
+      dropdown.classList.add('open');
+    } else {
+      dropdown.innerHTML = '<div class="region-dropdown__empty">검색 결과가 없습니다</div>';
+      dropdown.classList.add('open');
+    }
+  } catch (e) {
+    dropdown.innerHTML = '<div class="region-dropdown__empty">서버 연결 실패 — 로컬 서버가 실행 중인지 확인해주세요</div>';
+    dropdown.classList.add('open');
+  }
+}
+
+function selectRegion(region) {
+  if (selectedRegions.includes(region)) return;
+  selectedRegions.push(region);
+  renderRegionChips();
+  document.getElementById('regRegionSearch').value = '';
+  document.getElementById('regionDropdown').classList.remove('open');
+}
+
+function removeRegion(index) {
+  selectedRegions.splice(index, 1);
+  renderRegionChips();
+}
+
+function renderRegionChips() {
+  const container = document.getElementById('regionChips');
+  container.innerHTML = selectedRegions.map((r, i) =>
+    `<span class="region-chip">${r}<button class="region-chip__remove" onclick="removeRegion(${i})">&times;</button></span>`
+  ).join('');
+}
+
+// ═══ Step 4: Portfolio & Certifications ═══
+function addCertRow() {
+  const container = document.getElementById('certContainer');
+  const row = document.createElement('div');
+  row.className = 'reg-list-item';
+  row.innerHTML = `
+    <input type="text" class="reg-input" placeholder="자격증명" data-cert-name>
+    <input type="text" class="reg-input" placeholder="발급기관" data-cert-issuer>
+    <button class="reg-remove-btn" onclick="this.parentElement.remove()" title="삭제">&times;</button>
+  `;
+  container.appendChild(row);
+}
+
+function addPortfolioRow() {
+  const container = document.getElementById('portfolioContainer');
+  const row = document.createElement('div');
+  row.className = 'reg-list-item';
+  row.style.cssText = 'flex-direction:column;gap:10px;';
+  row.innerHTML = `
+    <input type="text" class="reg-input" placeholder="포트폴리오 제목/유형" data-portfolio-type>
+    <textarea class="reg-textarea" placeholder="설명" data-portfolio-desc style="min-height:60px;"></textarea>
+    <div class="reg-upload" onclick="this.querySelector('input[type=file]').click()" style="padding:16px;">
+      <div class="reg-upload__text">이미지 업로드 (최소 1장, 최대 7장)</div>
+      <input type="file" accept="image/*" multiple style="display:none" data-portfolio-images onchange="handlePortfolioImages(this)">
+    </div>
+    <div class="portfolio-preview" data-portfolio-preview></div>
+    <div class="portfolio-hint">드래그하여 순서를 변경할 수 있습니다</div>
+    <button class="reg-remove-btn" onclick="removePortfolioRow(this)" style="align-self:flex-end;" title="삭제">&times;</button>
+  `;
+  container.appendChild(row);
+}
+
+function validateStep4() {
+  const errEl = document.getElementById('step4Error');
+  errEl.textContent = '';
+
+  // 포트폴리오 검증: 최소 1개, 각각 제목+설명+이미지 1장 필수
+  const portfolioRows = document.querySelectorAll('#portfolioContainer .reg-list-item');
+  let validPortfolioCount = 0;
+
+  for (const row of portfolioRows) {
+    const type = row.querySelector('[data-portfolio-type]').value.trim();
+    const desc = row.querySelector('[data-portfolio-desc]').value.trim();
+    const key = row.dataset.portfolioKey;
+    const files = key ? (portfolioFilesMap[key] || []) : [];
+
+    const hasAny = type || desc || files.length > 0;
+    if (!hasAny) continue;
+
+    if (!type) {
+      errEl.textContent = '포트폴리오 제목을 입력해주세요.';
+      return;
+    }
+    if (!desc) {
+      errEl.textContent = '포트폴리오 설명을 입력해주세요.';
+      return;
+    }
+    if (files.length === 0) {
+      errEl.textContent = '포트폴리오 이미지를 최소 1장 업로드해주세요.';
+      return;
+    }
+    validPortfolioCount++;
+  }
+
+  if (validPortfolioCount === 0) {
+    errEl.textContent = '포트폴리오를 최소 1개 이상 등록해주세요. (제목, 설명, 이미지 필수)';
+    return;
+  }
+
+  // 자격증 검증: 둘 다 비어있으면 OK, 하나라도 입력하면 둘 다 필수
+  const certRows = document.querySelectorAll('#certContainer .reg-list-item');
+  for (const row of certRows) {
+    const name = row.querySelector('[data-cert-name]').value.trim();
+    const issuer = row.querySelector('[data-cert-issuer]').value.trim();
+    if (!name && !issuer) continue;
+    if (!name) {
+      errEl.textContent = '자격증명을 입력해주세요.';
+      return;
+    }
+    if (!issuer) {
+      errEl.textContent = '자격증 발급기관을 입력해주세요.';
+      return;
+    }
+  }
+
+  goToStep(5);
+}
+
+function removePortfolioRow(btn) {
+  const row = btn.closest('.reg-list-item');
+  const key = row.dataset.portfolioKey;
+  if (key) delete portfolioFilesMap[key];
+  row.remove();
+}
+
+// Store files per portfolio row (keyed by unique ID)
+const portfolioFilesMap = {};
+let portfolioKeyCounter = 0;
+
+function getPortfolioKey(row) {
+  if (!row.dataset.portfolioKey) {
+    row.dataset.portfolioKey = 'pf_' + (portfolioKeyCounter++);
+  }
+  return row.dataset.portfolioKey;
+}
+
+function handlePortfolioImages(input) {
+  const row = input.closest('.reg-list-item');
+  const key = getPortfolioKey(row);
+  if (!portfolioFilesMap[key]) portfolioFilesMap[key] = [];
+
+  const existing = portfolioFilesMap[key];
+  const newFiles = Array.from(input.files);
+  const total = existing.length + newFiles.length;
+
+  if (total > 7) {
+    alert('포트폴리오당 이미지는 최대 7장까지 업로드 가능합니다.');
+    const allowed = 7 - existing.length;
+    if (allowed > 0) {
+      portfolioFilesMap[key] = existing.concat(newFiles.slice(0, allowed));
+    }
+  } else {
+    portfolioFilesMap[key] = existing.concat(newFiles);
+  }
+
+  input.value = '';
+  renderPortfolioPreview(row);
+}
+
+function renderPortfolioPreview(row) {
+  const key = getPortfolioKey(row);
+  const files = portfolioFilesMap[key] || [];
+  const preview = row.querySelector('[data-portfolio-preview]');
+  preview.innerHTML = '';
+
+  files.forEach((file, idx) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'portfolio-thumb';
+    thumb.draggable = true;
+    thumb.dataset.idx = idx;
+
+    const img = document.createElement('img');
+    img.src = URL.createObjectURL(file);
+    img.onload = function() { URL.revokeObjectURL(this.src); };
+
+    const order = document.createElement('div');
+    order.className = 'portfolio-thumb__order';
+    order.textContent = idx + 1;
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'portfolio-thumb__remove';
+    removeBtn.innerHTML = '&times;';
+    removeBtn.onclick = function(e) {
+      e.stopPropagation();
+      portfolioFilesMap[key].splice(idx, 1);
+      renderPortfolioPreview(row);
+    };
+
+    thumb.appendChild(img);
+    thumb.appendChild(order);
+    thumb.appendChild(removeBtn);
+
+    // Drag events
+    thumb.addEventListener('dragstart', function(e) {
+      this.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', idx);
+    });
+    thumb.addEventListener('dragend', function() {
+      this.classList.remove('dragging');
+      preview.querySelectorAll('.portfolio-thumb').forEach(t => t.classList.remove('drag-over'));
+    });
+    thumb.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      this.classList.add('drag-over');
+    });
+    thumb.addEventListener('dragleave', function() {
+      this.classList.remove('drag-over');
+    });
+    thumb.addEventListener('drop', function(e) {
+      e.preventDefault();
+      this.classList.remove('drag-over');
+      const fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
+      const toIdx = parseInt(this.dataset.idx);
+      if (fromIdx === toIdx) return;
+      const arr = portfolioFilesMap[key];
+      const [moved] = arr.splice(fromIdx, 1);
+      arr.splice(toIdx, 0, moved);
+      renderPortfolioPreview(row);
+    });
+
+    preview.appendChild(thumb);
+  });
+}
+
+// Initialize first portfolio row key
+document.querySelectorAll('#portfolioContainer .reg-list-item').forEach(row => getPortfolioKey(row));
+
+// ═══ Step 5: Submit Expert Registration ═══
+async function submitExpertRegistration() {
+  const bankCode = document.getElementById('regBankCode').value;
+  const accountNumber = document.getElementById('regAccountNumber').value.trim();
+  const accountHolder = document.getElementById('regAccountHolder').value.trim();
+  const errEl = document.getElementById('step5Error');
+
+  if (!bankCode || !accountNumber || !accountHolder) {
+    errEl.textContent = '정산 정보를 모두 입력해주세요.';
+    return;
+  }
+  errEl.textContent = '';
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="reg-spinner"></span>';
+
+  // Collect certifications
+  const certifications = [];
+  document.querySelectorAll('#certContainer .reg-list-item').forEach(row => {
+    const name = row.querySelector('[data-cert-name]').value.trim();
+    const issuer = row.querySelector('[data-cert-issuer]').value.trim();
+    if (name) certifications.push({ name, issuer: issuer || null });
+  });
+
+  // Collect portfolios (upload images first, respecting drag-reorder)
+  const portfolios = [];
+  const portfolioRows = document.querySelectorAll('#portfolioContainer .reg-list-item');
+  for (const row of portfolioRows) {
+    const type = row.querySelector('[data-portfolio-type]').value.trim();
+    const desc = row.querySelector('[data-portfolio-desc]').value.trim();
+    const key = row.dataset.portfolioKey;
+    const files = key ? (portfolioFilesMap[key] || []) : [];
+    let imageUrls = [];
+
+    for (const file of files) {
+      try {
+        const json = await apiUpload('/v1/api/image/upload', file, 'PORTFOLIO');
+        if (json.success) imageUrls.push(json.data);
+      } catch (e) {}
+    }
+    if (type) portfolios.push({ type, description: desc || null, imageUrls });
+  }
+
+  // Collect regions
+  const availableRegions = [...selectedRegions];
+
+  const body = {
+    introduction: document.getElementById('regIntro').value.trim(),
+    detailIntroduction: document.getElementById('regDetailIntro').value.trim() || null,
+    careerPeriod: document.getElementById('regCareer').value.trim() || null,
+    activityMethod: document.getElementById('regActivityMethod').value,
+    bannerImageUrl: bannerImageUrl,
+    certifications,
+    portfolios,
+    availableTimes: [],
+    availableRegions,
+    subCategoryIds: selectedSubCategoryIds,
+    bankCode,
+    accountNumber,
+    accountHolder
+  };
+
+  try {
+    const json = await apiFetch('/v1/api/user/expert', {
+      method: 'POST',
+      body: JSON.stringify(body)
+    });
+    if (json.success) {
+      // Show completion
+      document.querySelectorAll('.reg-step').forEach(s => s.classList.remove('active'));
+      document.getElementById('regStepComplete').classList.add('active');
+      document.querySelectorAll('.reg-progress__step').forEach(s => { s.classList.remove('active'); s.classList.add('done'); });
+      // Confetti animation
+      launchConfetti();
+      // Refresh counter
+      loadExpertCount();
+    } else {
+      errEl.textContent = json.message || '전문가 등록에 실패했습니다.';
+      btn.disabled = false;
+      btn.textContent = '전문가 등록 완료';
+    }
+  } catch (e) {
+    errEl.textContent = '서버 연결에 실패했습니다.';
+    btn.disabled = false;
+    btn.textContent = '전문가 등록 완료';
+  }
+}
+
+// ── Reset checks on change ──
+document.addEventListener('input', (e) => {
+  if (e.target.id === 'regNickname') {
+    nicknameChecked = false;
+    const msg = document.getElementById('nicknameMsg');
+    if (msg) { msg.textContent = ''; msg.className = 'reg-msg'; }
+  }
+  if (e.target.id === 'regEmail') {
+    emailChecked = false;
+    const msg = document.getElementById('emailMsg');
+    if (msg) { msg.textContent = ''; msg.className = 'reg-msg'; }
+  }
+  updateStep1Button();
+});
+document.addEventListener('change', (e) => {
+  const agreementIds = ['regTerms', 'regPrivacy', 'regChatReview', 'regMarketing', 'regAgreeAll'];
+  if (agreementIds.includes(e.target.id)) updateStep1Button();
+});
+
+function updateStep1Button() {
+  const btn = document.getElementById('step1NextBtn');
+  if (!btn) return;
+  const email = document.getElementById('regEmail');
+  const pw = document.getElementById('regPassword');
+  const pwConfirm = document.getElementById('regPasswordConfirm');
+  const name = document.getElementById('regName');
+  const nickname = document.getElementById('regNickname');
+  const phone = document.getElementById('regPhone');
+  const terms = document.getElementById('regTerms');
+  const privacy = document.getElementById('regPrivacy');
+  const chatReview = document.getElementById('regChatReview');
+
+  const requiredAgreed = terms && terms.checked && privacy && privacy.checked && chatReview && chatReview.checked;
+
+  // For email signup: all fields + required agreements
+  if (email && pw && pwConfirm && name) {
+    const allFilled = email.value.trim() && pw.value && pwConfirm.value &&
+      name.value.trim() && nickname && nickname.value.trim() &&
+      phone && phone.value.trim() && requiredAgreed;
+    btn.disabled = !allFilled;
+  }
+}
+
+// ═══ Terms & Agreements ═══
+function toggleAllAgreements(allCheckbox) {
+  const checked = allCheckbox.checked;
+  ['regTerms', 'regPrivacy', 'regChatReview', 'regMarketing'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.checked = checked;
+  });
+  updateStep1Button();
+}
+
+function updateAgreeAll() {
+  const all = ['regTerms', 'regPrivacy', 'regChatReview', 'regMarketing'].every(id => {
+    const el = document.getElementById(id);
+    return el && el.checked;
+  });
+  const agreeAll = document.getElementById('regAgreeAll');
+  if (agreeAll) agreeAll.checked = all;
+  updateStep1Button();
+}
+
+const TERMS_DATA = {
+  terms: {
+    title: '서비스 이용약관',
+    content: `<h2>쪽집게 서비스 이용약관</h2>
+<p>시행일: 2026년 3월 1일</p>
+
+<h3>제1조 (목적)</h3>
+<p>본 약관은 쪽집게(이하 "회사")가 제공하는 전문가 매칭 플랫폼 "쪽집게"(이하 "서비스")의 이용과 관련하여 회사와 이용자 간의 권리, 의무 및 기타 필요한 사항을 규정함을 목적으로 합니다.</p>
+
+<h3>제2조 (정의)</h3>
+<p>1. "서비스"란 회사가 제공하는 전문가와 의뢰인 간 매칭, 채팅 상담, 리뷰 공개, 에스크로 결제, 쿠폰 구매 등 관련 제반 서비스를 의미합니다.<br>
+2. "전문가"란 본 서비스에 전문 서비스 제공자로 등록하여 의뢰인에게 전문 서비스를 제공하는 회원을 말합니다.<br>
+3. "의뢰인"이란 전문가에게 서비스를 의뢰하기 위해 본 서비스를 이용하는 회원을 말합니다.<br>
+4. "티켓(의뢰)"이란 의뢰인이 서비스를 받기 위해 등록하는 1회성 레슨·코칭 요청을 말합니다.<br>
+5. "제안서"란 전문가가 티켓(의뢰)에 대해 금액, 일시, 어필 등을 포함하여 보내는 서비스 제안을 말합니다.<br>
+6. "매칭"이란 의뢰인이 전문가의 제안서를 수락하여 거래가 성사되는 것을 말합니다.<br>
+7. "채팅"이란 매칭 완료 후 전문가와 의뢰인 간 서비스 내에서 이루어지는 텍스트·이미지 기반 상담 대화를 말합니다.<br>
+8. "리뷰"란 거래 완료 후 채팅 내역이 자동으로 스냅샷되어 다른 이용자에게 공개되는 것을 말합니다.<br>
+9. "에스크로"란 온라인 의뢰 시 의뢰인의 결제 대금을 회사가 안전하게 보관하였다가 서비스 완료 확인 후 전문가에게 정산하는 안전결제 방식을 말합니다.<br>
+10. "쿠폰"이란 의뢰(티켓) 등록에 필요한 디지털 이용권을 말합니다.<br>
+11. "합의서"란 온라인 의뢰에서 의뢰인과 전문가가 최종 금액, 작업 마감일, 작업 범위, 수정 횟수 등을 확정하는 문서를 말합니다.<br>
+12. "분쟁"이란 에스크로 환불 과정에서 전문가와 의뢰인 간 이견이 발생하여 회사의 중재가 필요한 상태를 말합니다.</p>
+
+<h3>제3조 (약관의 효력 및 변경)</h3>
+<p>1. 본 약관은 서비스 화면에 게시하거나 기타의 방법으로 회원에게 공지함으로써 효력이 발생합니다.<br>
+2. 회사는 관련 법령에 위배되지 않는 범위에서 본 약관을 개정할 수 있으며, 약관을 개정할 경우에는 적용일자 및 개정사유를 명시하여 적용일자 7일 전부터 서비스 내에 공지합니다. 이용자에게 불리한 변경의 경우 30일 전 공지합니다.<br>
+3. 회원이 개정약관에 동의하지 않는 경우 서비스 이용을 중단하고 탈퇴할 수 있으며, 개정약관의 적용일자 이후에도 서비스를 계속 이용하는 경우 약관의 변경 사항에 동의한 것으로 봅니다.</p>
+
+<h3>제4조 (회원가입 및 탈퇴)</h3>
+<p>1. 이용자는 회사가 정한 절차에 따라 회원가입을 신청하며, 회사는 이를 승낙함으로써 회원가입이 완료됩니다.<br>
+2. 회원은 서비스 내에서 의뢰인과 전문가 역할을 모두 수행할 수 있으며, 마이페이지에서 역할을 전환할 수 있습니다.<br>
+3. 전문가로 활동하기 위해서는 전문가 프로필 등록(소개, 자격증, 포트폴리오, 가능 일시, 활동 지역 등)이 필요합니다.<br>
+4. 회원은 언제든지 서비스 내 마이페이지에서 탈퇴를 요청할 수 있으며, 회사는 관련 법령 등이 정하는 바에 따라 즉시 처리합니다.<br>
+5. 회원 탈퇴 시 관련 법령 및 개인정보 처리방침에 따라 일정 기간 개인정보를 보유할 수 있습니다.<br>
+6. 탈퇴 시 미사용 쿠폰(AVAILABLE 상태)은 소멸되며, 진행 중인 거래가 있는 경우 해당 거래 완료 후 탈퇴가 처리됩니다.<br>
+7. 다음 각 호에 해당하는 경우 회사는 회원가입을 거부하거나 사후에 이용계약을 해지할 수 있습니다.<br>
+&nbsp;&nbsp;가. 실명이 아니거나 타인의 정보를 이용한 경우<br>
+&nbsp;&nbsp;나. 허위 정보를 기재하거나 필수 정보를 제공하지 않은 경우<br>
+&nbsp;&nbsp;다. 관련 법령에 위반하여 서비스를 이용한 경우</p>
+
+<h3>제5조 (서비스 내용)</h3>
+<p>1. 회사는 다음 각 호의 서비스를 제공합니다.<br>
+&nbsp;&nbsp;가. 전문가-의뢰인 매칭 서비스 (의뢰인이 티켓 등록 → 전문가가 제안서 발송 → 의뢰인이 수락)<br>
+&nbsp;&nbsp;나. 채팅 기반 상담 서비스 (매칭 완료 후 1:1 채팅방 자동 생성)<br>
+&nbsp;&nbsp;다. 채팅 내역 기반 리뷰 서비스<br>
+&nbsp;&nbsp;라. 에스크로 안전결제 서비스 (온라인 의뢰 전용)<br>
+&nbsp;&nbsp;마. 쿠폰(이용권) 발행 및 구매 서비스<br>
+&nbsp;&nbsp;바. 기타 회사가 정하는 부가 서비스<br>
+2. 의뢰 유형은 다음과 같이 구분됩니다.<br>
+&nbsp;&nbsp;가. 오프라인 의뢰: 대면 레슨. 결제는 당사자 간 직접 협의하며, 플랫폼은 결제에 개입하지 않습니다.<br>
+&nbsp;&nbsp;나. 온라인 의뢰: 화상/원격 진행. 합의서 확정 후 에스크로 안전결제를 통해 거래합니다.<br>
+3. 서비스의 구체적인 내용 및 이용 조건은 서비스 화면에서 확인할 수 있습니다.<br>
+4. 회사는 서비스 운영상·기술상의 필요에 따라 서비스의 전부 또는 일부를 변경할 수 있으며, 변경 시 사전에 공지합니다.</p>
+
+<h3>제6조 (쿠폰)</h3>
+<p>1. 쿠폰의 종류<br>
+&nbsp;&nbsp;가. 티켓 쿠폰: 일반 의뢰(티켓) 등록에 사용되는 쿠폰<br>
+&nbsp;&nbsp;나. 직접 의뢰 쿠폰: 특정 전문가에게 직접 의뢰할 때 사용되는 쿠폰<br>
+&nbsp;&nbsp;다. 웰컴 쿠폰: 회원가입 시 지급되는 무료 쿠폰<br>
+&nbsp;&nbsp;라. 이벤트 쿠폰: 카카오톡 공유, 프로모션 등으로 지급되는 무료 쿠폰<br>
+2. 쿠폰 구매<br>
+&nbsp;&nbsp;가. 쿠폰은 패키지 단위로 구매하며, 패키지별 쿠폰 수와 가격은 서비스 화면에 표시됩니다.<br>
+&nbsp;&nbsp;나. 결제 수단은 카드, 간편결제(카카오페이, 토스), Apple IAP, Google IAP를 지원합니다.<br>
+&nbsp;&nbsp;다. 결제는 PG(결제대행)사(포트원+토스페이먼츠) 또는 Apple/Google 인앱결제를 통해 처리됩니다.<br>
+3. 쿠폰 사용 및 상태<br>
+&nbsp;&nbsp;가. 의뢰(티켓) 등록 시 쿠폰 1장이 예약(RESERVED)됩니다.<br>
+&nbsp;&nbsp;나. 매칭 확정 시(의뢰인이 제안서 수락) 쿠폰이 최종 소진(CONSUMED)됩니다.<br>
+&nbsp;&nbsp;다. 매칭 전 취소 또는 모집 기간 만료 시 쿠폰이 반환(RETURNED)되어 다른 의뢰에 재사용할 수 있습니다.<br>
+&nbsp;&nbsp;라. 모든 쿠폰의 유효기간은 발급일로부터 12개월이며, 유효기간 경과 시 자동 만료(EXPIRED)됩니다.<br>
+&nbsp;&nbsp;마. 유효기간 만료 7일 전 알림이 발송됩니다.<br>
+4. 쿠폰 환불<br>
+&nbsp;&nbsp;가. 카드·간편결제로 구매한 패키지: 구매 후 7일 이내이며, 패키지 내 모든 쿠폰이 미사용(AVAILABLE) 상태인 경우에만 패키지 전액 환불이 가능합니다.<br>
+&nbsp;&nbsp;나. 한 번이라도 의뢰에 사용(RESERVED)된 이력이 있는 쿠폰은 매칭 실패로 반환(RETURNED)되더라도 현금 환불이 불가하며, 다른 의뢰에 재사용만 가능합니다.<br>
+&nbsp;&nbsp;다. 이는 쿠폰 사용 시 전문가들이 제안서 작성에 시간과 노력을 투입하는 등 서비스가 이미 작동하였기 때문입니다.<br>
+&nbsp;&nbsp;라. Apple IAP·Google IAP로 구매한 패키지: Apple App Store 또는 Google Play Store를 통해서만 환불 가능합니다. 회사는 환불 승인/거절 권한을 갖지 않습니다.<br>
+&nbsp;&nbsp;마. 스토어에서 환불이 승인되면, 해당 결제 건으로 발급된 모든 쿠폰은 사용 상태에 관계없이 즉시 회수(REFUNDED)됩니다.<br>
+&nbsp;&nbsp;바. 환불 후 회수된 쿠폰으로 등록된 의뢰 또는 진행 중인 매칭에 대해서는 별도의 보상이 제공되지 않습니다.<br>
+&nbsp;&nbsp;사. 쿠폰 사용 후 환불을 반복하는 행위는 서비스 악용으로 판단하며, 경고 알림, 쿠폰 구매 제한, 계정 정지 등의 조치를 취할 수 있습니다.<br>
+5. 쿠폰의 개별 양도, 부분 환불, 현금 전환은 불가합니다.</p>
+
+<h3>제7조 (매칭 및 거래)</h3>
+<p>1. 매칭 흐름<br>
+&nbsp;&nbsp;가. 의뢰인이 티켓(의뢰)을 등록합니다. (쿠폰 1장 예약)<br>
+&nbsp;&nbsp;나. 전문가가 티켓을 확인하고 제안서를 발송합니다. (제안서 발송은 무료)<br>
+&nbsp;&nbsp;다. 의뢰인이 제안서를 비교한 후 하나를 수락하면 매칭이 확정됩니다. (쿠폰 소진, 채팅방 자동 생성)<br>
+&nbsp;&nbsp;라. 미채택 제안서는 자동으로 거절(REJECTED) 처리됩니다.<br>
+2. 모집 기간<br>
+&nbsp;&nbsp;가. 티켓 등록일로부터 14일간 제안서를 모집합니다.<br>
+&nbsp;&nbsp;나. 모집 기간 내 매칭이 이루어지지 않으면 티켓은 만료(EXPIRED) 처리되고, 예약된 쿠폰이 반환됩니다.<br>
+3. 매칭 확정 후 취소 불가<br>
+&nbsp;&nbsp;가. 매칭 확정(제안서 수락) 시점에 쿠폰은 최종 소진되며, 이후 어떤 사유로든 쿠폰은 반환되지 않습니다.<br>
+&nbsp;&nbsp;나. 매칭 이후 거래와 관련된 사항은 채팅을 통해 당사자 간 협의합니다.</p>
+
+<h3>제8조 (합의서 — 온라인 의뢰)</h3>
+<p>1. 온라인 의뢰의 경우, 의뢰인은 채팅을 통해 협의한 내용을 바탕으로 합의서를 제안할 수 있습니다.<br>
+2. 합의서에는 다음 사항이 포함됩니다.<br>
+&nbsp;&nbsp;가. 최종 서비스 금액<br>
+&nbsp;&nbsp;나. 작업 마감일<br>
+&nbsp;&nbsp;다. 작업 범위 및 설명<br>
+&nbsp;&nbsp;라. 수정 가능 횟수 (기본 2회)<br>
+3. 전문가가 합의서를 수락(CONFIRMED)하면 에스크로 결제 단계로 진행됩니다.<br>
+4. 전문가가 합의서를 거절(REJECTED)하면 채팅에서 재협의 후 새 합의서를 제안할 수 있습니다.<br>
+5. 합의서는 에스크로 결제 및 분쟁 조정 시 거래 조건의 기준이 됩니다.</p>
+
+<h3>제9조 (에스크로 결제 — 온라인 의뢰)</h3>
+<p>1. 적용 대상: 온라인 의뢰에만 적용됩니다. 오프라인 의뢰는 결제를 당사자 간 직접 협의합니다.<br>
+2. 결제 흐름<br>
+&nbsp;&nbsp;가. 합의서 확정 후 의뢰인이 합의서의 최종 금액으로 에스크로 결제를 진행합니다.<br>
+&nbsp;&nbsp;나. 결제 대금은 서비스 완료 확인 시까지 PG사(토스페이먼츠)에 안전하게 예치됩니다.<br>
+&nbsp;&nbsp;다. 결제 완료 시 전문가에게 작업 시작 알림이 발송됩니다.<br>
+3. 수수료<br>
+&nbsp;&nbsp;가. 회사의 중개 수수료는 0%입니다.<br>
+&nbsp;&nbsp;나. PG사 수수료(약 3.5%)는 정산 시 전문가의 정산 금액에서 차감됩니다. 수수료율은 PG사 정책에 따라 변동될 수 있으며, 변동 시 사전 공지합니다.<br>
+&nbsp;&nbsp;다. 환불 시 PG사 수수료는 반환되지 않을 수 있습니다.<br>
+4. 구매 확인 및 정산<br>
+&nbsp;&nbsp;가. 의뢰인이 전문가의 작업물(Delivery)을 승인하면 거래가 완료되며, 에스크로 구매확인이 처리됩니다.<br>
+&nbsp;&nbsp;나. 전문가의 작업물 제출 후 72시간 이내에 의뢰인이 승인/수정요청을 하지 않으면 자동으로 승인 처리됩니다.<br>
+&nbsp;&nbsp;다. 구매확인 후 PG사 정산 주기(영업일 기준 2~5일)에 따라 플랫폼 계좌로 입금되며, 이후 전문가 계좌로 송금됩니다.<br>
+&nbsp;&nbsp;라. 구매확인 또는 자동 구매확인 이후에는 환불이 불가합니다.</p>
+
+<h3>제10조 (작업물 납품 및 수정 — 온라인 의뢰)</h3>
+<p>1. 전문가는 합의서에 명시된 작업 마감일까지 작업물(서비스 완료 보고 또는 파일)을 제출해야 합니다.<br>
+2. 작업 마감일 초과 후 3일 이내에 작업물이 제출되지 않으면 의뢰인에게 안내가 발송됩니다.<br>
+3. 의뢰인은 제출된 작업물에 대해 승인 또는 수정 요청을 할 수 있습니다.<br>
+&nbsp;&nbsp;가. 수정 요청 시 사유를 입력해야 하며, 작업 마감일이 3일 연장됩니다.<br>
+&nbsp;&nbsp;나. 수정 요청 가능 횟수는 합의서에 명시된 횟수(기본 2회)를 따릅니다.<br>
+&nbsp;&nbsp;다. 수정 가능 횟수를 모두 소진한 후에도 작업물이 합의 범위에 미달하는 경우, 의뢰인은 작업물을 거절할 수 있으며 이 경우 자동으로 분쟁(Dispute)으로 전환됩니다.<br>
+&nbsp;&nbsp;라. 수정 요청 및 작업물 거절 시 사유(최소 50자 이상)를 상세히 입력해야 합니다.<br>
+4. 작업물 제출 후 72시간 이내에 의뢰인이 승인, 수정 요청 또는 거절 등 응답을 하지 않으면 자동으로 승인 처리됩니다. 이용자는 본 서비스 이용 시 이 자동 승인 정책에 동의한 것으로 간주합니다.</p>
+
+<h3>제11조 (에스크로 환불)</h3>
+<p>1. 청약철회 제한 안내<br>
+&nbsp;&nbsp;가. 에스크로 결제 서비스는 의뢰인의 주문에 의해 개별적으로 제공되는 용역으로서, 전자상거래 등에서의 소비자보호에 관한 법률 제17조 제2항 제5호에 따라 용역의 제공이 개시된 경우 청약철회가 제한될 수 있습니다.<br>
+&nbsp;&nbsp;나. 회사는 결제 후 2시간의 쿨링오프 기간을 별도로 제공하며, 이 기간 동안 무조건 전액 환불이 가능합니다.<br>
+&nbsp;&nbsp;다. 본 조의 청약철회 제한 사항은 결제 화면에서 별도로 고지되며, 이용자의 동의를 받습니다.<br>
+2. 쿨링오프 구간 (결제 후 2시간 이내)<br>
+&nbsp;&nbsp;가. 의뢰인은 결제 후 2시간 이내에 사유 없이 전액 환불을 요청할 수 있습니다.<br>
+&nbsp;&nbsp;나. 이 경우 PG사를 통해 즉시 환불 처리됩니다.<br>
+3. 작업 진행 중 (결제 후 2시간 이후 ~ 작업물 제출 전)<br>
+&nbsp;&nbsp;가. 의뢰인이 환불을 요청하면 전문가에게 알림이 발송됩니다.<br>
+&nbsp;&nbsp;나. 전문가는 48시간 이내에 수락 또는 거절로 응답해야 합니다.<br>
+&nbsp;&nbsp;다. 전문가가 수락하면 PG사를 통해 전액 환불됩니다.<br>
+&nbsp;&nbsp;라. 전문가가 거절하면 자동으로 분쟁(Dispute)으로 전환됩니다.<br>
+&nbsp;&nbsp;마. 48시간 이내에 전문가가 응답하지 않으면 자동으로 전액 환불 처리됩니다.<br>
+&nbsp;&nbsp;바. 전문가에게는 응답 기한 36시간 경과 시 리마인더 알림이 발송됩니다.<br>
+4. 작업 마감일 초과 시<br>
+&nbsp;&nbsp;가. 합의서에 명시된 작업 마감일이 초과된 경우에도 작업물이 제출되지 않으면, 의뢰인은 환불을 요청할 수 있습니다.<br>
+&nbsp;&nbsp;나. 마감일 초과 시 의뢰인과 전문가 양측에 안내 알림이 발송됩니다.<br>
+&nbsp;&nbsp;다. 환불 처리 절차는 제3항(작업 진행 중)과 동일하게 적용됩니다.<br>
+5. 작업물 제출 후 (DELIVERED 이후)<br>
+&nbsp;&nbsp;가. 작업물이 제출된 후에는 환불 요청이 불가합니다.<br>
+&nbsp;&nbsp;나. 작업물에 문제가 있는 경우 수정 요청(제10조 제3항)을 통해 처리합니다.<br>
+&nbsp;&nbsp;다. 합의서에 명시된 수정 횟수를 모두 소진한 후 작업물이 여전히 합의 범위에 미달하는 경우, 의뢰인은 작업물을 거절할 수 있으며 이때 자동으로 분쟁(Dispute)으로 전환됩니다.<br>
+6. 구매확인 이후<br>
+&nbsp;&nbsp;가. 구매확인(수동 또는 자동) 이후에는 환불이 불가합니다.<br>
+&nbsp;&nbsp;나. 이미 정산이 진행된 거래는 환불 대상에서 제외됩니다.<br>
+7. 환불 처리 기간: 카드 결제 기준 3~5 영업일, 간편결제 기준 1~3 영업일 내 처리됩니다. 환불 시 PG사 수수료가 차감될 수 있습니다.</p>
+
+<h3>제12조 (오프라인 의뢰 완료)</h3>
+<p>1. 오프라인 의뢰의 경우, 채팅 협의 후 대면 레슨·코칭을 진행합니다.<br>
+2. 레슨비 등 비용은 당사자 간 직접 결제하며, 플랫폼은 이에 관여하지 않습니다.<br>
+3. 의뢰인이 서비스 내에서 완료 확인을 하면 거래가 종료됩니다.<br>
+4. 진행 시작(IN_PROGRESS) 후 48시간 이내에 완료 확인이 없으면 자동으로 거래 완료 처리됩니다.</p>
+
+<h3>제13조 (채팅 및 리뷰)</h3>
+<p>1. 채팅<br>
+&nbsp;&nbsp;가. 매칭 완료 시 1:1 채팅방이 자동 생성되며, 의뢰인과 전문가만 참여합니다.<br>
+&nbsp;&nbsp;나. 채팅 내역은 서비스 서버(MongoDB)에 저장됩니다.<br>
+&nbsp;&nbsp;다. 거래 완료 후 6개월이 경과하면 채팅 원본 데이터가 삭제될 수 있습니다.<br>
+2. 리뷰 자동 생성<br>
+&nbsp;&nbsp;가. 거래가 완료(COMPLETED)되면, 채팅 내역이 자동으로 스냅샷(복사)되어 리뷰 기초 자료로 생성됩니다. 이는 의뢰인의 별도 작성 없이 시스템에 의해 자동으로 이루어집니다.<br>
+&nbsp;&nbsp;나. 스냅샷된 채팅 내역은 영구 보존됩니다.<br>
+3. 개인정보 자동 비공개<br>
+&nbsp;&nbsp;가. 시스템은 채팅 메시지에서 전화번호, 계좌번호, 이메일, 상세 주소, 메신저 ID, 외부 링크 등 개인정보를 자동으로 감지합니다.<br>
+&nbsp;&nbsp;나. 개인정보가 감지된 메시지는 전체가 자동 비공개(HIDDEN_BY_SYSTEM) 처리됩니다.<br>
+&nbsp;&nbsp;다. 자동 비공개 처리된 메시지는 이용자가 해제할 수 없습니다.<br>
+4. 필터링 기간 (48시간)<br>
+&nbsp;&nbsp;가. 리뷰 스냅샷 생성 후 48시간 동안 의뢰인과 전문가 각자 자신이 보낸 메시지를 개별적으로 비공개(HIDDEN_BY_SENDER) 처리할 수 있습니다.<br>
+&nbsp;&nbsp;나. 상대방의 메시지는 비공개 처리할 수 없습니다.<br>
+&nbsp;&nbsp;다. 48시간 경과 시 또는 양쪽 모두 필터링 완료를 확인하면 리뷰가 공개됩니다.<br>
+5. 리뷰 공개<br>
+&nbsp;&nbsp;가. 리뷰에는 의뢰인의 닉네임, 프로필 이미지, 별점, 공개 처리된 채팅 내역이 포함됩니다.<br>
+&nbsp;&nbsp;나. 비공개 처리된 메시지는 "[비공개 메시지]"로 표시되며, 비공개 주체(본인/시스템)는 구분되지 않습니다.<br>
+6. 별점<br>
+&nbsp;&nbsp;가. 의뢰인은 필터링 기간 중 또는 리뷰 공개 후 별점(1~5점, 0.5단위)을 입력할 수 있습니다.<br>
+&nbsp;&nbsp;나. 별점 입력은 선택 사항이며, 한번 등록한 별점은 수정할 수 없습니다.<br>
+7. 전문가 답변<br>
+&nbsp;&nbsp;가. 전문가는 공개된 리뷰에 대해 1회에 한하여 답변을 작성할 수 있습니다. (최대 500자, 공개 후 30일 이내)<br>
+&nbsp;&nbsp;나. 작성된 답변은 수정할 수 없습니다.<br>
+8. 비공개 비율이 높은 리뷰에는 비공개 비율 안내가 표시될 수 있습니다.<br>
+9. 회사는 리뷰의 정확성, 신뢰성에 대해 보증하지 않으며, 리뷰 내용에 대한 책임은 발신자에게 있습니다.<br>
+10. 허위 사실, 명예훼손 등 부당한 리뷰에 대해 전문가는 회사에 삭제를 요청할 수 있으며, 회사는 검토 후 적절한 조치(HIDDEN 처리 등)를 취합니다.</p>
+
+<h3>제14조 (분쟁 해결)</h3>
+<p>1. 분쟁 자동 전환<br>
+&nbsp;&nbsp;가. 에스크로 환불 요청에 대해 전문가가 거절하면 자동으로 분쟁(Dispute)이 생성됩니다.<br>
+&nbsp;&nbsp;나. 합의서에 명시된 수정 횟수를 모두 소진한 후 의뢰인이 작업물을 거절하면 자동으로 분쟁이 생성됩니다.<br>
+2. 분쟁 발생 시 에스크로 예치금은 동결되며, 조정 완료 전까지 양측 모두 접근할 수 없습니다.<br>
+3. 분쟁 조정 절차<br>
+&nbsp;&nbsp;가. 분쟁 자동 접수 및 양측 알림<br>
+&nbsp;&nbsp;나. 관리자가 분쟁 내용을 검토합니다 (부당한 분쟁 신청은 각하될 수 있습니다)<br>
+&nbsp;&nbsp;다. 상대방에게 소명 기회가 부여됩니다 (관리자가 지정한 기한 내, 1회 제출, 최소 50자 이상)<br>
+&nbsp;&nbsp;라. 양측은 증거 자료를 최대 5건까지 제출할 수 있습니다<br>
+&nbsp;&nbsp;마. 관리자가 채팅 내역, 합의서, 양측 소명 자료를 종합하여 결정합니다<br>
+4. 조정 결과<br>
+&nbsp;&nbsp;가. 전액 환불: 전문가가 합의 범위를 이행하지 않은 경우, 의뢰인에게 결제 대금 전액을 환불합니다<br>
+&nbsp;&nbsp;나. 전문가 정산: 작업이 합의 범위에 부합하는 경우, 전문가에게 결제 대금 전액을 정산합니다<br>
+&nbsp;&nbsp;다. 미합의 종결: 양측의 주장이 첨예하게 대립하여 합의에 이르지 못한 경우 미합의로 종결될 수 있습니다<br>
+5. 분쟁 판단 기준<br>
+&nbsp;&nbsp;가. 전문가가 합의서에 명시된 범위를 이행하지 않은 경우 → 의뢰인 전액 환불<br>
+&nbsp;&nbsp;나. 결과물이 합의 범위와 상이한 경우 → 전액 환불 또는 수정 요청<br>
+&nbsp;&nbsp;다. 의뢰인이 합의 범위 외 추가 요구를 한 경우 → 전문가 정산<br>
+&nbsp;&nbsp;라. 양측 주장이 충돌하는 경우 → 채팅 내역 및 합의서 기반으로 관리자 판단<br>
+6. 회사의 분쟁 조정은 권고적 성격이며, 당사자가 수용하지 않는 경우 관련 법령에 따른 분쟁 해결 절차(소비자분쟁조정위원회, 법원 등)를 이용할 수 있습니다.</p>
+
+<h3>제15조 (회원의 의무)</h3>
+<p>1. 회원은 다음 각 호의 행위를 하여서는 안 됩니다.<br>
+&nbsp;&nbsp;가. 타인의 정보를 도용하거나 허위 정보를 등록하는 행위<br>
+&nbsp;&nbsp;나. 서비스를 이용하여 법령, 공공질서, 미풍양속에 반하는 행위<br>
+&nbsp;&nbsp;다. 다른 회원의 개인정보를 수집·저장·공개하는 행위<br>
+&nbsp;&nbsp;라. 서비스의 안정적 운영을 방해하는 행위<br>
+&nbsp;&nbsp;마. 회사의 사전 동의 없이 영리 목적의 광고를 게시하는 행위<br>
+&nbsp;&nbsp;바. 전문가로서 허위 자격 또는 경력을 기재하는 행위<br>
+&nbsp;&nbsp;사. 채팅에서 개인정보(연락처, 계좌, 주소 등)를 공유하여 플랫폼 외 거래를 유도하는 행위<br>
+&nbsp;&nbsp;아. 쿠폰 구매 후 서비스 이용 없이 반복적으로 환불을 요청하는 행위<br>
+2. 회원은 관련 법령, 본 약관, 서비스 이용 안내 및 주의사항을 준수하여야 합니다.</p>
+
+<h3>제16조 (서비스 이용 제한)</h3>
+<p>1. 회사는 회원이 본 약관의 의무를 위반하거나 서비스의 정상적인 운영을 방해한 경우, 서비스 이용을 제한할 수 있습니다.<br>
+2. 이용 제한의 종류는 경고, 일시 정지, 쿠폰 구매 제한, 회원자격 박탈 등이 있으며, 그 구체적인 기준은 서비스 운영정책에 따릅니다.<br>
+3. 회원은 이용 제한에 대해 회사에 이의를 신청할 수 있으며, 회사는 이의 신청이 정당한 경우 즉시 이용 제한을 해제합니다.</p>
+
+<h3>제17조 (통신판매중개자의 지위 및 책임 제한)</h3>
+<p>1. 회사는 전자상거래 등에서의 소비자보호에 관한 법률 제2조 제4호에 따른 통신판매중개자로서, 전문가와 의뢰인 간 거래를 중개하는 플랫폼을 제공합니다. 회사는 전문가 또는 의뢰인이 아니며, 전문가와 의뢰인 간 체결되는 거래의 당사자가 아닙니다.<br>
+2. 회사는 전문가가 제공하는 서비스(레슨, 코칭, 디자인, 번역 등 일체의 용역)의 내용, 품질, 완성도, 적법성, 안전성 등에 대하여 어떠한 보증도 하지 않으며, 이에 따른 손해에 대하여 책임을 부담하지 않습니다.<br>
+3. 전문가와 의뢰인 간 거래에서 발생하는 서비스 불이행, 저품질 작업물, 납기 지연, 연락 두절(이른바 "먹튀"), 서비스 결과에 대한 불만족, 기타 일체의 분쟁에 대하여 회사는 거래 당사자가 아니므로 직접적인 책임을 부담하지 않습니다.<br>
+4. 다만, 회사는 이용자 보호를 위해 다음과 같은 안전장치를 운영하며, 이러한 노력이 거래 결과를 보증하거나 손해배상 의무를 발생시키지는 않습니다.<br>
+&nbsp;&nbsp;가. 에스크로 안전결제 서비스 (온라인 의뢰): 서비스 완료 확인 전까지 결제 대금을 안전하게 예치<br>
+&nbsp;&nbsp;나. 분쟁 조정 서비스: 에스크로 거래에 한하여 전액 환불, 전문가 정산 등 권고적 중재<br>
+&nbsp;&nbsp;다. 채팅 기반 투명 리뷰 시스템: 거래 내역의 투명한 공개를 통한 정보 비대칭 완화<br>
+&nbsp;&nbsp;라. 부정 이용자 제재: 허위 프로필, 반복 불이행 등 악성 이용자에 대한 경고·정지·퇴출 조치<br>
+5. 회사의 분쟁 조정(제14조)은 권고적 성격으로서, 조정 결과에 대하여 법적 구속력이 없으며, 조정 결과에 불복하는 당사자는 소비자분쟁조정위원회, 한국소비자원 또는 관할 법원 등 법령에 따른 분쟁 해결 절차를 이용할 수 있습니다.<br>
+6. 오프라인 의뢰의 경우 회사는 결제, 환불, 서비스 품질 등 거래 일체에 관여하지 않으며, 이에 대한 책임을 부담하지 않습니다. 오프라인 의뢰에 대하여는 에스크로 결제 및 분쟁 조정 서비스가 제공되지 않으므로, 이용자는 이 점을 충분히 인지한 상태에서 거래에 임하여야 합니다.</p>
+
+<h3>제18조 (면책)</h3>
+<p>1. 회사는 천재지변, 전쟁, 테러, 해킹, DDoS 공격, 기간통신사업자의 서비스 중지, 정부 기관의 명령 등 불가항력으로 인하여 서비스를 제공할 수 없는 경우 책임이 면제됩니다.<br>
+2. 회원의 귀책사유(비밀번호 미관리, 기기 분실, 허위 정보 등록 등)로 인한 서비스 이용 장애 및 손해에 대해 회사는 책임을 지지 않습니다.<br>
+3. 회사는 회원이 서비스에 게재한 정보, 자료, 사실의 정확성, 신뢰성 등에 대해 책임을 지지 않습니다. 전문가의 자격증, 경력, 포트폴리오 등 프로필 정보는 전문가 본인이 등록한 것으로서, 회사는 그 진위를 보증하지 않습니다.<br>
+4. 회사는 회원 간 또는 회원과 제3자 간에 서비스를 매개로 발생한 분쟁에 대해 개입할 의무가 없으며, 이에 따른 손해를 배상할 책임이 없습니다.<br>
+5. 회사가 관련 법령에 따른 의무를 성실히 이행하였음에도 불구하고 발생한 손해에 대하여는 책임을 부담하지 않습니다.<br>
+6. 전자상거래 등에서의 소비자보호에 관한 법률 등 관련 법령에서 정한 회사의 의무 및 소비자의 권리는 본 약관의 규정에도 불구하고 그대로 적용됩니다.</p>
+
+<h3>제19조 (준거법 및 관할)</h3>
+<p>1. 본 약관의 해석 및 회사와 회원 간의 분쟁에 대하여는 대한민국 법률을 적용합니다.<br>
+2. 서비스 이용과 관련하여 분쟁이 발생한 경우, 회사의 본사 소재지를 관할하는 법원을 전속관할법원으로 합니다.</p>`
+  },
+  privacy: {
+    title: '개인정보 수집 및 이용 동의',
+    content: `<h2>쪽집게 개인정보 처리방침</h2>
+<p>시행일: 2026년 3월 1일</p>
+<p>"쪽집게"(이하 "회사")는 개인정보보호법, 정보통신망 이용촉진 및 정보보호 등에 관한 법률 등 관련 법령에 따라 이용자의 개인정보를 보호하고, 이와 관련한 고충을 신속하게 처리하기 위하여 다음과 같은 개인정보 처리방침을 수립·공개합니다.</p>
+
+<h3>제1조 (수집하는 개인정보 항목)</h3>
+<p>1. 회사는 서비스 제공을 위해 다음의 개인정보를 수집합니다.</p>
+<p><strong>[회원가입 시 필수 수집 항목]</strong><br>
+- 이메일 주소<br>
+- 비밀번호 (암호화하여 저장)<br>
+- 이름<br>
+- 닉네임</p>
+<p><strong>[소셜 로그인 시 수집 항목]</strong><br>
+- 카카오 로그인: 카카오 계정 고유 ID, 닉네임, 프로필 이미지, 이메일<br>
+- 구글 로그인: 구글 계정 고유 ID, 닉네임, 프로필 이미지, 이메일<br>
+- Apple 로그인: Apple 계정 고유 ID, 이름(최초 1회), 이메일</p>
+<p><strong>[서비스 이용 과정에서 수집되는 항목]</strong><br>
+- 프로필 이미지<br>
+- 지역 정보 (GPS 위치 기반 시/도, 구/군 수준 — 이용자 동의 시에만 수집)<br>
+- 채팅 메시지 내용 및 첨부 이미지·파일<br>
+- 의뢰(티켓) 작성 내용 (제목, 설명, 예산, 희망 일시, 위치 정보)<br>
+- 제안서 작성 내용 (금액, 가능 일시, 어필 내용)</p>
+<p><strong>[전문가 등록 시 추가 수집 항목]</strong><br>
+- 프로필 소개글 (단문·상세)<br>
+- 전문 분야 카테고리 (최대 3개)<br>
+- 경력 기간<br>
+- 자격증/면허 정보 (자격증명, 발급기관)<br>
+- 포트폴리오 이미지 (포트폴리오당 최대 7장)<br>
+- 활동 가능 요일 및 시간대<br>
+- 활동 가능 지역<br>
+- 활동 방식 (온라인/오프라인/모두)<br>
+- 사업자등록번호 (해당 시)</p>
+<p><strong>[결제 및 정산 시 수집 항목]</strong><br>
+- 결제 수단 정보 (카드사명, 카드번호 일부 등 — PG사에서 처리)<br>
+- 쿠폰 패키지 구매 내역 (패키지 유형, 금액, 결제 수단, PG 결제 키)<br>
+- 에스크로 결제 내역 (결제 금액, 결제 수단, 주문 ID, PG 결제 키)<br>
+- 인앱결제 영수증 정보 (Apple Transaction ID, Google Purchase Token)<br>
+- 은행 계좌 정보 (은행명, 계좌번호, 예금주명 — 전문가 정산 목적)</p>
+<p><strong>[분쟁 처리 시 수집 항목]</strong><br>
+- 분쟁 신청 사유 및 상세 설명<br>
+- 소명 자료 (텍스트)<br>
+- 증거 파일 (이미지 등)<br>
+- 분쟁 당사자 이메일</p>
+<p><strong>[기기 및 접속 정보 — 자동 수집]</strong><br>
+- 기기 고유 식별자 (Android: android.id, iOS: identifierForVendor)<br>
+- 기기 유형 (Android/iOS)<br>
+- OS 버전, 앱 버전<br>
+- FCM 토큰 (Firebase Cloud Messaging 푸시 알림 발송용)<br>
+- APNs 토큰 (iOS 푸시 알림용)<br>
+- 서비스 이용 기록, 접속 로그, 접속 IP</p>
+<p>2. 회사는 민감정보(사상·신념, 건강정보, 범죄경력 등)를 수집하지 않습니다.</p>
+
+<h3>제2조 (개인정보의 수집·이용 목적)</h3>
+<p>회사는 수집한 개인정보를 다음의 목적으로 이용합니다.</p>
+<p>1. 회원 가입 및 관리: 회원 식별, 가입 의사 확인, 본인 확인, 중복 가입 방지, 부정 이용 방지, 회원 자격 유지·관리, 탈퇴 처리<br>
+2. 서비스 제공: 전문가-의뢰인 매칭, 의뢰(티켓) 등록, 제안서 발송, 채팅 상담, 합의서 작성, 작업물 납품<br>
+3. 결제 및 정산: 쿠폰 패키지 구매 결제 검증, 에스크로 안전결제, 구매확인 및 전문가 정산, 환불 처리<br>
+4. 리뷰 서비스: 거래 완료 후 채팅 내역 스냅샷(복사) 생성, 개인정보 자동 감지 및 비공개 처리, 리뷰 공개<br>
+5. 알림 발송: FCM 기반 푸시 알림 (매칭 알림, 채팅 메시지 알림, 결제 알림, 제안서 알림, 환불 처리 알림, 쿠폰 만료 임박 알림 등)<br>
+6. 분쟁 조정: 에스크로 환불 분쟁 중재, 채팅 내역 열람, 합의서 확인, 양측 소명 자료 검토<br>
+7. 고객 지원: 문의 처리, 신고 처리, 공지사항 전달<br>
+8. 서비스 개선 및 통계: Firebase Analytics 기반 서비스 이용 패턴 분석, 퍼널 분석, 카테고리 인기도 분석 (비식별 통계 목적)<br>
+9. 부정 이용 방지: 쿠폰 악용 탐지 (반복 환불 패턴), 다중 계정 방지 (기기 ID 기반 중복 수령 차단), 서비스 남용 모니터링<br>
+10. 마케팅 정보 발송: 할인 쿠폰 안내, 이벤트 안내 등 (별도 동의 시에만)<br>
+11. 법적 의무 이행: 전자상거래법, 전자금융거래법, 정보통신망법 등 관련 법률에 따른 의무 이행</p>
+
+<h3>제3조 (개인정보의 수집 방법)</h3>
+<p>회사는 다음과 같은 방법으로 개인정보를 수집합니다.</p>
+<p>1. 회원가입, 프로필 수정, 전문가 등록 시 이용자가 직접 입력<br>
+2. 소셜 로그인 시 해당 플랫폼(카카오, 구글, Apple)의 API를 통한 자동 수집<br>
+3. 서비스 이용 과정에서 자동 생성·수집 (기기 정보, 접속 로그, 이용 기록, FCM 토큰)<br>
+4. GPS 위치 정보 이용 동의 시 기기의 위치 센서를 통한 수집<br>
+5. 결제 과정에서 PG사(포트원, 토스페이먼츠) 또는 Apple/Google을 통한 간접 수집<br>
+6. Firebase Analytics SDK를 통한 서비스 이용 이벤트 자동 수집</p>
+
+<h3>제4조 (개인정보의 보유 및 이용 기간)</h3>
+<p>1. 회사는 원칙적으로 이용자의 개인정보를 회원 탈퇴 시까지 보유·이용합니다.<br>
+2. 회원 탈퇴 시 개인정보는 지체 없이 파기합니다. 단, 다음의 경우 해당 기간 동안 보유합니다.</p>
+<p><strong>[관련 법령에 따른 의무 보유]</strong><br>
+- 계약 또는 청약 철회에 관한 기록: 5년 (전자상거래법 제6조)<br>
+- 대금결제 및 재화 등의 공급에 관한 기록: 5년 (전자상거래법 제6조)<br>
+- 소비자 불만 또는 분쟁 처리에 관한 기록: 3년 (전자상거래법 제6조)<br>
+- 표시·광고에 관한 기록: 6개월 (전자상거래법 제6조)<br>
+- 전자금융 거래에 관한 기록: 5년 (전자금융거래법 제22조)<br>
+- 서비스 이용 관련 통신사실 확인자료: 3개월 (통신비밀보호법 제15조의2)<br>
+- 본인 확인에 관한 기록: 6개월 (정보통신망법 제44조의5)</p>
+<p><strong>[서비스 내 별도 보유]</strong><br>
+- 채팅 원본 데이터: 거래 완료 후 6개월 보관 후 삭제<br>
+- 리뷰 스냅샷 데이터: 리뷰 공개 목적으로 영구 보존 (단, 비공개 처리된 메시지의 원문은 관리자만 열람 가능하며, 분쟁 해결 등 정당한 사유가 있는 경우에만 열람합니다)<br>
+- 시스템 자동 비공개 감지 로그: 개인정보 유출 여부 확인 및 감사 목적으로 보관, 리뷰 삭제 시 함께 삭제<br>
+- FCM 토큰 및 기기 정보: 회원 탈퇴 또는 기기 변경 시 삭제<br>
+- 은행 계좌 정보: 전문가 프로필 삭제 또는 회원 탈퇴 시 삭제 (단, 정산 완료 후 5년간 법적 보유)</p>
+
+<h3>제5조 (개인정보의 제3자 제공)</h3>
+<p>1. 회사는 원칙적으로 이용자의 개인정보를 외부에 제공하지 않습니다. 다만, 다음의 경우에는 예외로 합니다.<br>
+&nbsp;&nbsp;가. 이용자가 사전에 동의한 경우<br>
+&nbsp;&nbsp;나. 법률에 특별한 규정이 있거나 법령상 의무 준수를 위해 불가피한 경우<br>
+&nbsp;&nbsp;다. 수사 목적으로 법령에 정해진 절차와 방법에 따라 수사기관의 요구가 있는 경우</p>
+<p>2. 채팅 내역의 리뷰 공개: 거래 완료 시 채팅 내역이 자동으로 스냅샷되어 리뷰로 공개됩니다. 이는 회원가입 시 별도 동의(채팅 내역 리뷰 활용 동의)를 받습니다. 공개 전 48시간 필터링 기간이 제공되며, 개인정보가 포함된 메시지는 시스템이 자동으로 비공개 처리합니다.</p>
+<p>3. 분쟁 조정 시 관리자가 채팅 내역 전문(비공개 처리된 메시지 원문 포함)을 열람할 수 있습니다. 이는 공정한 분쟁 조정을 위한 것이며, 조정 목적 외 사용하지 않습니다.</p>
+
+<h3>제6조 (개인정보 처리 위탁)</h3>
+<p>회사는 서비스 제공을 위해 다음과 같이 개인정보 처리를 위탁하고 있습니다.</p>
+<p>- 포트원(주): 결제 처리 중개 (쿠폰 구매, 에스크로 결제) — 위탁 계약 종료 시까지<br>
+- (주)토스페이먼츠: 결제 승인, 취소, 에스크로 예치·확인·환불 처리 — 위탁 계약 종료 시까지<br>
+- Google LLC (Firebase): 푸시 알림 발송 (FCM), 서비스 이용 분석 (Firebase Analytics) — Google 정책에 따름<br>
+- Apple Inc.: 푸시 알림 발송 (APNs), 인앱결제 영수증 검증 — Apple 정책에 따름<br>
+- Amazon Web Services: 서버 호스팅, 데이터 저장 (이미지, 파일 포함) — 위탁 계약 종료 시까지</p>
+<p>회사는 위탁 계약 시 개인정보보호법 제26조에 따라 위탁 업무 수행 목적 외 개인정보 처리 금지, 기술적·관리적 보호조치, 재위탁 제한, 수탁자에 대한 관리·감독, 손해배상 등 책임에 관한 사항을 계약서 등 문서에 명시합니다.</p>
+
+<h3>제7조 (개인정보의 파기)</h3>
+<p>1. 회사는 개인정보 보유기간의 경과, 처리 목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체 없이 해당 개인정보를 파기합니다.<br>
+2. 보유기간이 경과했으나 다른 법률에 따라 계속 보존해야 하는 경우, 해당 개인정보를 별도의 데이터베이스로 옮기거나 보관 장소를 달리하여 보존합니다.<br>
+3. 파기 방법<br>
+&nbsp;&nbsp;가. 전자적 파일: 복구 불가능한 방법으로 영구 삭제<br>
+&nbsp;&nbsp;나. 종이 문서: 분쇄기로 분쇄 또는 소각<br>
+4. 채팅 원본 데이터는 거래 완료 후 6개월 경과 시 자동 삭제 처리됩니다.</p>
+
+<h3>제8조 (이용자 및 법정대리인의 권리·의무와 행사 방법)</h3>
+<p>1. 이용자(또는 법정대리인)는 회사에 대해 언제든지 다음 각 호의 개인정보 보호 관련 권리를 행사할 수 있습니다.<br>
+&nbsp;&nbsp;가. 개인정보 열람 요구<br>
+&nbsp;&nbsp;나. 오류 등이 있을 경우 정정 요구<br>
+&nbsp;&nbsp;다. 삭제 요구<br>
+&nbsp;&nbsp;라. 처리 정지 요구<br>
+2. 위 권리 행사는 서비스 내 마이페이지 또는 고객센터를 통해 가능하며, 회사는 지체 없이 조치합니다.<br>
+3. 이용자가 개인정보의 오류 등에 대한 정정 또는 삭제를 요구한 경우, 회사는 정정 또는 삭제를 완료할 때까지 해당 개인정보를 이용하거나 제공하지 않습니다.<br>
+4. 리뷰로 이미 공개된 채팅 스냅샷의 삭제를 요청하는 경우, 비공개 처리(HIDDEN)로 대체될 수 있습니다. 이는 리뷰 시스템의 투명성을 유지하면서 개인정보를 보호하기 위한 조치입니다.<br>
+5. 분쟁 해결을 위해 필요한 개인정보는 분쟁 종료 후 관련 법령에 따른 보유 기간 동안 보관될 수 있습니다.<br>
+6. 만 14세 미만 아동의 개인정보를 수집하지 않습니다. 만 14세 미만임이 확인된 경우 즉시 해당 정보를 파기합니다.</p>
+
+<h3>제9조 (개인정보의 안전성 확보 조치)</h3>
+<p>회사는 개인정보의 안전성 확보를 위해 다음과 같은 조치를 취하고 있습니다.</p>
+<p>1. 관리적 조치: 내부 관리계획 수립·시행, 정기적 직원 교육<br>
+2. 기술적 조치<br>
+&nbsp;&nbsp;가. 비밀번호 암호화 저장 (BCrypt 등 단방향 암호화)<br>
+&nbsp;&nbsp;나. 개인정보 전송 시 암호화 통신 (HTTPS/TLS)<br>
+&nbsp;&nbsp;다. 해킹 등에 대비한 기술적 대책 (JWT 토큰 기반 무상태 인증, Refresh Token 관리)<br>
+&nbsp;&nbsp;라. 접근 권한 관리 (관리자와 일반 사용자 권한 분리, 관리자 별도 인증 체계)<br>
+&nbsp;&nbsp;마. 채팅 내 개인정보 자동 감지 시스템 운영 (전화번호, 계좌번호, 이메일, 주소, 메신저 ID, 외부 링크 자동 감지 후 리뷰 비공개 처리)<br>
+3. 물리적 조치: 클라우드 서버 내 데이터 보관, 접근 통제</p>
+
+<h3>제10조 (자동 수집 장치의 설치·운영 및 거부)</h3>
+<p>1. 회사는 서비스 이용 과정에서 다음 정보를 자동으로 수집할 수 있습니다.</p>
+<p><strong>[기기 정보]</strong><br>
+- 기기 고유 식별자 (Android: android.id, iOS: identifierForVendor)<br>
+- 기기 유형 (Android/iOS), OS 버전, 앱 버전</p>
+<p><strong>[알림 관련]</strong><br>
+- FCM 토큰 (Firebase Cloud Messaging — Google 서버로 전송)<br>
+- APNs 토큰 (Apple Push Notification — Apple 서버로 전송)</p>
+<p><strong>[이용 분석 (Firebase Analytics)]</strong><br>
+- 화면 조회 이벤트 (어떤 화면을 방문했는지)<br>
+- 서비스 이용 이벤트 (의뢰 등록, 제안서 발송, 매칭, 결제 등 주요 행동)<br>
+- 퍼널 분석 데이터 (의뢰 등록 과정, 쿠폰 구매 과정 등 단계별 이탈률)<br>
+- 위 이벤트 데이터는 Firebase Analytics를 통해 Google 서버에 전송되며, 개별 사용자 식별이 아닌 서비스 개선을 위한 통계 분석 목적으로만 사용됩니다.</p>
+<p><strong>[위치 정보]</strong><br>
+- GPS 기반 위치 정보 (시/도, 구/군 수준)<br>
+- 위치 정보는 이용자의 명시적 동의(앱 권한 허용) 시에만 수집되며, 오프라인 의뢰 지역 매칭 목적으로 사용됩니다.<br>
+- 위치 정보의 수집을 원하지 않는 경우 기기 설정에서 위치 권한을 거부할 수 있습니다. 이 경우 지역 기반 서비스(근처 전문가 추천 등)가 제한될 수 있습니다.</p>
+<p>2. 이용자는 다음과 같이 자동 수집을 거부하거나 제한할 수 있습니다.<br>
+&nbsp;&nbsp;가. 푸시 알림 수신: 앱 설정 또는 기기 설정에서 거부 가능 (필수 서비스 알림 제외)<br>
+&nbsp;&nbsp;나. 위치 정보 수집: 기기 설정에서 위치 권한 거부 가능<br>
+&nbsp;&nbsp;다. 카메라·갤러리 접근: 기기 설정에서 거부 가능 (이미지 업로드 기능 제한)</p>
+
+<h3>제11조 (개인정보 보호 책임자)</h3>
+<p>회사는 개인정보 처리에 관한 업무를 총괄하고, 이용자의 개인정보 관련 불만 처리 및 피해 구제를 위해 다음과 같이 개인정보 보호 책임자를 지정하고 있습니다.</p>
+<p>- 개인정보 보호 책임자: 쪽집게 개인정보 보호팀<br>
+- 문의: 서비스 내 고객센터</p>
+<p>이용자는 서비스 이용 중 발생한 모든 개인정보 관련 문의, 불만, 피해 구제 등을 위 책임자에게 신고할 수 있습니다. 회사는 이용자의 신고에 대해 신속하고 충분한 답변을 드리겠습니다.</p>
+
+<h3>제12조 (권익 침해 구제 방법)</h3>
+<p>이용자는 개인정보 침해로 인한 구제를 받기 위해 다음 기관에 분쟁 해결이나 상담을 신청할 수 있습니다.</p>
+<p>- 개인정보분쟁조정위원회: (국번 없이) 1833-6972 (www.kopico.go.kr)<br>
+- 개인정보침해신고센터(한국인터넷진흥원, KISA): (국번 없이) 118 (privacy.kisa.or.kr)<br>
+- 대검찰청 사이버수사과: (국번 없이) 1301 (www.spo.go.kr)<br>
+- 경찰청 사이버수사국: (국번 없이) 182 (ecrm.cyber.go.kr)</p>
+
+<h3>제13조 (앱 접근 권한 안내)</h3>
+<p>서비스 이용을 위해 다음의 기기 접근 권한이 필요할 수 있습니다. 모든 권한은 선택적이며, 거부해도 기본 서비스는 이용 가능합니다.</p>
+<p><strong>[선택 권한]</strong><br>
+- 카메라: 프로필 사진, 포트폴리오 이미지, 채팅 사진 촬영<br>
+- 사진/갤러리: 프로필 이미지, 포트폴리오, 자격증, 채팅 첨부, 작업물 등 이미지 업로드<br>
+- 위치: 오프라인 의뢰 지역 자동 설정, 근처 전문가/의뢰 추천<br>
+- 알림: 매칭 알림, 채팅 메시지 알림, 결제 알림 등 푸시 알림 수신</p>
+<p>선택 권한을 거부해도 서비스의 기본 기능은 이용할 수 있으나, 해당 권한이 필요한 일부 기능의 이용이 제한될 수 있습니다.</p>
+
+<h3>제14조 (고지 의무)</h3>
+<p>본 개인정보 처리방침은 시행일로부터 적용되며, 법령·정책 또는 보안 기술의 변경에 따라 내용의 추가·삭제 및 수정이 있을 경우에는 변경 사항의 시행 7일 전부터 서비스 내 공지사항을 통하여 고지할 것입니다. 이용자에게 불리한 변경의 경우 30일 전 공지합니다.</p>`
+  },
+  chatReview: {
+    title: '채팅 내역 리뷰 활용 동의',
+    content: `<h2>채팅 내역 리뷰 활용 동의</h2>
+<p>시행일: 2026년 3월 1일</p>
+
+<h3>1. 동의 목적</h3>
+<p>"쪽집게" 서비스는 거래 완료 시 채팅 상담 내역을 자동으로 스냅샷하여 리뷰로 공개하는 투명 리뷰 시스템을 운영합니다. 본 동의는 채팅 내역이 리뷰로 자동 공개될 수 있음을 고지하고 이에 대한 동의를 구하기 위한 것입니다.</p>
+
+<h3>2. 리뷰 생성 및 공개 방식</h3>
+<p>가. 거래가 완료(COMPLETED)되면 채팅 내역이 자동으로 스냅샷(복사)되어 리뷰 기초 자료가 생성됩니다. 별도의 리뷰 작성 행위는 필요하지 않습니다.<br>
+나. 시스템은 채팅 메시지에서 개인정보(전화번호, 계좌번호, 이메일, 상세 주소, 메신저 ID, 외부 링크)를 자동으로 감지하여 해당 메시지 전체를 비공개 처리합니다. 이는 이용자의 개인정보 보호를 위한 조치입니다.<br>
+다. 스냅샷 생성 후 48시간 동안 의뢰인과 전문가는 각자 자신이 보낸 메시지를 개별적으로 비공개 처리할 수 있습니다.<br>
+라. 48시간 경과 시 또는 양측 모두 필터링 완료를 확인하면 리뷰가 자동 공개됩니다.<br>
+마. 리뷰에는 공개 처리된 채팅 내역, 별점(선택), 의뢰인의 닉네임 및 프로필 이미지가 포함됩니다.<br>
+바. 비공개 처리된 메시지는 "[비공개 메시지]"로 표시되며, 비공개 주체(본인/시스템)는 구분되지 않습니다.</p>
+
+<h3>3. 전문가의 권리</h3>
+<p>가. 전문가는 공개된 리뷰에 대해 1회에 한하여 답변을 작성할 수 있습니다. (최대 500자, 공개 후 30일 이내)<br>
+나. 허위 사실, 명예훼손 등 부당한 리뷰에 대해 삭제 요청을 할 수 있습니다.<br>
+다. 회사는 요청을 검토 후 적절한 조치(비공개 처리 등)를 취합니다.</p>
+
+<h3>4. 주의사항</h3>
+<p>가. 채팅 시 개인정보(연락처, 주소, 금융정보 등)를 포함하지 않도록 주의해주세요. 개인정보가 포함된 메시지는 시스템이 자동으로 비공개 처리하지만, 감지되지 않는 경우가 있을 수 있습니다.<br>
+나. 리뷰에 포함된 채팅 내용에 개인정보가 포함된 경우, 회사에 삭제를 요청할 수 있습니다.<br>
+다. 분쟁 조정 시 관리자가 비공개 처리된 메시지의 원문을 열람할 수 있습니다.<br>
+라. 본 동의를 철회하려면 서비스 탈퇴가 필요합니다.</p>
+
+<h3>5. 동의 거부 시 불이익</h3>
+<p>본 동의는 서비스 이용을 위한 <strong>필수 동의</strong> 사항입니다. 동의를 거부하실 경우 서비스 이용이 제한됩니다.</p>`
+  },
+  marketing: {
+    title: '마케팅 정보 수신 동의',
+    content: `<h2>마케팅 정보 수신 동의</h2>
+<p>시행일: 2026년 3월 1일</p>
+
+<h3>1. 수신 목적</h3>
+<p>회사는 이용자에게 다음과 같은 마케팅 정보를 발송하고자 합니다.</p>
+<p>가. 할인 쿠폰 및 프로모션 안내<br>
+나. 신규 전문가 및 서비스 소개<br>
+다. 이벤트 및 혜택 정보<br>
+라. 서비스 업데이트 안내</p>
+
+<h3>2. 수신 방법</h3>
+<p>가. 앱 푸시 알림<br>
+나. 이메일</p>
+
+<h3>3. 수신 거부</h3>
+<p>가. 마이페이지 > 설정 > 푸시 알림 설정에서 언제든지 수신을 거부할 수 있습니다.<br>
+나. 수신 거부 시에도 서비스 이용에 필요한 필수 알림(결제 확인, 매칭 알림, 채팅 알림, 환불 처리 등)은 발송됩니다.</p>
+
+<h3>4. 안내</h3>
+<p>본 동의는 <strong>선택 사항</strong>이며, 동의하지 않으셔도 서비스 이용에 제한이 없습니다.</p>`
+  }
+};
+
+function showTerms(type) {
+  const data = TERMS_DATA[type];
+  if (!data) return;
+  document.getElementById('termsModalTitle').textContent = data.title;
+  document.getElementById('termsModalBody').innerHTML = data.content;
+  document.getElementById('termsModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTermsModal() {
+  document.getElementById('termsModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ═══ Confetti Animation ═══
+function launchConfetti() {
+  const container = document.createElement('div');
+  container.className = 'confetti-container';
+  document.body.appendChild(container);
+
+  const colors = ['#6C5CE7', '#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#ec4899', '#8b5cf6', '#14b8a6'];
+  const shapes = ['square', 'rect', 'circle'];
+
+  for (let i = 0; i < 100; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+    const left = Math.random() * 100;
+    const delay = Math.random() * 1.5;
+    const duration = 2 + Math.random() * 2;
+    const size = 6 + Math.random() * 8;
+
+    piece.style.left = left + '%';
+    piece.style.width = (shape === 'rect' ? size * 0.4 : size) + 'px';
+    piece.style.height = size + 'px';
+    piece.style.background = color;
+    piece.style.borderRadius = shape === 'circle' ? '50%' : '2px';
+    piece.style.animationDuration = duration + 's';
+    piece.style.animationDelay = delay + 's';
+
+    container.appendChild(piece);
+  }
+
+  setTimeout(() => container.remove(), 5000);
 }
 </script>
 
