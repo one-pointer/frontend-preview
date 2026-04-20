@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>개인정보처리방침 - 쪽집게</title>
+  <meta name="description" content="쪽집게 서비스의 개인정보 수집·이용·제공에 관한 방침을 안내합니다.">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+  <style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --purple: #6C5CE7;
+  --purple-deep: #5A4BD1;
+  --purple-light: #a78bfa;
+  --purple-bg: rgba(108,92,231,0.06);
+  --green: #10b981;
+  --green-bg: rgba(16,185,129,0.08);
+  --red: #ef4444;
+  --red-bg: rgba(239,68,68,0.06);
+  --amber: #f59e0b;
+  --amber-bg: rgba(245,158,11,0.06);
+  --cream: #FAFAF7;
+  --cream-dark: #F2F0EB;
+  --text-primary: #1a1a2e;
+  --text-secondary: #555568;
+  --text-muted: #8e8ea0;
+  --border: rgba(0,0,0,0.06);
+  --white: #ffffff;
+  --warm-shadow: 0 2px 40px rgba(26,26,46,0.06);
+  --card-shadow: 0 8px 32px rgba(26,26,46,0.08);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Pretendard Variable', 'Pretendard', -apple-system, sans-serif;
+  background: var(--cream);
+  color: var(--text-primary);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Header ── */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(250,250,247,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+}
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.header__back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.header__back:hover { color: var(--purple); }
+.header__back svg { width: 18px; height: 18px; }
+.header__logo {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+/* ── Hero ── */
+.hero {
+  padding: 64px 0 48px;
+  text-align: center;
+}
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--purple-bg);
+  color: var(--purple);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+}
+.hero__title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+}
+.hero__subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin: 0 auto;
+}
+.hero__updated {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--text-muted);
+  background: var(--white);
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+
+/* ── Summary card ── */
+.summary {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 28px;
+  margin: 32px 0;
+  box-shadow: var(--warm-shadow);
+  border: 1px solid var(--border);
+}
+.summary__title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--purple);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.summary__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.summary__item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.summary__item::before {
+  content: "✓";
+  color: var(--green);
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* ── TOC ── */
+.toc {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 28px;
+  margin-bottom: 48px;
+}
+.toc__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 14px;
+}
+.toc__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toc__link {
+  display: flex;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 0;
+  transition: color 0.2s;
+}
+.toc__link:hover { color: var(--purple); }
+.toc__num {
+  color: var(--purple);
+  font-weight: 700;
+  min-width: 24px;
+}
+
+/* ── Section ── */
+.section {
+  margin-bottom: 48px;
+}
+.section__num {
+  display: inline-block;
+  background: var(--purple);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.section__title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+.section__body {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+.section__body p {
+  margin-bottom: 12px;
+}
+.section__body ul {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+}
+.section__body li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+.section__body li::before {
+  content: "•";
+  color: var(--purple);
+  font-weight: 800;
+  position: absolute;
+  left: 4px;
+}
+.section__body strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+/* ── Table ── */
+.policy-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--warm-shadow);
+  margin: 16px 0;
+  font-size: 14px;
+}
+.policy-table th {
+  background: var(--purple-bg);
+  color: var(--purple);
+  font-weight: 700;
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.policy-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+.policy-table tr:last-child td { border-bottom: none; }
+
+/* ── Callout ── */
+.callout {
+  background: var(--amber-bg);
+  border-left: 3px solid var(--amber);
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin: 16px 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.callout strong { color: var(--amber); }
+
+/* ── Contact card ── */
+.contact-card {
+  background: linear-gradient(135deg, var(--purple), var(--purple-deep));
+  color: var(--white);
+  border-radius: 20px;
+  padding: 32px;
+  margin: 32px 0;
+  box-shadow: 0 12px 40px rgba(108,92,231,0.2);
+}
+.contact-card__title {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+.contact-card__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.contact-card__item {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+  opacity: 0.95;
+}
+.contact-card__label {
+  min-width: 80px;
+  opacity: 0.8;
+  font-weight: 600;
+}
+.contact-card__value {
+  font-weight: 500;
+}
+
+/* ── Footer ── */
+.footer {
+  background: #1a1a2e;
+  color: rgba(255,255,255,0.6);
+  padding: 32px 0 40px;
+  margin-top: 48px;
+}
+.footer__inner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px;
+  text-align: center;
+}
+.footer__copy {
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.footer__link {
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.2s;
+}
+.footer__link:hover { color: var(--purple-light); }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .hero { padding: 48px 0 32px; }
+  .hero__title { font-size: 24px; }
+  .toc { padding: 20px 24px; }
+  .summary { padding: 20px; }
+  .section__title { font-size: 18px; }
+  .policy-table { font-size: 13px; }
+  .policy-table th, .policy-table td { padding: 8px 10px; }
+  .contact-card { padding: 24px; }
+}
+  </style>
+</head>
+<body>
+
+<!-- ═══ Header ═══ -->
+<header class="header">
+  <div class="header__inner">
+    <a href="index.html" class="header__back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      홈으로
+    </a>
+    <span class="header__logo">쪽집게</span>
+  </div>
+</header>
+
+<!-- ═══ Hero ═══ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Privacy Policy
+    </div>
+    <h1 class="hero__title">개인정보처리방침</h1>
+    <p class="hero__subtitle">쪽집게는 이용자의 개인정보를 소중히 여기며, 투명하게 수집·이용합니다.</p>
+    <span class="hero__updated">최종 수정일: 2026년 4월 20일</span>
+  </div>
+</section>
+
+<main class="container">
+
+  <!-- ═══ Summary ═══ -->
+  <div class="summary">
+    <div class="summary__title">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      핵심 요약
+    </div>
+    <ul class="summary__list">
+      <li class="summary__item">소셜 로그인을 통해 이메일·닉네임 등 최소한의 정보만 수집합니다.</li>
+      <li class="summary__item">수집한 정보는 서비스 제공, 결제, 전문가 매칭 목적으로만 사용됩니다.</li>
+      <li class="summary__item">이용자의 동의 없이 제3자에게 개인정보를 판매하거나 공유하지 않습니다.</li>
+      <li class="summary__item">회원탈퇴 시 개인정보는 즉시 삭제되며, 법정 보관 의무가 있는 정보만 일정 기간 보관됩니다.</li>
+      <li class="summary__item">이용자는 언제든지 자신의 정보를 열람·수정·삭제할 권리가 있습니다.</li>
+    </ul>
+  </div>
+
+  <!-- ═══ TOC ═══ -->
+  <nav class="toc">
+    <div class="toc__title">목차</div>
+    <ul class="toc__list">
+      <li><a href="#s1" class="toc__link"><span class="toc__num">01</span>개인정보의 수집 항목 및 방법</a></li>
+      <li><a href="#s2" class="toc__link"><span class="toc__num">02</span>개인정보의 수집·이용 목적</a></li>
+      <li><a href="#s3" class="toc__link"><span class="toc__num">03</span>개인정보의 보유 및 이용 기간</a></li>
+      <li><a href="#s4" class="toc__link"><span class="toc__num">04</span>개인정보의 제3자 제공</a></li>
+      <li><a href="#s5" class="toc__link"><span class="toc__num">05</span>개인정보 처리 위탁</a></li>
+      <li><a href="#s6" class="toc__link"><span class="toc__num">06</span>이용자의 권리 및 행사 방법</a></li>
+      <li><a href="#s7" class="toc__link"><span class="toc__num">07</span>개인정보 파기 절차 및 방법</a></li>
+      <li><a href="#s8" class="toc__link"><span class="toc__num">08</span>개인정보의 안전성 확보 조치</a></li>
+      <li><a href="#s9" class="toc__link"><span class="toc__num">09</span>쿠키·자동 수집 도구 사용</a></li>
+      <li><a href="#s10" class="toc__link"><span class="toc__num">10</span>아동의 개인정보 보호</a></li>
+      <li><a href="#s11" class="toc__link"><span class="toc__num">11</span>개인정보 보호책임자 및 문의처</a></li>
+      <li><a href="#s12" class="toc__link"><span class="toc__num">12</span>방침의 변경</a></li>
+    </ul>
+  </nav>
+
+  <!-- ═══ Section 1 ═══ -->
+  <section class="section" id="s1">
+    <span class="section__num">01</span>
+    <h2 class="section__title">개인정보의 수집 항목 및 방법</h2>
+    <div class="section__body">
+      <p>쪽집게(이하 "회사")는 서비스 제공을 위해 필요한 최소한의 개인정보를 수집합니다.</p>
+
+      <p><strong>가. 회원가입 시 수집하는 정보</strong></p>
+      <table class="policy-table">
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>수집 항목</th>
+            <th>수집 방법</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>필수</td>
+            <td>이메일, 닉네임, 프로필 사진 URL</td>
+            <td>Google, Apple, Kakao 소셜 로그인</td>
+          </tr>
+          <tr>
+            <td>필수</td>
+            <td>소셜 로그인 식별자(ID Token, Access Token)</td>
+            <td>소셜 로그인 인증 과정</td>
+          </tr>
+          <tr>
+            <td>필수</td>
+            <td>FCM 토큰, 디바이스 식별자, 디바이스 유형</td>
+            <td>앱 설치 시 자동 수집</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>나. 서비스 이용 중 수집하는 정보</strong></p>
+      <table class="policy-table">
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>수집 항목</th>
+            <th>수집 방법</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>선택</td>
+            <td>위치 정보(지역명, GPS 좌표)</td>
+            <td>이용자 동의 후 앱 내 수집</td>
+          </tr>
+          <tr>
+            <td>선택</td>
+            <td>카메라 촬영 이미지, 갤러리 사진, 첨부 파일</td>
+            <td>이용자가 업로드 시</td>
+          </tr>
+          <tr>
+            <td>선택(전문가)</td>
+            <td>자격증·경력·포트폴리오 이미지, 자격 발급기관</td>
+            <td>전문가 등록 시 직접 입력</td>
+          </tr>
+          <tr>
+            <td>선택(전문가)</td>
+            <td>예금주명, 은행명, 계좌번호</td>
+            <td>전문가 정산 등록 시</td>
+          </tr>
+          <tr>
+            <td>필수(결제 시)</td>
+            <td>거래ID, 결제 영수증 토큰</td>
+            <td>Google Play / App Store 인앱결제</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>다. 자동으로 수집되는 정보</strong></p>
+      <ul>
+        <li>서비스 이용 기록(로그인, 의뢰 등록, 제안, 결제 등)</li>
+        <li>접속 로그, 이용 시점, IP 주소</li>
+        <li>앱 버전, OS 버전, 디바이스 모델명</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ Section 2 ═══ -->
+  <section class="section" id="s2">
+    <span class="section__num">02</span>
+    <h2 class="section__title">개인정보의 수집·이용 목적</h2>
+    <div class="section__body">
+      <p>회사는 수집한 개인정보를 다음 목적으로만 이용합니다.</p>
+      <ul>
+        <li><strong>회원 관리:</strong> 회원 가입 및 본인 확인, 개인 식별, 부정 이용 방지, 중복 가입 확인</li>
+        <li><strong>서비스 제공:</strong> 의뢰-전문가 매칭, 제안서 교환, 채팅, 납품물 전달, 리뷰 작성</li>
+        <li><strong>결제 및 정산:</strong> 에스크로 결제 처리, 전문가 정산, 환불, 세금계산서 발행</li>
+        <li><strong>위치 기반 서비스:</strong> 이용자의 지역에 맞는 의뢰·전문가 추천</li>
+        <li><strong>알림 발송:</strong> 푸시 알림, 중요 공지, 고객 문의 응답</li>
+        <li><strong>안전한 거래 환경:</strong> 전문가 신원 확인, 허위 매물 방지, 분쟁 조정</li>
+        <li><strong>서비스 개선:</strong> 이용 행태 분석, 신규 기능 개발, 품질 향상</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ Section 3 ═══ -->
+  <section class="section" id="s3">
+    <span class="section__num">03</span>
+    <h2 class="section__title">개인정보의 보유 및 이용 기간</h2>
+    <div class="section__body">
+      <p>회사는 개인정보 수집·이용 목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 다만, 관련 법령에 의거하여 일정 기간 보관해야 하는 정보는 해당 기간 동안 별도 분리 보관합니다.</p>
+      <table class="policy-table">
+        <thead>
+          <tr>
+            <th>보관 항목</th>
+            <th>보관 기간</th>
+            <th>근거 법령</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>계약·청약철회 등 기록</td>
+            <td>5년</td>
+            <td>전자상거래법</td>
+          </tr>
+          <tr>
+            <td>대금결제·재화 공급 기록</td>
+            <td>5년</td>
+            <td>전자상거래법</td>
+          </tr>
+          <tr>
+            <td>소비자 불만·분쟁 처리 기록</td>
+            <td>3년</td>
+            <td>전자상거래법</td>
+          </tr>
+          <tr>
+            <td>표시·광고 기록</td>
+            <td>6개월</td>
+            <td>전자상거래법</td>
+          </tr>
+          <tr>
+            <td>서비스 접속 로그</td>
+            <td>3개월</td>
+            <td>통신비밀보호법</td>
+          </tr>
+          <tr>
+            <td>부정 이용 기록</td>
+            <td>1년</td>
+            <td>회사 내부 방침</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <strong>회원탈퇴 시:</strong> 위 법정 보관 대상 외의 모든 개인정보는 즉시 파기됩니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Section 4 ═══ -->
+  <section class="section" id="s4">
+    <span class="section__num">04</span>
+    <h2 class="section__title">개인정보의 제3자 제공</h2>
+    <div class="section__body">
+      <p>회사는 이용자의 개인정보를 원칙적으로 외부에 제공하지 않습니다. 다만, 다음의 경우에는 예외로 합니다.</p>
+      <ul>
+        <li>이용자가 사전에 동의한 경우</li>
+        <li>법령에 의거하거나 수사 목적으로 법령에 정해진 절차와 방법에 따라 수사기관의 요구가 있는 경우</li>
+        <li>거래 상대방(전문가 또는 의뢰자)에게 필요한 정보를 제공해야 하는 경우 — 이 경우 제공되는 정보는 닉네임, 프로필 사진, 거래 관련 내용에 한합니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ Section 5 ═══ -->
+  <section class="section" id="s5">
+    <span class="section__num">05</span>
+    <h2 class="section__title">개인정보 처리 위탁</h2>
+    <div class="section__body">
+      <p>회사는 서비스 향상 및 원활한 운영을 위해 다음 업체에 개인정보 처리 업무를 위탁하고 있습니다.</p>
+      <table class="policy-table">
+        <thead>
+          <tr>
+            <th>수탁업체</th>
+            <th>위탁 업무</th>
+            <th>보유·이용 기간</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Google LLC (Firebase)</td>
+            <td>푸시 알림 발송(FCM), 사용 통계 분석(Analytics)</td>
+            <td>서비스 제공 기간</td>
+          </tr>
+          <tr>
+            <td>Google LLC</td>
+            <td>Google 소셜 로그인 인증, Google Play 인앱결제</td>
+            <td>서비스 제공 기간</td>
+          </tr>
+          <tr>
+            <td>Apple Inc.</td>
+            <td>Apple 소셜 로그인 인증, App Store 인앱결제</td>
+            <td>서비스 제공 기간</td>
+          </tr>
+          <tr>
+            <td>Kakao Corp.</td>
+            <td>Kakao 소셜 로그인 인증, 카카오톡 공유</td>
+            <td>서비스 제공 기간</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>회사는 위탁 계약 시 관계 법령에 따라 개인정보 보호 관련 사항을 준수하도록 감독하고 있습니다.</p>
+    </div>
+  </section>
+
+  <!-- ═══ Section 6 ═══ -->
+  <section class="section" id="s6">
+    <span class="section__num">06</span>
+    <h2 class="section__title">이용자의 권리 및 행사 방법</h2>
+    <div class="section__body">
+      <p>이용자는 언제든지 자신의 개인정보에 대해 다음의 권리를 행사할 수 있습니다.</p>
+      <ul>
+        <li><strong>개인정보 열람 요구:</strong> 앱 내 "마이페이지"에서 열람 가능</li>
+        <li><strong>수정 및 삭제 요구:</strong> 앱 내 "프로필 수정"에서 직접 변경, 또는 고객센터 문의</li>
+        <li><strong>처리 정지 요구:</strong> 고객센터 문의를 통해 요청</li>
+        <li><strong>회원 탈퇴(동의 철회):</strong> 앱 내 "마이페이지 → 회원 탈퇴" 메뉴에서 직접 실행</li>
+      </ul>
+      <p>회사는 위 요청 접수 시 지체 없이 조치하며, 정당한 사유가 없는 한 10일 이내 처리합니다.</p>
+    </div>
+  </section>
+
+  <!-- ═══ Section 7 ═══ -->
+  <section class="section" id="s7">
+    <span class="section__num">07</span>
+    <h2 class="section__title">개인정보 파기 절차 및 방법</h2>
+    <div class="section__body">
+      <p><strong>가. 파기 절차</strong></p>
+      <ul>
+        <li>이용자가 입력한 정보는 목적 달성 후 별도 DB로 옮겨져 내부 방침 및 관련 법령에 따라 일정 기간 저장된 후 파기됩니다.</li>
+        <li>별도 DB로 옮겨진 개인정보는 법률에 따른 경우를 제외하고 다른 목적으로 이용되지 않습니다.</li>
+      </ul>
+      <p><strong>나. 파기 방법</strong></p>
+      <ul>
+        <li>전자적 파일 형태: 기록을 재생할 수 없는 기술적 방법으로 영구 삭제</li>
+        <li>종이 문서: 분쇄기로 분쇄하거나 소각</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ Section 8 ═══ -->
+  <section class="section" id="s8">
+    <span class="section__num">08</span>
+    <h2 class="section__title">개인정보의 안전성 확보 조치</h2>
+    <div class="section__body">
+      <p>회사는 이용자의 개인정보를 안전하게 보호하기 위해 다음의 조치를 취하고 있습니다.</p>
+      <ul>
+        <li><strong>관리적 조치:</strong> 개인정보 취급자 최소화, 정기 교육 실시</li>
+        <li><strong>기술적 조치:</strong> 개인정보 암호화 저장·전송(HTTPS/TLS), 접근 통제, 비밀번호 단방향 암호화</li>
+        <li><strong>물리적 조치:</strong> 서버실 출입 통제, 보안 시스템 운영</li>
+        <li><strong>보안 토큰:</strong> JWT 기반 액세스 토큰/리프레시 토큰 활용한 안전한 인증</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ Section 9 ═══ -->
+  <section class="section" id="s9">
+    <span class="section__num">09</span>
+    <h2 class="section__title">쿠키·자동 수집 도구 사용</h2>
+    <div class="section__body">
+      <p>회사는 서비스 개선을 위해 다음의 자동 수집 도구를 이용합니다.</p>
+      <ul>
+        <li><strong>Firebase Analytics:</strong> 이용자 행동 분석(로그인, 의뢰 등록, 결제 등 주요 이벤트)</li>
+        <li><strong>Firebase Cloud Messaging(FCM):</strong> 푸시 알림 발송</li>
+        <li><strong>로컬 스토리지(앱 내 DB):</strong> 로그인 유지, 앱 설정 저장</li>
+      </ul>
+      <p>이용자는 기기 설정에서 알림 수신 여부를 언제든지 변경할 수 있습니다.</p>
+    </div>
+  </section>
+
+  <!-- ═══ Section 10 ═══ -->
+  <section class="section" id="s10">
+    <span class="section__num">10</span>
+    <h2 class="section__title">아동의 개인정보 보호</h2>
+    <div class="section__body">
+      <p>회사는 만 14세 미만 아동의 개인정보를 수집하지 않는 것을 원칙으로 하며, 본 서비스는 만 14세 이상 이용자를 대상으로 합니다.</p>
+      <p>만 14세 미만 아동이 회사에 개인정보를 제공한 사실이 확인될 경우, 법정대리인의 동의가 없는 한 해당 정보를 지체 없이 파기합니다.</p>
+    </div>
+  </section>
+
+  <!-- ═══ Section 11 ═══ -->
+  <section class="section" id="s11">
+    <span class="section__num">11</span>
+    <h2 class="section__title">개인정보 보호책임자 및 문의처</h2>
+    <div class="section__body">
+      <p>회사는 이용자의 개인정보를 보호하고 개인정보와 관련된 불만을 처리하기 위해 개인정보 보호책임자를 지정하고 있습니다.</p>
+    </div>
+    <div class="contact-card">
+      <div class="contact-card__title">📧 개인정보 보호책임자</div>
+      <ul class="contact-card__list">
+        <li class="contact-card__item">
+          <span class="contact-card__label">담당자</span>
+          <span class="contact-card__value">쪽집게 개인정보 보호팀</span>
+        </li>
+        <li class="contact-card__item">
+          <span class="contact-card__label">이메일</span>
+          <span class="contact-card__value">privacy@onepointer.co.kr</span>
+        </li>
+        <li class="contact-card__item">
+          <span class="contact-card__label">고객센터</span>
+          <span class="contact-card__value">앱 내 "마이페이지 → 고객센터"</span>
+        </li>
+      </ul>
+    </div>
+    <div class="section__body">
+      <p>개인정보 침해 신고 및 상담이 필요하신 경우 아래 기관에 문의하실 수 있습니다.</p>
+      <ul>
+        <li>개인정보 침해신고센터 (privacy.kisa.or.kr / ☎ 118)</li>
+        <li>개인정보 분쟁조정위원회 (kopico.go.kr / ☎ 1833-6972)</li>
+        <li>대검찰청 사이버수사과 (spo.go.kr / ☎ 1301)</li>
+        <li>경찰청 사이버수사국 (ecrm.cyber.go.kr / ☎ 182)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ Section 12 ═══ -->
+  <section class="section" id="s12">
+    <span class="section__num">12</span>
+    <h2 class="section__title">방침의 변경</h2>
+    <div class="section__body">
+      <p>본 개인정보처리방침은 법령 및 회사 정책에 따라 변경될 수 있으며, 변경 시 시행일 및 변경 내용을 사전에 공지합니다.</p>
+      <p>중요한 변경 사항이 있는 경우 시행일 최소 7일 전부터, 이용자 권리에 중대한 영향을 미치는 변경의 경우 최소 30일 전부터 공지합니다.</p>
+      <div class="callout">
+        <strong>시행일:</strong> 본 방침은 <strong>2026년 4월 20일</strong>부터 시행됩니다.
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══ Footer ═══ -->
+<footer class="footer">
+  <div class="footer__inner">
+    <p class="footer__copy">© 2026 쪽집게 (One Pointer). All rights reserved.</p>
+    <a href="index.html" class="footer__link">홈으로 돌아가기</a>
+  </div>
+</footer>
+
+</body>
+</html>
