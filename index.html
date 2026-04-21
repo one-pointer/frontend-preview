@@ -2915,8 +2915,20 @@ body {
 
     <!-- ── Step 1: 회원가입 ── -->
     <div class="reg-step active" id="regStep1">
-      <h3 class="reg-step__title">회원가입</h3>
-      <p class="reg-step__desc">전문가 등록을 위해 먼저 계정을 만들어주세요.</p>
+      <h3 class="reg-step__title" id="step1Title">회원가입</h3>
+      <p class="reg-step__desc" id="step1Desc">전문가 등록을 위해 먼저 계정을 만들어주세요.</p>
+
+      <div style="margin:14px 0 20px;padding:14px 16px;background:#fff5f5;border:1px solid #f5c6c6;border-left:4px solid #e74c3c;border-radius:8px;">
+        <p style="margin:0;color:#c0392b;font-weight:700;font-size:14px;line-height:1.5;">
+          ※ 회원가입만으로는 <u>얼리버드 뱃지가 부여되지 않습니다.</u><br>
+          <span style="font-weight:700;">전문가 프로필 등록까지 완료</span>해야 얼리버드 뱃지와 런칭 혜택이 부여됩니다.
+        </p>
+      </div>
+
+      <div id="step1ModeToggle" style="display:flex;gap:8px;margin-bottom:16px;background:#f5f5f7;border-radius:10px;padding:4px;">
+        <button type="button" id="signupModeBtn" onclick="switchStep1Mode('signup')" style="flex:1;padding:10px;border:none;border-radius:8px;background:#fff;color:#191919;font-weight:700;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,0.06);">회원가입</button>
+        <button type="button" id="loginModeBtn" onclick="switchStep1Mode('login')" style="flex:1;padding:10px;border:none;border-radius:8px;background:transparent;color:#777;font-weight:500;cursor:pointer;">로그인</button>
+      </div>
 
       <div class="reg-social-buttons">
         <button class="reg-social-btn reg-social-btn--kakao" onclick="socialLogin('kakao')">
@@ -2929,8 +2941,26 @@ body {
         </button>
       </div>
 
-      <div class="reg-divider">또는 이메일로 가입</div>
+      <div class="reg-divider" id="step1Divider">또는 이메일로 가입</div>
 
+      <!-- ── Login pane ── -->
+      <div id="loginPane" style="display:none;">
+        <div class="reg-form-group">
+          <label>이메일</label>
+          <input type="email" class="reg-input" id="loginEmail" placeholder="email@example.com">
+        </div>
+        <div class="reg-form-group">
+          <label>비밀번호</label>
+          <input type="password" class="reg-input" id="loginPassword" placeholder="비밀번호" onkeydown="if(event.key==='Enter'){event.preventDefault();submitLogin();}">
+        </div>
+        <div class="reg-msg reg-msg--error" id="loginError"></div>
+        <div class="reg-actions">
+          <button class="reg-btn reg-btn--primary" onclick="submitLogin()">로그인</button>
+        </div>
+      </div>
+
+      <!-- ── Signup pane ── -->
+      <div id="signupPane">
       <div class="reg-form-group">
         <label>이메일</label>
         <div class="reg-input-row">
@@ -3007,6 +3037,7 @@ body {
 
       <div class="reg-actions">
         <button class="reg-btn reg-btn--primary" id="step1NextBtn" onclick="submitStep1()" disabled>다음</button>
+      </div>
       </div>
     </div>
 
@@ -3505,6 +3536,67 @@ async function submitStep1() {
       goToStep(2);
     } else {
       errEl.textContent = json.message || '회원가입에 실패했습니다.';
+    }
+  } catch (e) {
+    errEl.textContent = '서버 연결에 실패했습니다.';
+  }
+}
+
+// ═══ Step1 mode switch (signup / login) ═══
+function switchStep1Mode(mode) {
+  const isLogin = mode === 'login';
+  document.getElementById('signupPane').style.display = isLogin ? 'none' : '';
+  document.getElementById('loginPane').style.display = isLogin ? '' : 'none';
+  document.getElementById('step1Divider').textContent = isLogin ? '또는 이메일로 로그인' : '또는 이메일로 가입';
+  document.getElementById('step1Title').textContent = isLogin ? '로그인' : '회원가입';
+  document.getElementById('step1Desc').textContent = isLogin
+    ? '이미 가입하신 계정으로 로그인하여 전문가 프로필 등록을 이어가세요.'
+    : '전문가 등록을 위해 먼저 계정을 만들어주세요.';
+
+  const signupBtn = document.getElementById('signupModeBtn');
+  const loginBtn = document.getElementById('loginModeBtn');
+  const activeStyle = 'flex:1;padding:10px;border:none;border-radius:8px;background:#fff;color:#191919;font-weight:700;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,0.06);';
+  const inactiveStyle = 'flex:1;padding:10px;border:none;border-radius:8px;background:transparent;color:#777;font-weight:500;cursor:pointer;';
+  signupBtn.setAttribute('style', isLogin ? inactiveStyle : activeStyle);
+  loginBtn.setAttribute('style', isLogin ? activeStyle : inactiveStyle);
+
+  document.getElementById('loginError').textContent = '';
+  document.getElementById('step1Error').textContent = '';
+}
+
+async function submitLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+  if (!email) { errEl.textContent = '이메일을 입력해주세요.'; return; }
+  if (!password) { errEl.textContent = '비밀번호를 입력해주세요.'; return; }
+  errEl.textContent = '';
+
+  try {
+    const json = await apiFetch('/v1/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password })
+    });
+    if (!json.success) {
+      errEl.textContent = json.message || '로그인에 실패했습니다.';
+      return;
+    }
+    authToken = json.data.accessToken;
+    if (authToken) localStorage.setItem('op_token', authToken);
+    if (json.data.refreshToken) localStorage.setItem('op_refresh', json.data.refreshToken);
+
+    // 전문가 프로필 등록 여부 확인 → 미등록이면 Step 2로 이동, 등록됐으면 안내
+    try {
+      const existsRes = await apiFetch('/v1/api/user/expert/exists');
+      const hasExpertProfile = existsRes && existsRes.success && existsRes.data === true;
+      if (hasExpertProfile) {
+        alert('이미 전문가로 등록된 계정입니다.\n\n원포인트 앱에서 로그인해주세요.');
+        closeRegistration();
+      } else {
+        goToStep(2);
+      }
+    } catch (err) {
+      errEl.textContent = '전문가 프로필 확인 중 오류가 발생했습니다.';
     }
   } catch (e) {
     errEl.textContent = '서버 연결에 실패했습니다.';
